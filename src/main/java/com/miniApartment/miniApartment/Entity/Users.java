@@ -1,15 +1,15 @@
 package com.miniApartment.miniApartment.Entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "Users")
-public class users {
+public class Users {
     @Id
     private String userId;
     private String firstName;
@@ -22,10 +22,16 @@ public class users {
     private String password;
     private int roleId;
 
-    public users() {
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+    public Users() {
     }
 
-    public users(String userId, String firstName, String lastName, Boolean gender, Date dateOfBirth, String placeOfPermanet, String email, String contact, String password, int roleId) {
+    public Users(String userId, String firstName, String lastName, Boolean gender, Date dateOfBirth, String placeOfPermanet, String email, String contact, String password, int roleId, Set<Role> roles) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,6 +42,7 @@ public class users {
         this.contact = contact;
         this.password = password;
         this.roleId = roleId;
+        this.roles = roles;
     }
 
     public String getUserId() {
@@ -116,5 +123,13 @@ public class users {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
