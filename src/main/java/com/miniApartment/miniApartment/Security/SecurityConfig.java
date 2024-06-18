@@ -38,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
     public static final String[] PUBLIC_URLS = {
-    "/auth/**"
+    "/auth/**",
+            "/api/user/**"
     };
     @Override
     protected void configure(HttpSecurity http) throws Exception {
