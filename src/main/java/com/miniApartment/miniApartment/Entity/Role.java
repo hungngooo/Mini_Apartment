@@ -1,5 +1,6 @@
 package com.miniApartment.miniApartment.Entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -7,16 +8,18 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Role")
-public class role {
+@Table(name = "role")
+public class Role {
     @Id
+    @Column(name = "roleId")
     private int Id;
+    @Column(name = "roleName")
     private String roleName;
-    public role() {
+    public Role() {
 
     }
 
-    public role(int id, String roleName) {
+    public Role(int id, String roleName) {
         Id = id;
         this.roleName = roleName;
     }

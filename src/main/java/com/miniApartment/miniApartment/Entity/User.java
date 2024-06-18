@@ -1,4 +1,5 @@
 package com.miniApartment.miniApartment.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -8,24 +9,42 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "Users")
-public class users {
+@Table(name = "users")
+public class User {
+    @Column(name = "userId")
     @Id
     private String userId;
+
+    @Column(name = "firstName")
     private String firstName;
+
+    @Column(name = "lastName")
     private String lastName;
+
+    @Column(name = "gender")
     private Boolean gender;
+
+    @Column(name = "dateOfBirth")
     private Date dateOfBirth;
+
+    @Column(name = "placeOfPermanet")
     private String placeOfPermanet;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "contact")
     private String contact;
+
+    @Column(name = "password")
     private String password;
+    @Column(name = "roleId")
     private int roleId;
 
-    public users() {
+    public User() {
     }
 
-    public users(String userId, String firstName, String lastName, Boolean gender, Date dateOfBirth, String placeOfPermanet, String email, String contact, String password, int roleId) {
+    public User(String userId, String firstName, String lastName, Boolean gender, Date dateOfBirth, String placeOfPermanet, String email, String contact, String password, int roleId) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
