@@ -1,37 +1,50 @@
 package com.miniApartment.miniApartment.Entity;
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "Users")
-public class Users {
+@Table(name = "users")
+public class User {
+    @Column(name = "userId")
     @Id
     private String userId;
+
+    @Column(name = "firstName")
     private String firstName;
+
+    @Column(name = "lastName")
     private String lastName;
+
+    @Column(name = "gender")
     private Boolean gender;
+
+    @Column(name = "dateOfBirth")
     private Date dateOfBirth;
+
+    @Column(name = "placeOfPermanet")
     private String placeOfPermanet;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "contact")
     private String contact;
+
+    @Column(name = "password")
     private String password;
+    @Column(name = "roleId")
     private int roleId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
-
-    public Users() {
+    public User() {
     }
 
-    public Users(String userId, String firstName, String lastName, Boolean gender, Date dateOfBirth, String placeOfPermanet, String email, String contact, String password, int roleId, Set<Role> roles) {
+    public User(String userId, String firstName, String lastName, Boolean gender, Date dateOfBirth, String placeOfPermanet, String email, String contact, String password, int roleId) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,7 +55,6 @@ public class Users {
         this.contact = contact;
         this.password = password;
         this.roleId = roleId;
-        this.roles = roles;
     }
 
     public String getUserId() {
@@ -123,13 +135,5 @@ public class Users {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 }
