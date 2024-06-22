@@ -40,7 +40,8 @@ public class User {
     private String password;
     @Column(name = "roleId")
     private int roleId;
-
+    @Column(name = "image")
+    private String image;
     public User() {
     }
 

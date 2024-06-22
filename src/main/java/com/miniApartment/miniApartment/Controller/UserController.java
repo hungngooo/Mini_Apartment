@@ -24,6 +24,11 @@ public class UserController {
     public ResponseEntity<User> getUserById(@RequestParam String id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
+    @GetMapping("/getUserByEmail")
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ResponseEntity<User> getUserByEmail(@RequestParam String email){
+        return ResponseEntity.ok(userService.getUserByEmail(email));
+    }
     @PostMapping("/editProfile")
     @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<User> editProfile(@RequestBody User user){
