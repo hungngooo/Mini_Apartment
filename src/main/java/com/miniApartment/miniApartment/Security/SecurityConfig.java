@@ -34,10 +34,17 @@ public class SecurityConfig {
     }
 
     // Configuring HttpSecurity
+    private static final String[] url = {"/auth/welcome"
+            ,"/api/user/**"
+            ,"/auth/addNewUser"
+            , "/auth/generateToken"
+            , "/auth/login"
+            , "/auth/signup"
+            , "/api/file/**"};
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/welcome","/api/user/**" ,"/auth/addNewUser", "/auth/generateToken", "/auth/login", "/auth/signup").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(url).permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/user/**").authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/admin/**").authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

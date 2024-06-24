@@ -70,7 +70,7 @@ public class AuthController {
 
             if (authentication.isAuthenticated()) {
                 String token = jwtService.generateToken(loginDto.getEmail());
-                return ResponseEntity.ok("Login succesfully");
+                return ResponseEntity.ok(token);
             } else {
                 return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
             }
