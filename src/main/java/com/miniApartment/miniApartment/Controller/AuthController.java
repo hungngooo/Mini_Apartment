@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -61,6 +62,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -69,7 +71,7 @@ public class AuthController {
 
             if (authentication.isAuthenticated()) {
                 String token = jwtService.generateToken(loginDto.getEmail());
-                return ResponseEntity.ok(token);
+                return ResponseEntity.ok("Login succesfully");
             } else {
                 return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
             }
@@ -109,4 +111,5 @@ public class AuthController {
             throw new UsernameNotFoundException("invalid user request !");
         }
     }
+
 }
