@@ -11,13 +11,12 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/file")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin
 public class FileController {
     @Autowired
     private MinioService minioService;
 
     @PostMapping("/upload")
-    @CrossOrigin(origins = "http://localhost:5173")
     public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("email") String email) throws Exception {
         try {
             return minioService.uploadFile(file,email);
