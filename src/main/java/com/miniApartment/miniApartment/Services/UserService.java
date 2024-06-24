@@ -26,4 +26,7 @@ public class UserService {
     public User updateUser(User user) {
         return userRepository.save(user);
     }
+//    public boolean checkCurrentPass(String email, String currentPass){
+//        User user =
+//    }
 }

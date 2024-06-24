@@ -2,6 +2,7 @@ package com.miniApartment.miniApartment.Controller;
 
 import com.miniApartment.miniApartment.Entity.User;
 import com.miniApartment.miniApartment.Services.UserService;
+import com.miniApartment.miniApartment.dto.ChangePasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,12 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<User> editProfile(@RequestBody User user){
         return ResponseEntity.ok(userService.updateUser(user));
+    }
+    @PostMapping("/changePassword")
+    public ResponseEntity<ChangePasswordDTO> changePassword(@RequestBody ChangePasswordDTO passwordDTO){
+        User user = userService.getUserByEmail(passwordDTO.getEmail());
+//        String passInDB = user.getPassword().decode
+        return null;
+//        return ResponseEntity.ok(userService.changePassword(user));
     }
 }
