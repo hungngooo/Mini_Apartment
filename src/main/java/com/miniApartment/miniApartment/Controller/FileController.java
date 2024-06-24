@@ -17,7 +17,8 @@ public class FileController {
     private MinioService minioService;
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("email") String email) throws Exception {
+    public String uploadFile(@RequestParam("file") MultipartFile file,
+                             @RequestParam("email") String email) throws Exception {
         try {
             return minioService.uploadFile(file,email);
         } catch (Exception e) {

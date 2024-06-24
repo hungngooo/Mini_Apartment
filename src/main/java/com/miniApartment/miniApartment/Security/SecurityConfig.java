@@ -35,12 +35,15 @@ public class SecurityConfig {
 
     // Configuring HttpSecurity
     private static final String[] url = {"/auth/welcome"
-            ,"/api/user/**"
-            ,"/auth/addNewUser"
-            , "/auth/generateToken"
-            , "/auth/login"
-            , "/auth/signup"
-            , "/api/file/**"};
+            , "/api/file/upload"
+
+
+            , "/auth/**"
+
+            , "/api/user/**"
+            , "/mail/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())

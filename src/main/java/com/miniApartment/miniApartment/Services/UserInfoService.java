@@ -40,6 +40,9 @@ public class UserInfoService implements UserDetailsService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+//    public boolean confirmOTP(int number) {
+//        return userRepository.
+//    }
 }
 
 
