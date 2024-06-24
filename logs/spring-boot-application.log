@@ -1,341 +1,38 @@
-2024-06-21T14:12:11.909+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : Starting MiniApartmentApplication using Java 22.0.1 with PID 18128 (D:\thuc tap fpt\Mini_Apartment\target\classes started by HP in D:\thuc tap fpt\Mini_Apartment)
-2024-06-21T14:12:11.926+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : No active profile set, falling back to 1 default profile: "default"
-2024-06-21T14:12:12.004+07:00  INFO 18128 --- [miniApartment] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2024-06-21T14:12:12.006+07:00  INFO 18128 --- [miniApartment] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2024-06-21T14:12:13.360+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-06-21T14:12:13.362+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
-2024-06-21T14:12:13.405+07:00  INFO 18128 --- [miniApartment] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.miniApartment.miniApartment.Repository.RoleRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
-2024-06-21T14:12:13.406+07:00  INFO 18128 --- [miniApartment] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.miniApartment.miniApartment.Repository.UserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
-2024-06-21T14:12:13.407+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 39 ms. Found 0 JDBC repository interfaces.
-2024-06-21T14:12:13.422+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-06-21T14:12:13.423+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-06-21T14:12:13.458+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 31 ms. Found 2 JPA repository interfaces.
-2024-06-21T14:12:14.282+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2024-06-21T14:12:14.298+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-06-21T14:12:14.298+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
-2024-06-21T14:12:14.357+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-06-21T14:12:14.358+07:00  INFO 18128 --- [miniApartment] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2350 ms
-2024-06-21T14:12:14.552+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-06-21T14:12:14.659+07:00  INFO 18128 --- [miniApartment] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
-2024-06-21T14:12:14.719+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-06-21T14:12:15.143+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-06-21T14:12:15.184+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-06-21T14:12:15.644+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3b2f1fcc
-2024-06-21T14:12:15.647+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-06-21T14:12:15.711+07:00  WARN 18128 --- [miniApartment] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-06-21T14:12:17.100+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-06-21T14:12:17.104+07:00  INFO 18128 --- [miniApartment] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-06-21T14:12:17.717+07:00  INFO 18128 --- [miniApartment] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
-2024-06-21T14:12:17.719+07:00  WARN 18128 --- [miniApartment] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider.
-2024-06-21T14:12:17.793+07:00  WARN 18128 --- [miniApartment] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-06-21T14:12:18.290+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6bee3e88, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@42c9734f, org.springframework.security.web.context.SecurityContextHolderFilter@2ff7a6e0, org.springframework.security.web.header.HeaderWriterFilter@6f20b708, org.springframework.web.filter.CorsFilter@722aee30, org.springframework.security.web.authentication.logout.LogoutFilter@7b6f545b, com.miniApartment.miniApartment.Filter.JWTAuthFilter@378565f7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@fd6af16, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@dcf1e84, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1f530ace, org.springframework.security.web.session.SessionManagementFilter@6c1d723b, org.springframework.security.web.access.ExceptionTranslationFilter@38dc42a1, org.springframework.security.web.access.intercept.AuthorizationFilter@467dfe64]
-2024-06-21T14:12:18.625+07:00  WARN 18128 --- [miniApartment] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2024-06-21T14:12:19.165+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2024-06-21T14:12:19.221+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2024-06-21T14:12:19.237+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : Started MiniApartmentApplication in 8.049 seconds (process running for 9.619)
-2024-06-21T14:12:38.657+07:00  INFO 18128 --- [miniApartment] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-06-21T14:12:38.657+07:00  INFO 18128 --- [miniApartment] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-06-21T14:12:38.663+07:00  INFO 18128 --- [miniApartment] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
-2024-06-21T14:12:38.951+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T14:12:45.209+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T14:36:10.202+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-5] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T15:05:04.474+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
-    select
-        u1_0.userId 
-    from
-        users u1_0 
-    where
-        u1_0.email=? 
-    limit
-        ?
-2024-06-21T15:05:04.571+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.userId=?
-2024-06-21T15:05:04.596+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
-    insert 
-    into
-        users
-        (contact, dateOfBirth, email, firstName, gender, lastName, password, placeOfPermanet, roleId, userId) 
-    values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-2024-06-21T15:05:04.613+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T15:05:28.106+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-10] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T15:14:48.136+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T15:15:06.831+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
-    select
-        u1_0.userId 
-    from
-        users u1_0 
-    where
-        u1_0.email=? 
-    limit
-        ?
-2024-06-21T15:15:06.915+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.userId=?
-2024-06-21T15:15:06.931+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
-    insert 
-    into
-        users
-        (contact, dateOfBirth, email, firstName, gender, lastName, password, placeOfPermanet, roleId, userId) 
-    values
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-2024-06-21T15:15:06.938+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T15:15:17.984+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T15:15:23.419+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-5] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T15:15:39.499+07:00 DEBUG 18128 --- [miniApartment] [http-nio-8080-exec-6] org.hibernate.SQL                        : 
-    select
-        u1_0.userId,
-        u1_0.contact,
-        u1_0.dateOfBirth,
-        u1_0.email,
-        u1_0.firstName,
-        u1_0.gender,
-        u1_0.lastName,
-        u1_0.password,
-        u1_0.placeOfPermanet,
-        u1_0.roleId 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2024-06-21T15:17:16.290+07:00  INFO 18128 --- [miniApartment] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
-2024-06-21T15:17:16.300+07:00  INFO 18128 --- [miniApartment] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2024-06-21T15:17:16.305+07:00  INFO 18128 --- [miniApartment] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2024-06-21T15:17:16.309+07:00  INFO 18128 --- [miniApartment] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2024-06-21T15:17:16.399+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : Starting MiniApartmentApplication using Java 22.0.1 with PID 18128 (D:\thuc tap fpt\Mini_Apartment\target\classes started by HP in D:\thuc tap fpt\Mini_Apartment)
-2024-06-21T15:17:16.399+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : No active profile set, falling back to 1 default profile: "default"
-2024-06-21T15:17:16.732+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-06-21T15:17:16.733+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
-2024-06-21T15:17:16.739+07:00  INFO 18128 --- [miniApartment] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.miniApartment.miniApartment.Repository.RoleRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
-2024-06-21T15:17:16.740+07:00  INFO 18128 --- [miniApartment] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.miniApartment.miniApartment.Repository.UserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
-2024-06-21T15:17:16.740+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 JDBC repository interfaces.
-2024-06-21T15:17:16.743+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-06-21T15:17:16.743+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-06-21T15:17:16.748+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 2 JPA repository interfaces.
-2024-06-21T15:17:17.145+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2024-06-21T15:17:17.148+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-06-21T15:17:17.150+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
-2024-06-21T15:17:17.189+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-06-21T15:17:17.190+07:00  INFO 18128 --- [miniApartment] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 789 ms
-2024-06-21T15:17:17.302+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-06-21T15:17:17.307+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-06-21T15:17:17.319+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-06-21T15:17:17.321+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
-2024-06-21T15:17:17.342+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6bcb4ea2
-2024-06-21T15:17:17.343+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
-2024-06-21T15:17:17.344+07:00  WARN 18128 --- [miniApartment] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-06-21T15:17:17.403+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-06-21T15:17:17.404+07:00  INFO 18128 --- [miniApartment] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-06-21T15:17:17.492+07:00  WARN 18128 --- [miniApartment] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-06-21T15:17:17.504+07:00  INFO 18128 --- [miniApartment] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
-2024-06-21T15:17:17.505+07:00  WARN 18128 --- [miniApartment] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider.
-2024-06-21T15:17:17.629+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2da2bb7a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@16e0495d, org.springframework.security.web.context.SecurityContextHolderFilter@5ac4816b, org.springframework.security.web.header.HeaderWriterFilter@1a21a7ce, org.springframework.web.filter.CorsFilter@648a898c, org.springframework.security.web.authentication.logout.LogoutFilter@4c8c6c22, com.miniApartment.miniApartment.Filter.JWTAuthFilter@3468726d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7403a859, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@630b7ec0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@673acc8f, org.springframework.security.web.session.SessionManagementFilter@3ba070ce, org.springframework.security.web.access.ExceptionTranslationFilter@c7453b1, org.springframework.security.web.access.intercept.AuthorizationFilter@2e02a78]
-2024-06-21T15:17:17.692+07:00  WARN 18128 --- [miniApartment] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2024-06-21T15:17:17.805+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2024-06-21T15:17:17.817+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2024-06-21T15:17:17.820+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : Started MiniApartmentApplication in 1.451 seconds (process running for 3908.203)
-2024-06-21T15:17:17.823+07:00  INFO 18128 --- [miniApartment] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2024-06-21T15:17:21.269+07:00  INFO 18128 --- [miniApartment] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
-2024-06-21T15:17:21.274+07:00  INFO 18128 --- [miniApartment] [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2024-06-21T15:17:21.275+07:00  INFO 18128 --- [miniApartment] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
-2024-06-21T15:17:21.278+07:00  INFO 18128 --- [miniApartment] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
-2024-06-21T15:17:21.346+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : Starting MiniApartmentApplication using Java 22.0.1 with PID 18128 (D:\thuc tap fpt\Mini_Apartment\target\classes started by HP in D:\thuc tap fpt\Mini_Apartment)
-2024-06-21T15:17:21.346+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : No active profile set, falling back to 1 default profile: "default"
-2024-06-21T15:17:21.476+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-06-21T15:17:21.477+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
-2024-06-21T15:17:21.483+07:00  INFO 18128 --- [miniApartment] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.miniApartment.miniApartment.Repository.RoleRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
-2024-06-21T15:17:21.484+07:00  INFO 18128 --- [miniApartment] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.miniApartment.miniApartment.Repository.UserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
-2024-06-21T15:17:21.484+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 JDBC repository interfaces.
-2024-06-21T15:17:21.487+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-06-21T15:17:21.488+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-06-21T15:17:21.492+07:00  INFO 18128 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 2 JPA repository interfaces.
-2024-06-21T15:17:21.635+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2024-06-21T15:17:21.636+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-06-21T15:17:21.636+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
-2024-06-21T15:17:21.653+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-06-21T15:17:21.653+07:00  INFO 18128 --- [miniApartment] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 305 ms
-2024-06-21T15:17:21.705+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-06-21T15:17:21.708+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-06-21T15:17:21.714+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-06-21T15:17:21.715+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
-2024-06-21T15:17:21.724+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@46ae454d
-2024-06-21T15:17:21.725+07:00  INFO 18128 --- [miniApartment] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
-2024-06-21T15:17:21.726+07:00  WARN 18128 --- [miniApartment] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-06-21T15:17:21.770+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-06-21T15:17:21.771+07:00  INFO 18128 --- [miniApartment] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-06-21T15:17:21.836+07:00  INFO 18128 --- [miniApartment] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
-2024-06-21T15:17:21.836+07:00  WARN 18128 --- [miniApartment] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider.
-2024-06-21T15:17:21.854+07:00  WARN 18128 --- [miniApartment] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-06-21T15:17:21.970+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5e6e033a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@325918d9, org.springframework.security.web.context.SecurityContextHolderFilter@4b97a3b1, org.springframework.security.web.header.HeaderWriterFilter@5a4069e1, org.springframework.web.filter.CorsFilter@38f6dbc, org.springframework.security.web.authentication.logout.LogoutFilter@4bc4e3e5, com.miniApartment.miniApartment.Filter.JWTAuthFilter@22bbcfb2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@ba87c53, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@527e13a6, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1e337026, org.springframework.security.web.session.SessionManagementFilter@75034544, org.springframework.security.web.access.ExceptionTranslationFilter@73766139, org.springframework.security.web.access.intercept.AuthorizationFilter@210784d7]
-2024-06-21T15:17:22.077+07:00  WARN 18128 --- [miniApartment] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2024-06-21T15:17:22.172+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2024-06-21T15:17:22.182+07:00  INFO 18128 --- [miniApartment] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2024-06-21T15:17:22.187+07:00  INFO 18128 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : Started MiniApartmentApplication in 0.862 seconds (process running for 3912.57)
-2024-06-21T15:17:22.188+07:00  INFO 18128 --- [miniApartment] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2024-06-21T16:10:44.209+07:00  WARN 18128 --- [miniApartment] [HikariPool-3 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Thread starvation or clock leap detected (housekeeper delta=43m22s224ms198µs500ns).
-2024-06-21T16:21:37.596+07:00  WARN 18128 --- [miniApartment] [HikariPool-3 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Thread starvation or clock leap detected (housekeeper delta=6m23s288ms644µs400ns).
-2024-06-21T16:24:21.317+07:00  INFO 18128 --- [miniApartment] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2024-06-21T16:24:21.319+07:00  INFO 18128 --- [miniApartment] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
-2024-06-21T16:24:21.324+07:00  INFO 18128 --- [miniApartment] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2024-06-20T09:55:22.973+07:00  INFO 10320 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : Starting MiniApartmentApplication using Java 22.0.1 with PID 10320 (D:\thuc tap fpt\Mini_Apartment\target\classes started by HP in D:\thuc tap fpt\Mini_Apartment)
+2024-06-20T09:55:22.987+07:00  INFO 10320 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : No active profile set, falling back to 1 default profile: "default"
+2024-06-20T09:55:23.045+07:00  INFO 10320 --- [miniApartment] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-06-20T09:55:23.046+07:00  INFO 10320 --- [miniApartment] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-06-20T09:55:24.189+07:00  INFO 10320 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-06-20T09:55:24.191+07:00  INFO 10320 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-06-20T09:55:24.233+07:00  INFO 10320 --- [miniApartment] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.miniApartment.miniApartment.Repository.RoleRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-06-20T09:55:24.235+07:00  INFO 10320 --- [miniApartment] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.miniApartment.miniApartment.Repository.UserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-06-20T09:55:24.236+07:00  INFO 10320 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 37 ms. Found 0 JDBC repository interfaces.
+2024-06-20T09:55:24.256+07:00  INFO 10320 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-06-20T09:55:24.257+07:00  INFO 10320 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-20T09:55:24.296+07:00  INFO 10320 --- [miniApartment] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 33 ms. Found 2 JPA repository interfaces.
+2024-06-20T09:55:25.077+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-06-20T09:55:25.095+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-20T09:55:25.095+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.24]
+2024-06-20T09:55:25.159+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-20T09:55:25.160+07:00  INFO 10320 --- [miniApartment] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2112 ms
+2024-06-20T09:55:25.345+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-20T09:55:25.472+07:00  INFO 10320 --- [miniApartment] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-06-20T09:55:25.529+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-06-20T09:55:25.955+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-20T09:55:26.003+07:00  INFO 10320 --- [miniApartment] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-20T09:55:26.598+07:00  INFO 10320 --- [miniApartment] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@75a5a88e
+2024-06-20T09:55:26.601+07:00  INFO 10320 --- [miniApartment] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-06-20T09:55:26.696+07:00  WARN 10320 --- [miniApartment] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-06-20T09:55:27.862+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-20T09:55:27.865+07:00  INFO 10320 --- [miniApartment] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-20T09:55:28.350+07:00  INFO 10320 --- [miniApartment] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2024-06-20T09:55:28.351+07:00  WARN 10320 --- [miniApartment] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider.
+2024-06-20T09:55:28.413+07:00  WARN 10320 --- [miniApartment] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-20T09:55:28.815+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@663cb8d3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@52869855, org.springframework.security.web.context.SecurityContextHolderFilter@593bb637, org.springframework.security.web.header.HeaderWriterFilter@183dc658, org.springframework.web.filter.CorsFilter@1c02ca63, org.springframework.security.web.authentication.logout.LogoutFilter@16aa13e1, com.miniApartment.miniApartment.Filter.JWTAuthFilter@1527d114, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3d59be4a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@540a551c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4037b7b0, org.springframework.security.web.session.SessionManagementFilter@72d4938e, org.springframework.security.web.access.ExceptionTranslationFilter@51d61fa, org.springframework.security.web.access.intercept.AuthorizationFilter@7dd92af3]
+2024-06-20T09:55:29.040+07:00  WARN 10320 --- [miniApartment] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2024-06-20T09:55:29.287+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-06-20T09:55:29.326+07:00  INFO 10320 --- [miniApartment] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-06-20T09:55:29.333+07:00  INFO 10320 --- [miniApartment] [restartedMain] c.m.m.MiniApartmentApplication           : Started MiniApartmentApplication in 6.982 seconds (process running for 10.859)
+2024-06-20T09:55:49.855+07:00  INFO 10320 --- [miniApartment] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-20T09:55:49.860+07:00  INFO 10320 --- [miniApartment] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-06-20T09:55:49.873+07:00  INFO 10320 --- [miniApartment] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

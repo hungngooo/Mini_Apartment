@@ -62,7 +62,6 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -111,5 +110,4 @@ public class AuthController {
             throw new UsernameNotFoundException("invalid user request !");
         }
     }
-
 }

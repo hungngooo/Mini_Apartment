@@ -1,0 +1,27 @@
+-- create database miniApartment
+-- drop database miniApartment
+use miniApartment;
+CREATE TABLE `role` (
+    roleId INT PRIMARY KEY,
+    roleName VARCHAR(20)
+);
+CREATE TABLE `users` (
+    userId VARCHAR(255) PRIMARY KEY,
+    firstName NVARCHAR(15),
+    lastName NVARCHAR(15),
+    gender BIT,
+    dateOfBirth DATE,
+    placeOfPermanet NVARCHAR(100), 
+    email VARCHAR(30),
+    contact VARCHAR(15),
+    password VARCHAR(255),
+    image varchar(255),
+    roleId INT,
+    FOREIGN KEY (roleId) REFERENCES Role(roleId)
+);
+-- create table `token`(
+-- 	email VARCHAR(255),
+--     token varchar(255),
+--     expTime datetime,
+--     
+-- )
