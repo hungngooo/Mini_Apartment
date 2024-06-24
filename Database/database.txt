@@ -25,3 +25,15 @@ CREATE TABLE `users` (
 --     expTime datetime,
 --     
 -- )
+INSERT INTO `miniapartment`.`role`
+(`roleId`,
+`roleName`)
+VALUES
+(1,
+'citizen');
+INSERT INTO `miniapartment`.`role`
+(`roleId`,
+`roleName`)
+VALUES
+(2,
+'admin');
