@@ -5,6 +5,7 @@ import com.miniApartment.miniApartment.Services.UserService;
 import com.miniApartment.miniApartment.dto.ChangePasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @GetMapping("/getAllUser")
     public ResponseEntity<List<User>> getAllUser(){
         return ResponseEntity.ok(userService.getAllUsers());
@@ -36,10 +38,18 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(user));
     }
     @PostMapping("/changePassword")
-    public ResponseEntity<ChangePasswordDTO> changePassword(@RequestBody ChangePasswordDTO passwordDTO){
-        User user = userService.getUserByEmail(passwordDTO.getEmail());
-//        String passInDB = user.getPassword().decode
-        return null;
-//        return ResponseEntity.ok(userService.changePassword(user));
+    public String changePassword(@RequestBody ChangePasswordDTO passwordDTO) {
+        try {
+            if (userService.checkCurrentPass(passwordDTO.getEmail(), passwordDTO.getCurrentPassword())) {
+                User user = userService.getUserByEmail(passwordDTO.getEmail());
+                user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
+                userService.updateUser(user);
+                return "Change pass successfull";
+            } else {
+                return "Invalid pass or email";
+            }
+        } catch (Exception e){
+            return e.getMessage();
+        }
     }
 }
