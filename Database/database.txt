@@ -19,11 +19,36 @@ CREATE TABLE `users` (
     roleId INT,
     FOREIGN KEY (roleId) REFERENCES Role(roleId)
 );
+create table contract(
+	contractId int primary key,
+    numberOfTenant int,
+    rentalFee decimal,
+    securityDeposite decimal,
+    paymentCycle int,
+    singinDate date,
+    moveinDate date,
+    expireDate date,
+    contractStatus int
+);
+create table `tenants`(
+	email varchar(30) primary key,
+    roomId int,
+    career varchar(25),
+    licensePLate varchar(25),
+    vehicleType varchar(20),
+    vehicleColor varchar(20),
+    representative bit,
+    residenceStatus varchar(20),
+    contractId int,
+    foreign key(contractId) references contract(contractId)
+);
+CREATE INDEX idx_users_id ON users (email);
+ALTER TABLE tenants ADD CONSTRAINT tenants_user FOREIGN KEY(email) REFERENCES users(email);
 -- create table `token`(
 -- 	email VARCHAR(255),
 --     token varchar(255),
 --     expTime datetime,
---     
+--
 -- )
 INSERT INTO `miniapartment`.`role`
 (`roleId`,
@@ -37,3 +62,12 @@ INSERT INTO `miniapartment`.`role`
 VALUES
 (2,
 'admin');
+INSERT INTO `miniapartment`.`users`
+(`userId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
+VALUES
+('000001','minh','tran',1,'2003-12-24','bắc giang','minhtt14@fpt.com','0398707242','123',2);
+INSERT INTO `miniapartment`.`users`
+(`userId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
+VALUES
+('000002','minh','tran',1,'2003-12-24','bắc giang','minhtt14@fpt.com','0398707242','123',1);
+
