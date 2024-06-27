@@ -36,10 +36,8 @@ public class SecurityConfig {
     // Configuring HttpSecurity
     private static final String[] url = {"/auth/welcome"
             , "/api/file/upload"
-
-
+            , "/api/tenants/**"
             , "/auth/**"
-
             , "/api/user/**"
             , "/mail/**"
     };
