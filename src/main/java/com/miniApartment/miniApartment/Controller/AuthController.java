@@ -2,12 +2,14 @@ package com.miniApartment.miniApartment.Controller;
 
 import com.miniApartment.miniApartment.Entity.OtpDetails;
 import com.miniApartment.miniApartment.Entity.User;
+import com.miniApartment.miniApartment.Response.EHttpStatus;
+import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.EmailService;
 import com.miniApartment.miniApartment.Services.JwtService;
 import com.miniApartment.miniApartment.Services.UserInfoService;
-import com.miniApartment.miniApartment.dto.LoginDTO;
-import com.miniApartment.miniApartment.dto.OtpVerificationDTO;
-import com.miniApartment.miniApartment.dto.SignUpDTO;
+import com.miniApartment.miniApartment.Services.UserService;
+import com.miniApartment.miniApartment.dto.*;
+import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.PublicKey;
 import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
@@ -34,6 +37,8 @@ public class AuthController {
 
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private JwtService jwtService;
@@ -63,17 +68,15 @@ public class AuthController {
         // Generate OTP
         Random random = new Random();
         int otp = random.nextInt(900000) + 100000; // Generate 6-digit OTP
-        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(1); // Set expiry time to 2 minutes from now
+        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(2); // Set expiry time to 2 minutes from now
 
         otpStore.put(signUpDto.getEmail(), new OtpDetails(String.valueOf(otp), expiryTime));
 
         emailService.sendMail(signUpDto.getEmail(), "Email confirm", "Here is the OTP: " + otp);
 
-        // Schedule a task to remove the OTP after it expires
-        scheduler.schedule(() -> otpStore.remove(signUpDto.getEmail()), 0, TimeUnit.MINUTES);
-
         return new ResponseEntity<>("OTP sent to your email. Please verify to complete registration.", HttpStatus.OK);
     }
+
 
     @PostMapping("/verifyOtp")
     public ResponseEntity<?> verifyOtp(@RequestBody OtpVerificationDTO otpVerificationDto) {
@@ -116,7 +119,8 @@ public class AuthController {
     }
 
 
-@PostMapping("/login")
+
+    @PostMapping("/login")
 public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDto) {
     try {
         Authentication authentication = authenticationManager.authenticate(
@@ -164,4 +168,22 @@ public String authenticateAndGetToken(@RequestBody LoginDTO loginDTO) {
         throw new UsernameNotFoundException("invalid user request !");
     }
 }
+    @PostMapping("/forgetPassword")
+    public ResponseEntity<?> forgetPassword(@RequestBody ForgetPasswordDTO forgetPasswordDTO) {
+        try {
+            userInfoService.forgetPassword(forgetPasswordDTO.getEmail());
+            return ResponseEntity.ok(new Response(EHttpStatus.OK,"OTP sent to your email. Please verify to reset password."));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/verifyOtpForgetPassword")
+    public ResponseEntity<?> verifyOtp(@RequestBody OtpForgetPasswordDTO otpForgetPasswordDTO) {
+        try {
+            userInfoService.verifyOtp(otpForgetPasswordDTO);
+            return ResponseEntity.ok(new Response(EHttpStatus.OK,"Password reset successfully."));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

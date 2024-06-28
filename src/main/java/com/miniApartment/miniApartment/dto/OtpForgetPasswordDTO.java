@@ -1,4 +1,5 @@
 package com.miniApartment.miniApartment.dto;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -6,9 +7,9 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class ForgetPasswordDTO {
+public class OtpForgetPasswordDTO {
     private String email;
-    private String password;
-    private String rePassword;
+    private String otp;
+    private String newPassword;
+    private String confirmPassword;
 }
-
