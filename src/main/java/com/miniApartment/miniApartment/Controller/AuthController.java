@@ -2,16 +2,16 @@ package com.miniApartment.miniApartment.Controller;
 
 import com.miniApartment.miniApartment.Entity.OtpDetails;
 import com.miniApartment.miniApartment.Entity.User;
+import com.miniApartment.miniApartment.Response.EHttpStatus;
+import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.EmailService;
 import com.miniApartment.miniApartment.Services.JwtService;
 import com.miniApartment.miniApartment.Services.UserInfoService;
-import com.miniApartment.miniApartment.dto.LoginDTO;
-import com.miniApartment.miniApartment.dto.OtpVerificationDTO;
-import com.miniApartment.miniApartment.dto.SignUpDTO;
+import com.miniApartment.miniApartment.Services.UserService;
+import com.miniApartment.miniApartment.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,7 +25,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @CrossOrigin
 @RestController
@@ -34,6 +33,8 @@ public class AuthController {
 
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private JwtService jwtService;
@@ -46,9 +47,11 @@ public class AuthController {
         this.emailService = emailService;
     }
 
+    // Generate OTP
 
     private ConcurrentHashMap<String, OtpDetails> otpStore = new ConcurrentHashMap<>();
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDTO signUpDto) {
@@ -59,21 +62,17 @@ public class AuthController {
         if (!signUpDto.getPassword().equals(signUpDto.getRePassword())) {
             return new ResponseEntity<>("Passwords do not match!", HttpStatus.BAD_REQUEST);
         }
-
-        // Generate OTP
         Random random = new Random();
         int otp = random.nextInt(900000) + 100000; // Generate 6-digit OTP
-        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(1); // Set expiry time to 2 minutes from now
+        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(5); // Set expiry time to 5 minutes from now
 
         otpStore.put(signUpDto.getEmail(), new OtpDetails(String.valueOf(otp), expiryTime));
 
         emailService.sendMail(signUpDto.getEmail(), "Email confirm", "Here is the OTP: " + otp);
 
-        // Schedule a task to remove the OTP after it expires
-        scheduler.schedule(() -> otpStore.remove(signUpDto.getEmail()), 0, TimeUnit.MINUTES);
-
         return new ResponseEntity<>("OTP sent to your email. Please verify to complete registration.", HttpStatus.OK);
     }
+
 
     @PostMapping("/verifyOtp")
     public ResponseEntity<?> verifyOtp(@RequestBody OtpVerificationDTO otpVerificationDto) {
@@ -115,53 +114,108 @@ public class AuthController {
         return ResponseEntity.ok("User sign up successfully. Token: " + token);
     }
 
+    private ConcurrentHashMap<String, OtpDetails> otpResendStore = new ConcurrentHashMap<>();
 
-@PostMapping("/login")
-public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDto) {
-    try {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
-        );
-        if (authentication.isAuthenticated()) {
-            String token = jwtService.generateToken(loginDto.getEmail());
-            return ResponseEntity.ok(token);
-        } else {
+    @PostMapping("/resendOtpRegister")
+    public ResponseEntity<?> resendOtp(@RequestBody SignUpDTO signUpDto) {
+        otpStore.remove(signUpDto.getEmail());
+        Random random = new Random();
+        int otp = random.nextInt(900000) + 100000; // Generate 6-digit OTP
+        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(5); // Set expiry time to 5 minutes from now
+        otpStore.put(signUpDto.getEmail(), new OtpDetails(String.valueOf(otp), expiryTime));
+        emailService.sendMail(signUpDto.getEmail(), "Email confirm", "Here is the OTP: " + otp);
+        return new ResponseEntity<>("OTP resent to your email. Please verify to complete registration.", HttpStatus.OK);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDto) {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
+            );
+            String email = loginDto.getEmail();
+        if (!authentication.isAuthenticated()) {
             return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
         }
-    } catch (AuthenticationException e) {
-        return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
+                Random random = new Random();
+                int otp = random.nextInt(900000) + 100000;
+                LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
+                otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
+                emailService.sendMail(email, "Login Otp", "Here is OTP " + otp);
+                return ResponseEntity.ok("Otp is sent successfully, please check the OTP to verify");
     }
-}
 
-@GetMapping("/welcome")
-public String welcome() {
-    return "Welcome this endpoint is not secure";
-}
+    @PostMapping("/verifyOtpLogin")
+    public ResponseEntity<?> verifyOtpLogin(@RequestBody LoginVerifyOtpDTO loginVerifyOtpDTO) {
+        String email = loginVerifyOtpDTO.getEmail();
+        String otp = loginVerifyOtpDTO.getOtp();
 
-@PostMapping("/addNewUser")
-public String addNewUser(@RequestBody User user) {
-    return userInfoService.addUser(user);
-}
+        if (!otpStore.containsKey(email)) {
+            return new ResponseEntity<>("OTP not found or expired!", HttpStatus.BAD_REQUEST);
+        }
 
-@GetMapping("/user/userProfile")
-@PreAuthorize("hasAuthority('ROLE_USER')")
-public String userProfile() {
-    return "Welcome to User Profile";
-}
+        OtpDetails otpDetails = otpStore.get(email);
+        if (otpDetails.getExpiryTime().isBefore(LocalDateTime.now())) {
+            otpStore.remove(email);
+            return new ResponseEntity<>("OTP expired!", HttpStatus.BAD_REQUEST);
+        }
 
-@GetMapping("/admin/adminProfile")
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-public String adminProfile() {
-    return "Welcome to Admin Profile";
-}
-
-@PostMapping("/generateToken")
-public String authenticateAndGetToken(@RequestBody LoginDTO loginDTO) {
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-    if (authentication.isAuthenticated()) {
-        return jwtService.generateToken(loginDTO.getEmail());
-    } else {
-        throw new UsernameNotFoundException("invalid user request !");
+        if (!otpDetails.getOtp().equals(otp)) {
+            return new ResponseEntity<>("Invalid OTP!", HttpStatus.BAD_REQUEST);
+        }
+        otpStore.remove(email);
+        String token = jwtService.generateToken(email);
+        return ResponseEntity.ok(token);
     }
-}
+
+
+    @PostMapping("/resendOtpLogin")
+    public ResponseEntity<?> resendOtpLogin(@RequestBody LoginDTO LoginDTO) {
+        try {
+            userInfoService.resentOtp(LoginDTO.getEmail());
+            return new ResponseEntity<>("OTP resent to your email. Please verify to login.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/generateToken")
+    public String authenticateAndGetToken(@RequestBody LoginDTO loginDTO) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(loginDTO.getEmail());
+        } else {
+            throw new UsernameNotFoundException("invalid user request !");
+        }
+    }
+
+    @PostMapping("/forgetPassword")
+    public ResponseEntity<?> forgetPassword(@RequestBody ForgetPasswordDTO forgetPasswordDTO) {
+        try {
+            userInfoService.forgetPassword(forgetPasswordDTO.getEmail());
+            return ResponseEntity.ok(new Response(EHttpStatus.OK, "OTP sent to your email. Please verify to reset password."));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/verifyOtpForgetPassword")
+    public ResponseEntity<?> verifyOtp(@RequestBody OtpForgetPasswordDTO otpForgetPasswordDTO) {
+        try {
+            userInfoService.verifyOtp(otpForgetPasswordDTO);
+            return ResponseEntity.ok(new Response(EHttpStatus.OK, "Password reset successfully."));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/resendOtpForgetPassword")
+    public ResponseEntity<?> resendOtpForgetPassword(@RequestBody ForgetPasswordDTO forgetPasswordDTO) {
+        try {
+            userInfoService.resentOtp(forgetPasswordDTO.getEmail());
+            return new ResponseEntity<>("OTP resent to your email. Please verify to reset your password.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

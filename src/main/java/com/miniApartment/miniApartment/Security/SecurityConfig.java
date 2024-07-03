@@ -40,14 +40,15 @@ public class SecurityConfig {
             , "/auth/**"
             , "/api/user/**"
             , "/mail/**"
+            , "/contract/**"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(url).permitAll())
-//                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/user/**").authenticated())
-//                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/admin/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/user/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/admin/**").authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
