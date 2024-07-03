@@ -20,7 +20,7 @@ CREATE TABLE `users` (
     FOREIGN KEY (roleId) REFERENCES Role(roleId)
 );
 create table contract(
-	contractId int primary key,
+	contractId int primary key auto_increment,
     numberOfTenant int,
     rentalFee decimal,
     securityDeposite decimal,
