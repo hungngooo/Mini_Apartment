@@ -2,7 +2,6 @@ package com.miniApartment.miniApartment.Controller;
 
 import com.miniApartment.miniApartment.Entity.Tenants;
 import com.miniApartment.miniApartment.Services.TenantService;
-import com.miniApartment.miniApartment.dto.ListTenantDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +17,22 @@ public class TenantController {
     private TenantService tenantService;
 
     @GetMapping("/getAllTenant")
-    public ResponseEntity<List<ListTenantDTO>> getAllTenant(){
+    public ResponseEntity<List<Tenants>> getAllTenant(){
         return ResponseEntity.ok(tenantService.getAllTenants());
     }
     @PostMapping("/addNewTenant")
     public ResponseEntity<Tenants> addNewTenant(@RequestBody Tenants tenants){
         return ResponseEntity.ok(tenantService.addTenant(tenants));
+    }
+    @DeleteMapping("/deleteTenant")
+    public String deleteTenant(@RequestParam String email) throws Exception {
+        if(tenantService.deleteTenant(email) == 1){
+            return "Delete successful";
+        }
+        return "Delete not successful";
+    }
+    @PostMapping("/getTenantByRoomId")
+    public ResponseEntity<List<Tenants>> getTenantByRoomId(@RequestParam int roomId){
+        return ResponseEntity.ok(tenantService.getTenantByRoomId(roomId));
     }
 }
