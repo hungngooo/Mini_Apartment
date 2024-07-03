@@ -40,6 +40,7 @@ public class SecurityConfig {
             , "/auth/**"
             , "/api/user/**"
             , "/mail/**"
+            , "/contract/**"
     };
 
     @Bean

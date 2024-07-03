@@ -4,7 +4,9 @@ import com.miniApartment.miniApartment.Entity.OtpDetails;
 import com.miniApartment.miniApartment.Entity.User;
 import com.miniApartment.miniApartment.Repository.UserRepository;
 import com.miniApartment.miniApartment.dto.OtpForgetPasswordDTO;
+import com.miniApartment.miniApartment.dto.OtpVerificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,11 +42,25 @@ public class UserInfoService implements UserDetailsService {
         }
         Random random = new Random();
         int otp = random.nextInt(900000) + 100000;
-        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(2);
+        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
         otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
         emailService.sendMail(email, "Reset password", "Here is OTP " + otp);
     }
-
+    public void resentOtp(String email) {
+        otpStore.remove(email);
+        Random random = new Random();
+        int otp = random.nextInt(900000) + 100000;
+        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
+        otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
+        emailService.sendMail(email, "Resent OTP", "Here is OTP " + otp);
+    }
+    public void loginOtp(String email) {
+        Random random = new Random();
+        int otp = random.nextInt(900000) + 100000;
+        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
+        otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
+        emailService.sendMail(email, "Login Otp", "Here is OTP " + otp);
+    }
     public void verifyOtp(OtpForgetPasswordDTO otpForgetPasswordDTO) {
         String email = otpForgetPasswordDTO.getEmail();
         String otp = otpForgetPasswordDTO.getOtp();
@@ -76,6 +92,7 @@ public class UserInfoService implements UserDetailsService {
         user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
