@@ -14,6 +14,7 @@ CREATE TABLE `users` (
     placeOfPermanet NVARCHAR(100), 
     email VARCHAR(30),
     contact VARCHAR(15),
+    citizenId INT,
     password VARCHAR(255),
     image varchar(255),
     roleId INT,
@@ -21,6 +22,7 @@ CREATE TABLE `users` (
 );
 create table contract(
 	contractId int primary key auto_increment,
+	representative bit,
     numberOfTenant int,
     rentalFee decimal,
     securityDeposite decimal,
@@ -33,17 +35,23 @@ create table contract(
 create table `tenants`(
 	email varchar(30) primary key,
     roomId int,
+    firstName NVARCHAR(15),
+    lastName NVARCHAR(15),
+    gender BIT,
+    dateOfBirth DATE,
+    contact VARCHAR(15),
+    citizenId INT,
     career varchar(25),
     licensePLate varchar(25),
     vehicleType varchar(20),
     vehicleColor varchar(20),
-    representative bit,
     residenceStatus varchar(20),
     contractId int,
     foreign key(contractId) references contract(contractId)
 );
 CREATE INDEX idx_users_id ON users (email);
 ALTER TABLE tenants ADD CONSTRAINT tenants_user FOREIGN KEY(email) REFERENCES users(email);
+ALTER TABLE users ADD CONSTRAINT tenants_unique UNIQUE(email);
 -- create table `token`(
 -- 	email VARCHAR(255),
 --     token varchar(255),
@@ -69,5 +77,24 @@ VALUES
 INSERT INTO `miniapartment`.`users`
 (`userId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
 VALUES
-('000002','minh','tran',1,'2003-12-24','bắc giang','minhtt14@fpt.com','0398707242','123',1);
-
+('000002','minh','tran',1,'2003-12-24','bắc giang','minhtt141@fpt.com','0398707242','123',1);
+INSERT INTO `miniapartment`.`users`
+(`userId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
+VALUES
+('000003','minh','tran',1,'2003-12-24','bắc giang','minhtt@fpt.com','0398707242','123',1);
+INSERT INTO `miniapartment`.`contract`
+(`numberOfTenant`,`rentalFee`,`securityDeposite`,`paymentCycle`,`singinDate`,`moveinDate`,`expireDate`,`contractStatus`)
+VALUES
+(1,'12000','122222',1,'2024-6-24','2024-6-26','2024-7-24',1);
+INSERT INTO `miniapartment`.`tenants`
+(`email`,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
+VALUES
+('minhtt141@fpt.com',101,'student','99AA-99999','wave','black','Success',1);
+INSERT INTO `miniapartment`.`tenants`
+(`email`,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
+VALUES
+('minhtt14@fpt.com',101,'student','99AA-99999','wave','black','In Progress',1);
+INSERT INTO `miniapartment`.`tenants`
+(`email`,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
+VALUES
+('minhtt@fpt.com',101,'student','99AA-99999','wave','black','Failed',1);
