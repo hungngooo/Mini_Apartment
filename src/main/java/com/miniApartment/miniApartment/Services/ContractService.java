@@ -1,6 +1,7 @@
 package com.miniApartment.miniApartment.Services;
 
 import com.miniApartment.miniApartment.Entity.Contract;
+import com.miniApartment.miniApartment.Entity.IDemoExample;
 import com.miniApartment.miniApartment.Repository.ContractRepository;
 import com.miniApartment.miniApartment.Response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,4 +19,8 @@ public class ContractService {
         return contractRepository.findAll();
     }
 
+    public List<IDemoExample> getExample() {
+        List<IDemoExample> result = contractRepository.getExample();
+        return null;
+    }
 }

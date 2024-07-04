@@ -1,6 +1,7 @@
 package com.miniApartment.miniApartment.Controller;
 
 import com.miniApartment.miniApartment.Entity.Contract;
+import com.miniApartment.miniApartment.Entity.IDemoExample;
 import com.miniApartment.miniApartment.Services.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +21,11 @@ public class ContractController {
     @GetMapping("/getAllContract")
     public ResponseEntity<List<Contract>> getAllContract() {
         return ResponseEntity.ok(contractService.getAllContract());
+    }
+
+
+    @GetMapping("/getExample")
+    public ResponseEntity<List<IDemoExample>> getExample() {
+        return ResponseEntity.ok(contractService.getExample());
     }
 }
