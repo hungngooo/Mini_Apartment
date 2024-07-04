@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -130,19 +129,19 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDto) {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
-            );
-            String email = loginDto.getEmail();
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
+        );
+        String email = loginDto.getEmail();
         if (!authentication.isAuthenticated()) {
             return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
         }
-                Random random = new Random();
-                int otp = random.nextInt(900000) + 100000;
-                LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
-                otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
-                emailService.sendMail(email, "Login Otp", "Here is OTP " + otp);
-                return ResponseEntity.ok("Otp is sent successfully, please check the OTP to verify");
+        Random random = new Random();
+        int otp = random.nextInt(900000) + 100000;
+        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
+        otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
+        emailService.sendMail(email, "Login Otp", "Here is OTP " + otp);
+        return ResponseEntity.ok("Otp is sent successfully, please check the OTP to verify");
     }
 
     @PostMapping("/verifyOtpLogin")
@@ -203,7 +202,17 @@ public class AuthController {
     public ResponseEntity<?> verifyOtp(@RequestBody OtpForgetPasswordDTO otpForgetPasswordDTO) {
         try {
             userInfoService.verifyOtp(otpForgetPasswordDTO);
-            return ResponseEntity.ok(new Response(EHttpStatus.OK, "Password reset successfully."));
+            return ResponseEntity.ok(new Response(EHttpStatus.OK, "OTP verified successfully."));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/forgetPasswordChange")
+    public ResponseEntity<?> forgetPasswordChange(@RequestBody OtpForgetPasswordDTO otpForgetPasswordDTO) {
+        try {
+            userInfoService.changeForgetPassword(otpForgetPasswordDTO);
+            return ResponseEntity.ok(new Response(EHttpStatus.OK, "Change Password Successfully"));
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

@@ -64,8 +64,6 @@ public class UserInfoService implements UserDetailsService {
     public void verifyOtp(OtpForgetPasswordDTO otpForgetPasswordDTO) {
         String email = otpForgetPasswordDTO.getEmail();
         String otp = otpForgetPasswordDTO.getOtp();
-        String newPassword = otpForgetPasswordDTO.getNewPassword();
-        String confirmPassword = otpForgetPasswordDTO.getConfirmPassword();
 
         if (!otpStore.containsKey(email)) {
             throw new RuntimeException("OTP not found or expired!");
@@ -81,18 +79,21 @@ public class UserInfoService implements UserDetailsService {
             throw new RuntimeException("Invalid OTP!");
         }
 
+        otpStore.remove(email); // Remove OTP after verification
+    }
+    public void changeForgetPassword(OtpForgetPasswordDTO otpForgetPasswordDTO) {
+        String email = otpForgetPasswordDTO.getEmail();
+        String newPassword = otpForgetPasswordDTO.getNewPassword();
+        String confirmPassword = otpForgetPasswordDTO.getConfirmPassword();
+
         if (!newPassword.equals(confirmPassword)) {
             throw new RuntimeException("Passwords do not match!");
         }
-
-        otpStore.remove(email); // Remove OTP after verification
-
         // Update user's password
         User user = userRepository.findByEmail1(email);
         user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
