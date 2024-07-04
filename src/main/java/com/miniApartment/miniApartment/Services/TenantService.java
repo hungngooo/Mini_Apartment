@@ -29,4 +29,12 @@ public class TenantService {
     public List<Tenants> getTenantByRoomId(int roomId){
         return tenantRepository.getTenantsByRoomId(roomId);
     }
+    public Tenants getTenantByEmail(String email){
+        return  tenantRepository.getTenantByEmail(email);
+    }
+    public void updateTenant(List<Tenants> tenantsList){
+        for(Tenants tenant: tenantsList){
+            tenantRepository.save(tenant);
+        }
+    }
 }

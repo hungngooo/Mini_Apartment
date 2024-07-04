@@ -35,4 +35,12 @@ public class TenantController {
     public ResponseEntity<List<Tenants>> getTenantByRoomId(@RequestParam int roomId){
         return ResponseEntity.ok(tenantService.getTenantByRoomId(roomId));
     }
+    @PostMapping("/getTenantByEmail")
+    public ResponseEntity<Tenants> getTenantByEmail(@RequestParam String email){
+        return ResponseEntity.ok(tenantService.getTenantByEmail(email));
+    }
+    @PostMapping("/updateTenants")
+    public void updateTenants(@RequestBody List<Tenants> tenantsList){
+        tenantService.updateTenant(tenantsList);
+    }
 }

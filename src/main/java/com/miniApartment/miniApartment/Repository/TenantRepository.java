@@ -10,4 +10,6 @@ import java.util.List;
 public interface TenantRepository extends JpaRepository<Tenants, String> {
     @Query("select t from Tenants t where t.roomId = :roomId")
     List<Tenants> getTenantsByRoomId(@Param("roomId") int roomId);
+    @Query("select t from Tenants t where t.email = :email")
+    Tenants getTenantByEmail(@Param("email") String email);
 }
