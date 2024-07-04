@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Getter
@@ -42,4 +43,5 @@ public class Contract {
         this.expireDate = expireDate;
         this.contractStatus = contractStatus;
     }
+
 }
