@@ -1,17 +1,17 @@
 -- create database miniApartment
 -- drop database miniApartment
 use miniApartment;
-CREATE TABLE `role` (
+CREATE TABLE role (
     roleId INT PRIMARY KEY,
     roleName VARCHAR(20)
 );
-CREATE TABLE `users` (
+CREATE TABLE users (
     userId VARCHAR(255) PRIMARY KEY,
     firstName NVARCHAR(15),
     lastName NVARCHAR(15),
     gender BIT,
     dateOfBirth DATE,
-    placeOfPermanet NVARCHAR(100), 
+    placeOfPermanet NVARCHAR(100),
     email VARCHAR(30),
     contact VARCHAR(15),
     citizenId INT,
@@ -31,22 +31,12 @@ create table contract(
     moveinDate date,
     expireDate date,
     contractStatus int,
-	representative nvarchar(100)
-);
-create table contractDetail(
-	contractId int primary key,
-    totalArea decimal,
-    landArear decimal,
-    publicArea decimal,
-    privateArea decimal,
-    device nvarchar(255),
-    ownerOrgirin nvarchar(255),
-    ownerLimit nvarchar(255),
-	rights nvarchar(255),
-    obligations nvarchar(255),
-    `commit` nvarchar(255),
+	rights varchar(255),
+    obligations varchar(255),
+    commit varchar(255),
     copies int,
-     FOREIGN KEY (contractId) REFERENCES contract(contractId)
+	representative nvarchar(100)
+
 );
 create table `tenants`(
 	email varchar(30) primary key,
@@ -75,43 +65,43 @@ ALTER TABLE tenants ADD CONSTRAINT tenant_user FOREIGN KEY(email) REFERENCES use
 --     expTime datetime,
 --
 -- )
-INSERT INTO `miniapartment`.`role`
-(`roleId`,
-`roleName`)
+INSERT INTO miniapartment.`role`
+(roleId,
+roleName)
 VALUES
 (1,
 'citizen');
-INSERT INTO `miniapartment`.`role`
-(`roleId`,
-`roleName`)
+INSERT INTO miniapartment.`role`
+(roleId,
+roleName)
 VALUES
 (2,
 'admin');
-INSERT INTO `miniapartment`.`users`
-(`userId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
+INSERT INTO miniapartment.`users`
+(userId,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
 VALUES
 ('000001','minh','tran',1,'2003-12-24','bắc giang','minhtt14@fpt.com','0398707242','123',2);
-INSERT INTO `miniapartment`.`users`
-(`userId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
+INSERT INTO miniapartment.`users`
+(userId,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
 VALUES
 ('000002','minh','tran',1,'2003-12-24','bắc giang','minhtt141@fpt.com','0398707242','123',1);
-INSERT INTO `miniapartment`.`users`
-(`userId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
+INSERT INTO miniapartment.`users`
+(userId,`firstName`,`lastName`,`gender`,`dateOfBirth`,`placeOfPermanet`,`email`,`contact`,`password`,`roleId`)
 VALUES
 ('000003','minh','tran',1,'2003-12-24','bắc giang','minhtt@fpt.com','0398707242','123',1);
-INSERT INTO `miniapartment`.`contract`
-(`numberOfTenant`,`rentalFee`,`securityDeposite`,`paymentCycle`,`singinDate`,`moveinDate`,`expireDate`,`contractStatus`)
+INSERT INTO miniapartment.`contract`
+(numberOfTenant,`rentalFee`,`securityDeposite`,`paymentCycle`,`singinDate`,`moveinDate`,`expireDate`,`contractStatus`)
 VALUES
 (1,'12000','122222',1,'2024-6-24','2024-6-26','2024-7-24',1);
-INSERT INTO `miniapartment`.`tenants`
-(`email`,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
+INSERT INTO miniapartment.`tenants`
+(email,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
 VALUES
 ('minhtt141@fpt.com',101,'student','99AA-99999','wave','black','Success',1);
-INSERT INTO `miniapartment`.`tenants`
-(`email`,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
+INSERT INTO miniapartment.`tenants`
+(email,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
 VALUES
 ('minhtt14@fpt.com',101,'student','99AA-99999','wave','black','In Progress',1);
-INSERT INTO `miniapartment`.`tenants`
-(`email`,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
+INSERT INTO miniapartment.`tenants`
+(email,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
 VALUES
 ('minhtt@fpt.com',101,'student','99AA-99999','wave','black','Failed',1);
