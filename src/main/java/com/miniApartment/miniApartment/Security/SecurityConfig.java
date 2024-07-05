@@ -37,6 +37,7 @@ public class SecurityConfig {
     private static final String[] url = {"/auth/welcome"
             , "/api/file/upload"
             , "/api/tenants/**"
+            , "/api/payment/**"
             , "/auth/**"
             , "/api/user/**"
             , "/mail/**"
