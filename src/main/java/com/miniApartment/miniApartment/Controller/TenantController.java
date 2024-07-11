@@ -3,6 +3,7 @@ package com.miniApartment.miniApartment.Controller;
 import com.miniApartment.miniApartment.Entity.Tenants;
 import com.miniApartment.miniApartment.Services.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,9 @@ public class TenantController {
     private TenantService tenantService;
 
     @GetMapping("/getAllTenant")
-    public ResponseEntity<List<Tenants>> getAllTenant(){
-        return ResponseEntity.ok(tenantService.getAllTenants());
+    public ResponseEntity<Page<Tenants>> getAllTenant(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                      @RequestParam(defaultValue = "10") Integer pageSize) throws Exception {
+        return ResponseEntity.ok(tenantService.getAllTenants(pageNo,pageSize));
     }
     @PostMapping("/addNewTenant")
     public ResponseEntity<Tenants> addNewTenant(@RequestBody Tenants tenants){

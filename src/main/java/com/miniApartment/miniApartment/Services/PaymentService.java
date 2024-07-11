@@ -13,19 +13,19 @@ public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
     public List<IListPayment> getPaymentByYear(String year){
-        List<Integer> roomIdList = paymentRepository.getRoomIdDistinct();
-        List<IListPayment> iListPayments = paymentRepository.getListPaymentByYear(year);
-        for(Integer obRoomIdList: roomIdList){
-            double totalFee = paymentRepository.getTotalFeeByRoomIdAndYear(obRoomIdList,year);
-            double paid = paymentRepository.getPaidByRoomIdAndYear(obRoomIdList,year);
-            if((totalFee - paid) == totalFee){
-                for(IListPayment obIListPayments:iListPayments){
-                    if(obIListPayments.getRoomId() == obRoomIdList){
-//                        obIListPayments.getStatus() = "sks";
-                    }
-                }
-            }
-        }
+//        List<Integer> roomIdList = paymentRepository.getRoomIdDistinct();
+//        List<IListPayment> iListPayments = paymentRepository.getListPaymentByYear(year);
+//        for(Integer obRoomIdList: roomIdList){
+//            double totalFee = paymentRepository.getTotalFeeByRoomIdAndYear(obRoomIdList,year);
+//            double paid = paymentRepository.getPaidByRoomIdAndYear(obRoomIdList,year);
+//            if((totalFee - paid) == totalFee){
+//                for(IListPayment obIListPayments:iListPayments){
+//                    if(obIListPayments.getRoomId() == obRoomIdList){
+////                        obIListPayments.getStatus() = "sks";
+//                    }
+//                }
+//            }
+//        }
         return paymentRepository.getListPaymentByYear(year);
     }
 }

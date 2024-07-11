@@ -23,20 +23,16 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
             "    SUM(CASE WHEN `month` = 9 THEN paid ELSE 0 END) AS Sep,\n" +
             "    SUM(CASE WHEN `month` = 10 THEN paid ELSE 0 END) AS Oct,\n" +
             "    SUM(CASE WHEN `month` = 11 THEN paid ELSE 0 END) AS Nov,\n" +
-            "    SUM(CASE WHEN `month` = 12 THEN paid ELSE 0 END) AS `Dec`\n" +
-            "    \n" +
+            "    SUM(CASE WHEN `month` = 12 THEN paid ELSE 0 END) AS `Dec`,\n" +
+            "    CASE \n" +
+            "\t\tWHEN SUM(paid) >= SUM(totalFee) THEN 'Paid'\n" +
+            "        WHEN SUM(paid) > 0 AND SUM(paid) < SUM(totalFee) THEN 'Partial Paid'\n" +
+            "        ELSE 'Unpaid'\n" +
+            "        end as `status`\n" +
             "FROM \n" +
             "    payment\n" +
             "    where `year` = :year\n" +
             "GROUP BY \n" +
-            "    roomId\n" +
-            "ORDER BY \n" +
-            "    roomId;",nativeQuery = true)
+            "    roomId",nativeQuery = true)
     List<IListPayment> getListPaymentByYear(String year);
-    @Query(value = "select sum(totalFee) from payment where roomId = :roomId and year = :year",nativeQuery = true)
-    double getTotalFeeByRoomIdAndYear(int roomId,String year);
-    @Query(value = "select sum(paid) from payment where roomId = :roomId and year = :year",nativeQuery = true)
-    double getPaidByRoomIdAndYear(int roomId,String year);
-    @Query(value = "select distinct roomId from payment",nativeQuery = true)
-    List<Integer> getRoomIdDistinct();
 }
