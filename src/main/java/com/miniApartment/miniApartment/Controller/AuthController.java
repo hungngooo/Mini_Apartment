@@ -53,13 +53,15 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpDTO signUpDto) {
+    public Response<?> registerUser(@RequestBody SignUpDTO signUpDto) {
         if (userInfoService.existsByEmail(signUpDto.getEmail())) {
-            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.OK, "Email is already taken.");
+//            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
         if (!signUpDto.getPassword().equals(signUpDto.getRePassword())) {
-            return new ResponseEntity<>("Passwords do not match!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.OK, "Passwords do not match!");
+//            return new ResponseEntity<>("Passwords do not match!", HttpStatus.BAD_REQUEST);
         }
         Random random = new Random();
         int otp = random.nextInt(900000) + 100000; // Generate 6-digit OTP
@@ -68,8 +70,8 @@ public class AuthController {
         otpStore.put(signUpDto.getEmail(), new OtpDetails(String.valueOf(otp), expiryTime));
 
         emailService.sendMail(signUpDto.getEmail(), "Email confirm", "Here is the OTP: " + otp);
-
-        return new ResponseEntity<>("OTP sent to your email. Please verify to complete registration.", HttpStatus.OK);
+        return new Response<>(EHttpStatus.OK, "OTP sent to your email. Please verify to complete registration.");
+//        return new ResponseEntity<>("OTP sent to your email. Please verify to complete registration.", HttpStatus.OK);
     }
 
 
