@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContractService {
@@ -18,9 +19,14 @@ public class ContractService {
     public List<Contract> getAllContract() {
         return contractRepository.findAll();
     }
+    public Optional<Contract> getContractById(int contractId) {
+        return contractRepository.findById(contractId);
+    }
 
     public List<IDemoExample> getExample() {
         List<IDemoExample> result = contractRepository.getExample();
         return null;
     }
+
+
 }

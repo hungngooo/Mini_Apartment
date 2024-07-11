@@ -18,30 +18,33 @@ public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int contractId;
-    private int numberOfTenant;
+    private int roomId;
     @Column(precision = 10, scale = 0)
     private BigDecimal rentalFee;
     @Column(precision = 10, scale = 0)
     private BigDecimal securityDeposite;
     private int paymentCycle;
-    private Date singinDate;
+    private Date signinDate;
     private Date moveinDate;
     private Date expireDate;
     private int contractStatus;
+    private String representative;
+    private int numberOfTenant;
 
     public Contract() {
     }
 
-    public Contract(int contractId, int numberOfTenant, BigDecimal rentalFee, BigDecimal securityDeposite, int paymentCycle, Date singinDate, Date moveinDate, Date expireDate, int contractStatus) {
+    public Contract(int contractId, int roomId, BigDecimal rentalFee, BigDecimal securityDeposite, int paymentCycle, Date signinDate, Date moveinDate, Date expireDate, int contractStatus, String representative, int numberOfTenant) {
         this.contractId = contractId;
-        this.numberOfTenant = numberOfTenant;
+        this.roomId = roomId;
         this.rentalFee = rentalFee;
         this.securityDeposite = securityDeposite;
         this.paymentCycle = paymentCycle;
-        this.singinDate = singinDate;
+        this.signinDate = signinDate;
         this.moveinDate = moveinDate;
         this.expireDate = expireDate;
         this.contractStatus = contractStatus;
+        this.representative = representative;
+        this.numberOfTenant = numberOfTenant;
     }
-
 }
