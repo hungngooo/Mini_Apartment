@@ -27,7 +27,7 @@ create table contract(
     rentalFee decimal,
     securityDeposite decimal,
     paymentCycle int,
-    singinDate date,
+    signinDate date,
     moveinDate date,
     expireDate date,
     contractStatus int,
@@ -57,6 +57,8 @@ create table `tenants`(
     dateOfBirth DATE,
     contact VARCHAR(15),
     citizenId INT,
+    createCitizenIdDate Date,
+    createCitizenIdPlace nvarchar(99),
     career varchar(25),
     licensePLate varchar(25),
     vehicleType varchar(20),
@@ -66,8 +68,24 @@ create table `tenants`(
     placeOfPermanet NVARCHAR(100),
     foreign key(contractId) references contract(contractId)
 );
+create table payment(
+	roomId int,
+	`year` year,
+    `month` int,
+    totalFee decimal,
+    paid decimal,
+    `status` varchar(20),
+    primary key(roomId,`year`,`month`)
+);
+create table room(
+	roomId int primary key,
+	roomStatus bit
+);
 CREATE INDEX idx_users_id ON users (email);
 ALTER TABLE tenants ADD CONSTRAINT tenant_user FOREIGN KEY(email) REFERENCES users(email);
+CREATE INDEX idx_room_id ON contract (roomId);
+ALTER TABLE payment ADD CONSTRAINT payment_ibfk_1 FOREIGN KEY(roomId) REFERENCES contract(roomId);
+ALTER TABLE contract ADD CONSTRAINT room_ibfk_1 FOREIGN KEY(roomId) REFERENCES room(roomId);
 -- ALTER TABLE users ADD CONSTRAINT tenants_unique UNIQUE(email);
 -- create table `token`(
 -- 	email VARCHAR(255),
@@ -100,7 +118,7 @@ INSERT INTO `miniapartment`.`users`
 VALUES
 ('000003','minh','tran',1,'2003-12-24','bắc giang','minhtt@fpt.com','0398707242','123',1);
 INSERT INTO `miniapartment`.`contract`
-(`numberOfTenant`,`rentalFee`,`securityDeposite`,`paymentCycle`,`singinDate`,`moveinDate`,`expireDate`,`contractStatus`)
+(`numberOfTenant`,`rentalFee`,`securityDeposite`,`paymentCycle`,`signinDate`,`moveinDate`,`expireDate`,`contractStatus`)
 VALUES
 (1,'12000','122222',1,'2024-6-24','2024-6-26','2024-7-24',1);
 INSERT INTO `miniapartment`.`tenants`
@@ -115,3 +133,37 @@ INSERT INTO `miniapartment`.`tenants`
 (`email`,`roomId`,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
 VALUES
 ('minhtt@fpt.com',101,'student','99AA-99999','wave','black','Failed',1);
+INSERT INTO room (roomId, roomStatus) VALUES (101, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (102, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (103, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (104, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (105, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (106, 0);
+
+INSERT INTO room (roomId, roomStatus) VALUES (201, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (202, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (203, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (204, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (205, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (206, 0);
+
+INSERT INTO room (roomId, roomStatus) VALUES (301, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (302, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (303, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (304, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (305, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (306, 0);
+
+INSERT INTO room (roomId, roomStatus) VALUES (401, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (402, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (403, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (404, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (405, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (406, 0);
+
+INSERT INTO room (roomId, roomStatus) VALUES (501, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (502, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (503, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (504, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (505, 0);
+INSERT INTO room (roomId, roomStatus) VALUES (506, 0);
