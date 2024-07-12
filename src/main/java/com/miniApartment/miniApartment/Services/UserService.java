@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-
 public class UserService {
     @Autowired
     private UserRepository  userRepository;
@@ -38,8 +37,16 @@ public class UserService {
     public User addUser(User user){
         return userRepository.save(user);
     }
-    public UserInfoDTO updateUser(UserInfoDTO user) {
-        return userRepository.updateUserByEmail(user);
+    public void updateUser(UserInfoDTO userInfoDTO) {
+        userRepository.updateUserByEmail(
+                userInfoDTO.getFirstName(),
+                userInfoDTO.getLastName(),
+                userInfoDTO.getGender(),
+                userInfoDTO.getDateOfBirth(),
+                userInfoDTO.getPlaceOfPermanet(),
+                userInfoDTO.getContact(),
+                userInfoDTO.getCitizenId(),
+                userInfoDTO.getEmail());
     }
     private String getPassByEmail(String email){
         return userRepository.getPassByEmail(email);

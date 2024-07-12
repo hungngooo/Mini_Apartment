@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -34,8 +35,9 @@ public class UserController {
         return new Response<>(EHttpStatus.OK,userService.getUserByEmail(email));
     }
     @PostMapping("/editProfile")
-    public Response<UserInfoDTO> editProfile(@RequestBody UserInfoDTO user){
-        return new Response<>(EHttpStatus.OK,userService.updateUser(user));
+    public Response<?> editProfile(@RequestBody UserInfoDTO user){
+        userService.updateUser(user);
+        return new Response<>(EHttpStatus.OK,"update succsess");
     }
 //    @PostMapping("/changePassword")
 //    public String changePassword(@RequestBody ChangePasswordDTO passwordDTO) {

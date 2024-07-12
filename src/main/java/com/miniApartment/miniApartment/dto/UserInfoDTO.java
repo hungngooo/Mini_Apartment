@@ -13,19 +13,23 @@ public class UserInfoDTO {
     private String lastName;
     private Boolean gender;
     private Date dateOfBirth;
-    private String placeOfPermaet;
+    private String placeOfPermanet;
     private String email;
     private String contact;
     private String image;
-
+    private Integer citizenId;
     public UserInfoDTO(User user) {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.gender = user.getGender();
         this.dateOfBirth = user.getDateOfBirth();
-        this.placeOfPermaet = user.getPlaceOfPermanet();
+        this.placeOfPermanet = user.getPlaceOfPermanet();
         this.email = user.getEmail();
         this.contact = user.getContact();
         this.image = user.getImage();
+        this.citizenId = user.getCitizenId();
+    }
+
+    public UserInfoDTO() {
     }
 }
