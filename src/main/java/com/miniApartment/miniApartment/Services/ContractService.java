@@ -12,21 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ContractService {
-    @Autowired
-    private ContractRepository contractRepository;
-
-    public List<Contract> getAllContract() {
-        return contractRepository.findAll();
-    }
-    public Optional<Contract> getContractById(int contractId) {
-        return contractRepository.findById(contractId);
-    }
-
-    public List<IDemoExample> getExample() {
-        List<IDemoExample> result = contractRepository.getExample();
-        return null;
-    }
-
-
+public interface ContractService {
+    public List<Contract> getAllContract();
+    public Optional<Contract> getContractById(int contractId);
+    public List<IDemoExample> getExample();
 }

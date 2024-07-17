@@ -10,11 +10,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.Optional;
 
 
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
     @Query("select u from User u where u.email = ?1")
@@ -26,8 +27,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE users SET " +
-            "firstName = :firstName, " +
-            "lastName = :lastName, " +
             "gender = :gender, " +
             "dateOfBirth = :dateOfBirth, " +
             "placeOfPermanet = :placeOfPermanet, " +
@@ -35,12 +34,10 @@ public interface UserRepository extends JpaRepository<User, String> {
             "citizenId = :citizenId " +
             "WHERE email = :email", nativeQuery = true)
     int updateUserByEmail(
-            @Param("firstName") String firstName,
-            @Param("lastName") String lastName,
             @Param("gender") boolean gender,
             @Param("dateOfBirth") Date dateOfBirth,
             @Param("placeOfPermanet") String placeOfPermanet,
             @Param("contact") String contact,
-            @Param("citizenId") int citizenId,
+            @Param("citizenId") String citizenId,
             @Param("email") String email);
 }

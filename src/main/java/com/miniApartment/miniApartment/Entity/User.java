@@ -1,42 +1,34 @@
 package com.miniApartment.miniApartment.Entity;
 import com.miniApartment.miniApartment.dto.UserInfoDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "users")
 public class User {
-    @Column(name = "userId")
     @Id
+    @GeneratedValue
+    private Long id;
+    @Column(name = "userId")
     private String userId;
-
     @Column(name = "firstName")
     private String firstName;
-
     @Column(name = "lastName")
     private String lastName;
-
     @Column(name = "gender")
     private Boolean gender;
-
     @Column(name = "dateOfBirth")
     private Date dateOfBirth;
-
     @Column(name = "placeOfPermanet")
     private String placeOfPermanet;
-
     @Column(name = "email")
     private String email;
-
     @Column(name = "contact")
     private String contact;
-
     @Column(name = "password")
     private String password;
     @Column(name = "roleId")
@@ -44,7 +36,7 @@ public class User {
     @Column(name = "image")
     private String image;
     @Column(name = "citizenId")
-    private Integer citizenId;
+    private String citizenId;
     public User() {
     }
 

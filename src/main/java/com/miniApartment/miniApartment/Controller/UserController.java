@@ -26,10 +26,10 @@ public class UserController {
 //    public ResponseEntity<List<User>> getAllUser(){
 //        return ResponseEntity.ok(userService.getAllUsers());
 //    }
-    @GetMapping("/getUserById/{id}")
-    public Response<UserInfoDTO> getUserById(@PathVariable("id") String id){
-        return new Response<>(EHttpStatus.OK,userService.getUserById(id));
-    }
+//    @GetMapping("/getUserById/{id}")
+//    public Response<UserInfoDTO> getUserById(@PathVariable("id") String id){
+//        return new Response<>(EHttpStatus.OK,userService.getUserById(id));
+//    }
     @GetMapping("/getUserByEmail")
     public Response<UserInfoDTO> getUserByEmail(@RequestParam String email){
         return new Response<>(EHttpStatus.OK,userService.getUserByEmail(email));
@@ -39,19 +39,12 @@ public class UserController {
         userService.updateUser(user);
         return new Response<>(EHttpStatus.OK,"update succsess");
     }
-//    @PostMapping("/changePassword")
-//    public String changePassword(@RequestBody ChangePasswordDTO passwordDTO) {
-//        try {
-//            if (userService.checkCurrentPass(passwordDTO.getEmail(), passwordDTO.getCurrentPassword())) {
-//                User user = userService.getUserByEmail(passwordDTO.getEmail());
-//                user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
-//                userService.updateUser(user);
-//                return "Change pass successfull";
-//            } else {
-//                return "Invalid pass or email";
-//            }
-//        } catch (Exception e){
-//            return e.getMessage();
-//        }
-//    }
+    @PostMapping("/changePassword")
+    public Response<?> changePassword(@RequestBody ChangePasswordDTO passwordDTO) {
+        if(userService.changePassword(passwordDTO)){
+            return new Response<>(EHttpStatus.OK,"change pass success");
+        }else {
+            return new Response<>(EHttpStatus.INVALID_INFORMATION, "wrong password");
+        }
+    }
 }
