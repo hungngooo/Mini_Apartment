@@ -1,4 +1,5 @@
 package com.miniApartment.miniApartment.Entity;
+import com.miniApartment.miniApartment.dto.UserInfoDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -42,6 +43,8 @@ public class User {
     private int roleId;
     @Column(name = "image")
     private String image;
+    @Column(name = "citizenId")
+    private Integer citizenId;
     public User() {
     }
 
@@ -56,6 +59,18 @@ public class User {
         this.contact = contact;
         this.password = password;
         this.roleId = roleId;
+    }
+
+    public User(UserInfoDTO userInfoDTO) {
+        this.firstName = userInfoDTO.getFirstName();
+        this.lastName = userInfoDTO.getLastName();
+        this.gender = userInfoDTO.getGender();
+        this.dateOfBirth = userInfoDTO.getDateOfBirth();
+        this.placeOfPermanet = userInfoDTO.getPlaceOfPermanet();
+        this.email = userInfoDTO.getEmail();
+        this.contact = userInfoDTO.getContact();
+        this.image = userInfoDTO.getImage();
+        this.citizenId = userInfoDTO.getCitizenId();
     }
 
     public String getUserId() {

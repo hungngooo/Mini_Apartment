@@ -13,9 +13,7 @@ import lombok.Setter;
 public class Payment {
     @Id
     private int roomId;
-    @Id
     private String year;
-    @Id
     private int month;
     private double totalCost;
     private String status;
