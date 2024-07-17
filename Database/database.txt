@@ -27,16 +27,26 @@ create table contract(
     rentalFee decimal,
     securityDeposite decimal,
     paymentCycle int,
-    singinDate date,
+    signinDate date,
     moveinDate date,
     expireDate date,
     contractStatus int,
-	rights varchar(255),
-    obligations varchar(255),
-    commit varchar(255),
-    copies int,
 	representative nvarchar(100)
-
+);
+create table contractDetail(
+	contractId int primary key,
+    totalArea decimal,
+    landArear decimal,
+    publicArea decimal,
+    privateArea decimal,
+    device nvarchar(255),
+    ownerOrgirin nvarchar(255),
+    ownerLimit nvarchar(255),
+	rights nvarchar(255),
+    obligations nvarchar(255),
+    commit nvarchar(255),
+    copies int,
+     FOREIGN KEY (contractId) REFERENCES contract(contractId)
 );
 create table `tenants`(
 	email varchar(30) primary key,
@@ -56,6 +66,10 @@ create table `tenants`(
     placeOfPermanet NVARCHAR(100),
     foreign key(contractId) references contract(contractId)
 );
+alter table contractdetail
+add column dated date;
+alter table contractdetail
+add column placeOfCitizenId varchar(100);
 CREATE INDEX idx_users_id ON users (email);
 ALTER TABLE tenants ADD CONSTRAINT tenant_user FOREIGN KEY(email) REFERENCES users(email);
 -- ALTER TABLE users ADD CONSTRAINT tenants_unique UNIQUE(email);
@@ -90,7 +104,7 @@ INSERT INTO miniapartment.`users`
 VALUES
 ('000003','minh','tran',1,'2003-12-24','bắc giang','minhtt@fpt.com','0398707242','123',1);
 INSERT INTO miniapartment.`contract`
-(numberOfTenant,`rentalFee`,`securityDeposite`,`paymentCycle`,`singinDate`,`moveinDate`,`expireDate`,`contractStatus`)
+(numberOfTenant,`rentalFee`,`securityDeposite`,`paymentCycle`,`signinDate`,`moveinDate`,`expireDate`,`contractStatus`)
 VALUES
 (1,'12000','122222',1,'2024-6-24','2024-6-26','2024-7-24',1);
 INSERT INTO miniapartment.`tenants`

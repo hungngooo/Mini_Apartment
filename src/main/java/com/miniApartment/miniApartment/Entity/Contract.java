@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Contract {
     private Date signinDate;
     private Date moveinDate;
     private Date expireDate;
+//    private String contract;
     private int contractStatus;
     private String representative;
     private int numberOfTenant;
@@ -43,6 +45,7 @@ public class Contract {
         this.signinDate = signinDate;
         this.moveinDate = moveinDate;
         this.expireDate = expireDate;
+//        this.contract = contract;
         this.contractStatus = contractStatus;
         this.representative = representative;
         this.numberOfTenant = numberOfTenant;

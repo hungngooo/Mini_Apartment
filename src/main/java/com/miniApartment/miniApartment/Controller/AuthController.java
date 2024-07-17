@@ -170,23 +170,16 @@ public class AuthController {
 
     @PostMapping("/resendOtpLogin")
     public ResponseEntity<?> resendOtpLogin(@RequestBody LoginDTO LoginDTO) {
-        try {
-            userInfoService.resentOtp(LoginDTO.getEmail());
+        otpStore.remove(LoginDTO.getEmail());
+        Random random = new Random();
+        int otp = random.nextInt(900000) + 100000;
+        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
+        otpStore.put(LoginDTO.getEmail(), new OtpDetails(String.valueOf(otp), expiredTime));
+        emailService.sendMail(LoginDTO.getEmail(), "Resent OTP", "Here is OTP " + otp);
             return new ResponseEntity<>("OTP resent to your email. Please verify to login.", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
     }
 
-    @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody LoginDTO loginDTO) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(loginDTO.getEmail());
-        } else {
-            throw new UsernameNotFoundException("invalid user request !");
-        }
-    }
+
 
     @PostMapping("/forgetPassword")
     public ResponseEntity<?> forgetPassword(@RequestBody ForgetPasswordDTO forgetPasswordDTO) {
@@ -225,6 +218,15 @@ public class AuthController {
             return new ResponseEntity<>("OTP resent to your email. Please verify to reset your password.", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/generateToken")
+    public String authenticateAndGetToken(@RequestBody LoginDTO loginDTO) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(loginDTO.getEmail());
+        } else {
+            throw new UsernameNotFoundException("invalid user request !");
         }
     }
 }
