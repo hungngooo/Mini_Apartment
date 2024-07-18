@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.util.Date;
 @Setter
 @Getter
@@ -17,7 +18,7 @@ public class UserInfoDTO {
     private String email;
     private String contact;
     private String image;
-    private Integer citizenId;
+    private String citizenId;
     public UserInfoDTO(User user) {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();

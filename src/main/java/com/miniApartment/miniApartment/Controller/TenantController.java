@@ -21,27 +21,26 @@ public class TenantController {
 
     @GetMapping("/getAllTenant")
     public Response<Page<Tenants>> getAllTenant(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                @RequestParam(defaultValue = "10") Integer pageSize) throws Exception {
-        return new Response<>(EHttpStatus.OK,tenantService.getAllTenants(pageNo,pageSize));
+                                                @RequestParam(defaultValue = "2") Integer pageSize,
+                                                @RequestParam String keySearch) throws Exception {
+        return new Response<>(EHttpStatus.OK,tenantService.getAllTenants(pageNo,pageSize,keySearch));
     }
     @PostMapping("/addNewTenant")
     public ResponseEntity<Tenants> addNewTenant(@RequestBody Tenants tenants){
         return ResponseEntity.ok(tenantService.addTenant(tenants));
     }
     @DeleteMapping("/deleteTenant")
-    public String deleteTenant(@RequestParam String email) throws Exception {
+    public Response<?> deleteTenant(@RequestParam String email) throws Exception {
         if(tenantService.deleteTenant(email) == 1){
-            return "Delete successful";
+            return new Response<>(EHttpStatus.OK,"Delete successful");
         }
-        return "Delete not successful";
+        return new Response<>(EHttpStatus.OK,"Delete not successful");
     }
     @PostMapping("/getTenantByRoomId")
-    public ResponseEntity<List<Tenants>> getTenantByRoomId(@RequestParam int roomId){
-        return ResponseEntity.ok(tenantService.getTenantByRoomId(roomId));
-    }
-    @PostMapping("/getTenantByEmail")
-    public ResponseEntity<Tenants> getTenantByEmail(@RequestParam String email){
-        return ResponseEntity.ok(tenantService.getTenantByEmail(email));
+    public Response<Page<Tenants>> getTenantByRoomId(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                     @RequestParam(defaultValue = "10") Integer pageSize,
+                                                     @RequestParam int roomId){
+        return new Response<>(EHttpStatus.OK,tenantService.getTenantByRoomId(pageNo,pageSize,roomId));
     }
     @PostMapping("/updateTenants")
     public void updateTenants(@RequestBody List<Tenants> tenantsList){

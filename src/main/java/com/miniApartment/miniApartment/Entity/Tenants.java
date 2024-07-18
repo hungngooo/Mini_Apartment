@@ -8,25 +8,40 @@ import lombok.Setter;
 import java.util.Date;
 
 @Data
-@Getter
-@Setter
 @Entity
+@Table(name = "tenants")
 public class Tenants {
     @Id
-    private String email;
+    @GeneratedValue
+    private Long id;
 
+    @Column(name = "email")
+    private String email;
+    @Column(name = "roomId")
     private int roomId;
+    @Column(name = "firstName")
     private String firstName;
+    @Column(name = "lastName")
     private String lastName;
+    @Column(name = "gender")
     private Boolean gender;
+    @Column(name = "dateOfBirth")
     private Date dateOfBirth;
+    @Column(name = "contact")
     private String contact;
+    @Column(name = "career")
     private String career;
+    @Column(name = "licensePlate")
     private String licensePlate;
+    @Column(name = "vehicleType")
     private String vehicleType;
+    @Column(name = "vehicleColor")
     private String vehicleColor;
+    @Column(name = "residenceStatus")
     private String residenceStatus;
+    @Column(name = "contractId")
     private int contractId;
-    private Integer citizenId;
+    @Column(name = "citizenId")
+    private String citizenId;
 
 }
