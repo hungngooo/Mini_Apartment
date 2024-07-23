@@ -3,6 +3,7 @@ package com.miniApartment.miniApartment.Controller;
 import com.miniApartment.miniApartment.Entity.Tenants;
 import com.miniApartment.miniApartment.Response.EHttpStatus;
 import com.miniApartment.miniApartment.Response.Response;
+import com.miniApartment.miniApartment.Services.RoomService;
 import com.miniApartment.miniApartment.Services.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,6 @@ public class TenantController {
 
     @Autowired
     private TenantService tenantService;
-
     @GetMapping("/getAllTenant")
     public Response<Page<Tenants>> getAllTenant(@RequestParam(defaultValue = "0") Integer pageNo,
                                                 @RequestParam(defaultValue = "2") Integer pageSize,
@@ -26,8 +26,8 @@ public class TenantController {
         return new Response<>(EHttpStatus.OK,tenantService.getAllTenants(pageNo,pageSize,keySearch));
     }
     @PostMapping("/addNewTenant")
-    public ResponseEntity<Tenants> addNewTenant(@RequestBody Tenants tenants){
-        return ResponseEntity.ok(tenantService.addTenant(tenants));
+    public Response<Tenants> addNewTenant(@RequestBody Tenants tenants){
+        return new Response<>(EHttpStatus.OK, tenantService.addTenant(tenants));
     }
     @DeleteMapping("/deleteTenant")
     public Response<?> deleteTenant(@RequestParam String email) throws Exception {
@@ -43,7 +43,8 @@ public class TenantController {
         return new Response<>(EHttpStatus.OK,tenantService.getTenantByRoomId(pageNo,pageSize,roomId));
     }
     @PostMapping("/updateTenants")
-    public void updateTenants(@RequestBody List<Tenants> tenantsList){
+    public Response<?> updateTenants(@RequestBody List<Tenants> tenantsList){
         tenantService.updateTenant(tenantsList);
+        return new Response<>(EHttpStatus.OK,"update sucess");
     }
 }
