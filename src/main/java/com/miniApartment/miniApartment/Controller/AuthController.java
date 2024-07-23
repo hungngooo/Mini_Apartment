@@ -58,7 +58,6 @@ public class AuthController {
             return new Response<>(EHttpStatus.OK, "Email is already taken.");
 //            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
-
         if (!signUpDto.getPassword().equals(signUpDto.getRePassword())) {
             return new Response<>(EHttpStatus.OK, "Passwords do not match!");
 //            return new ResponseEntity<>("Passwords do not match!", HttpStatus.BAD_REQUEST);
