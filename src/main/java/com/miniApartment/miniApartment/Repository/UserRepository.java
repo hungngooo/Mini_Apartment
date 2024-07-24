@@ -33,7 +33,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "contact = :contact, " +
             "citizenId = :citizenId " +
             "WHERE email = :email", nativeQuery = true)
-    int updateUserByEmail(
+    void updateUserByEmail(
             @Param("gender") boolean gender,
             @Param("dateOfBirth") Date dateOfBirth,
             @Param("placeOfPermanet") String placeOfPermanet,

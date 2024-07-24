@@ -2,6 +2,8 @@ package com.miniApartment.miniApartment.Repository;
 
 import com.miniApartment.miniApartment.Entity.IListPayment;
 import com.miniApartment.miniApartment.Entity.Payment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,5 +36,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
             "    where `year` = :year\n" +
             "GROUP BY \n" +
             "    roomId",nativeQuery = true)
-    List<IListPayment> getListPaymentByYear(String year);
+    Page<IListPayment> getListPaymentByYear(String year, Pageable pageable);
 }
