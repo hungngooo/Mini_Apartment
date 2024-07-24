@@ -2,9 +2,11 @@ package com.miniApartment.miniApartment.Services;
 
 import com.miniApartment.miniApartment.Entity.Contract;
 import com.miniApartment.miniApartment.Entity.IDemoExample;
+import com.miniApartment.miniApartment.Entity.Tenants;
 import com.miniApartment.miniApartment.Repository.ContractRepository;
 import com.miniApartment.miniApartment.Response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,8 @@ import java.util.Optional;
 
 @Service
 public interface ContractService {
-    public List<Contract> getAllContract();
-    public Optional<Contract> getContractById(int contractId);
+    public Page<Contract> getAllContract(Integer pageNo, Integer pageSize, String keySearch)throws Exception;
+    Page<Contract> getContractByContractId(Integer pageNo, Integer pageSize, int roomId);
     public List<IDemoExample> getExample();
     public Contract getContractByRoom(int id);
 }

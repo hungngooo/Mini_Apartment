@@ -7,6 +7,7 @@ import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ContractService;
 import org.simpleframework.xml.Path;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,17 @@ public class ContractController {
     private ContractService contractService;
 
     @GetMapping("/getAllContract")
-    public ResponseEntity<List<Contract>> getAllContract() {
-        return ResponseEntity.ok(contractService.getAllContract());
+    public Response<Page<Contract>> getAllContract(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                   @RequestParam(defaultValue = "2") Integer pageSize,
+                                                   @RequestParam String keySearch) throws Exception {
+        return new Response<>(EHttpStatus.OK,contractService.getAllContract(pageNo,pageSize,keySearch));
     }
 
-    @GetMapping("/getContractByContractId/{contractId}")
-    public ResponseEntity<Optional<Contract>> getContractByContractId(@PathVariable int contractId) {
-        return ResponseEntity.ok(contractService.getContractById(contractId));
+    @GetMapping("/getContractByContractId")
+    public Response<Page<Contract>> getContractByContractId(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                            @RequestParam(defaultValue = "10") Integer pageSize,
+                                                            @RequestParam int contractId) {
+        return new Response<>(EHttpStatus.OK,contractService.getContractByContractId(pageNo,pageSize,contractId));
     }
     @GetMapping("/getContractByRoom/{roomId}")
     public Response<?> getContractByRoom(@PathVariable int roomId) {
