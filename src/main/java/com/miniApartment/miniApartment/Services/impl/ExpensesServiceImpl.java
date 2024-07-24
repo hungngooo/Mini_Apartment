@@ -15,12 +15,8 @@ public class ExpensesServiceImpl implements ExpensesService {
     private ExpensesDetailRepository repository;
     @Override
     public void addNewExpenses(ExpensesDetailEntity entity) {
-        entity.setRentalFee(4000000);
-        entity.setSecurityDeposite(4000000);
         entity.setElectricity((entity.getElectricCurrentMeter()-entity.getElectricPreviousMeter())*3800);
         entity.setWater((entity.getWaterCurrentMeter()-entity.getWaterPreviousMeter())*35000);
-        entity.setInternet(100000);
-        entity.setDebt(0);
         repository.save(entity);
     }
 
