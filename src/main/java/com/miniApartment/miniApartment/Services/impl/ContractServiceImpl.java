@@ -4,9 +4,12 @@ import com.miniApartment.miniApartment.Entity.Contract;
 import com.miniApartment.miniApartment.Entity.IDemoExample;
 import com.miniApartment.miniApartment.Repository.ContractRepository;
 import com.miniApartment.miniApartment.Services.ContractService;
+import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +28,16 @@ public class ContractServiceImpl implements ContractService {
     public List<IDemoExample> getExample() {
         List<IDemoExample> result = contractRepository.getExample();
         return null;
+    }
+    @Override
+    public RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId){
+        Date date = new Date();
+        int month = date.getMonth();
+        Contract contract =  contractRepository.getRepesentativeByRoomId(roomId);
+        RentalFeeOfContractDTO rentalFeeOfContractDTO = new RentalFeeOfContractDTO(contract);
+        if(month != contract.getSigninDate().getMonth()){
+            rentalFeeOfContractDTO.setSecurityDeposite(BigDecimal.valueOf(0));
+        }
+        return rentalFeeOfContractDTO;
     }
 }

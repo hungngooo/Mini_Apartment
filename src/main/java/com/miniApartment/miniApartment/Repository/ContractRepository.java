@@ -2,6 +2,7 @@ package com.miniApartment.miniApartment.Repository;
 
 import com.miniApartment.miniApartment.Entity.Contract;
 import com.miniApartment.miniApartment.Entity.IDemoExample;
+import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,4 +18,6 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
             "table1 as b,\n" +
             "table1 as c", nativeQuery = true)
     List<IDemoExample> getExample();
+    @Query(value = "SELECT * FROM miniapartment.contract where roomId = :roomId",nativeQuery = true)
+    Contract getRepesentativeByRoomId(int roomId);
 }

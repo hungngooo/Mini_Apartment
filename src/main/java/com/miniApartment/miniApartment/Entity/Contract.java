@@ -1,5 +1,6 @@
 package com.miniApartment.miniApartment.Entity;
 
+import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -46,5 +47,11 @@ public class Contract {
         this.contractStatus = contractStatus;
         this.representative = representative;
         this.numberOfTenant = numberOfTenant;
+    }
+
+    public Contract(RentalFeeOfContractDTO dto) {
+        this.rentalFee = dto.getRentalFee();
+        this.securityDeposite = dto.getSecurityDeposite();
+        this.representative = dto.getRepresentative();
     }
 }

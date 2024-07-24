@@ -2,9 +2,12 @@ package com.miniApartment.miniApartment.Controller;
 
 import com.miniApartment.miniApartment.Entity.Contract;
 import com.miniApartment.miniApartment.Entity.IDemoExample;
+import com.miniApartment.miniApartment.Response.EHttpStatus;
+import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ContractService;
 import org.simpleframework.xml.Path;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +31,10 @@ public class ContractController {
     public ResponseEntity<Optional<Contract>> getContractByContractId(@PathVariable int contractId) {
         return ResponseEntity.ok(contractService.getContractById(contractId));
     }
-
+    @GetMapping("/getRepesentative")
+    public Response<?> getRepesentativeByRoomId(@RequestParam int roomId){
+        return new Response<>(EHttpStatus.OK, contractService.getRepesentativeByRoomId(roomId));
+    }
 
 
     @GetMapping("/getExample")
