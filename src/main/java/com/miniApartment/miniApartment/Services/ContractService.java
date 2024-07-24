@@ -13,6 +13,6 @@ public interface ContractService {
     List<Contract> getAllContract();
     Optional<Contract> getContractById(int contractId);
     List<IDemoExample> getExample();
-
     RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId);
+    public Contract getContractByRoom(int id);
 }

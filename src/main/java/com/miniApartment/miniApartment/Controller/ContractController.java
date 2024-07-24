@@ -31,12 +31,29 @@ public class ContractController {
     public ResponseEntity<Optional<Contract>> getContractByContractId(@PathVariable int contractId) {
         return ResponseEntity.ok(contractService.getContractById(contractId));
     }
-    @GetMapping("/getRepesentative")
-    public Response<?> getRepesentativeByRoomId(@RequestParam int roomId){
-        return new Response<>(EHttpStatus.OK, contractService.getRepesentativeByRoomId(roomId));
+    @GetMapping("/getContractByRoom/{roomId}")
+    public Response<?> getContractByRoom(@PathVariable int roomId) {
+        return new Response<>(EHttpStatus.OK, contractService.getContractByRoom(roomId));
     }
-
-
+//    @PutMapping("/updateStatus/{contractId}/{status}")
+//    public Contract updateStatus(@PathVariable int contractId, @PathVariable int status) {
+//        return contractService.updateContractStatus(contractId, status);
+//    }
+//    @PutMapping("/updateContract/{contractId}")
+//    public ResponseEntity<Contract> updateContract(@RequestBody Contract contract, @PathVariable int contractId) {
+//        try {
+//            Contract updatedContract = contractService.updateContract(contract, contractId);
+//            return ResponseEntity.ok(updatedContract);
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+@GetMapping("/getRepesentative")
+public Response<?> getRepesentativeByRoomId(@RequestParam int roomId){
+    return new Response<>(EHttpStatus.OK, contractService.getRepesentativeByRoomId(roomId));
+}
     @GetMapping("/getExample")
     public ResponseEntity<List<IDemoExample>> getExample() {
         return ResponseEntity.ok(contractService.getExample());
