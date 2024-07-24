@@ -1,13 +1,11 @@
 package com.miniApartment.miniApartment.Controller;
 
 import com.miniApartment.miniApartment.Entity.OtpDetails;
+import com.miniApartment.miniApartment.Entity.Tenants;
 import com.miniApartment.miniApartment.Entity.User;
 import com.miniApartment.miniApartment.Response.EHttpStatus;
 import com.miniApartment.miniApartment.Response.Response;
-import com.miniApartment.miniApartment.Services.EmailService;
-import com.miniApartment.miniApartment.Services.JwtService;
-import com.miniApartment.miniApartment.Services.UserInfoService;
-import com.miniApartment.miniApartment.Services.UserService;
+import com.miniApartment.miniApartment.Services.*;
 import com.miniApartment.miniApartment.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,28 +48,31 @@ public class AuthController {
 
     private ConcurrentHashMap<String, OtpDetails> otpStore = new ConcurrentHashMap<>();
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
+    @Autowired
+    private TenantService tenantService;
 
     @PostMapping("/signup")
     public Response<?> registerUser(@RequestBody SignUpDTO signUpDto) {
-        if (userInfoService.existsByEmail(signUpDto.getEmail())) {
-            return new Response<>(EHttpStatus.OK, "Email is already taken.");
-//            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+        Tenants tenant = tenantService.getTenantByEmail(signUpDto.getEmail());
+        if (tenant == null) {
+            return new Response<>(EHttpStatus.BAD_REQUEST, "Tenant not found. Please create a tenant first.");
         }
-
+        if (!tenant.getFirstName().equals(signUpDto.getFirstName()) || !tenant.getLastName().equals(signUpDto.getLastName()) ||
+                !tenant.getEmail().equals(signUpDto.getEmail())) {
+            return new Response<>(EHttpStatus.BAD_REQUEST, "Please check the entered information.");
+        }
+        if (userInfoService.existsByEmail(signUpDto.getEmail())) {
+            return new Response<>(EHttpStatus.BAD_REQUEST, "Email is already taken.");
+        }
         if (!signUpDto.getPassword().equals(signUpDto.getRePassword())) {
-            return new Response<>(EHttpStatus.OK, "Passwords do not match!");
-//            return new ResponseEntity<>("Passwords do not match!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.BAD_REQUEST, "Passwords do not match!");
         }
         Random random = new Random();
         int otp = random.nextInt(900000) + 100000; // Generate 6-digit OTP
-        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(5); // Set expiry time to 5 minutes from now
-
+        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(2); // Set expiry time to 5 minutes from now
         otpStore.put(signUpDto.getEmail(), new OtpDetails(String.valueOf(otp), expiryTime));
-
         emailService.sendMail(signUpDto.getEmail(), "Email confirm", "Here is the OTP: " + otp);
         return new Response<>(EHttpStatus.OK, "OTP sent to your email. Please verify to complete registration.");
-//        return new ResponseEntity<>("OTP sent to your email. Please verify to complete registration.", HttpStatus.OK);
     }
 
 

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContractRepository extends JpaRepository<Contract, Integer> {
 
@@ -17,4 +18,5 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
             "table1 as b,\n" +
             "table1 as c", nativeQuery = true)
     List<IDemoExample> getExample();
+    Contract getContractByRoomId(int id);
 }

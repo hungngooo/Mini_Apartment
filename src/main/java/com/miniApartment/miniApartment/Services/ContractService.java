@@ -16,4 +16,5 @@ public interface ContractService {
     public List<Contract> getAllContract();
     public Optional<Contract> getContractById(int contractId);
     public List<IDemoExample> getExample();
+    public Contract getContractByRoom(int id);
 }

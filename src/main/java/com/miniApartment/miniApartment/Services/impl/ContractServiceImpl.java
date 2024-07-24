@@ -26,4 +26,9 @@ public class ContractServiceImpl implements ContractService {
         List<IDemoExample> result = contractRepository.getExample();
         return null;
     }
+
+    @Override
+    public Contract getContractByRoom(int id) {
+        return contractRepository.getContractByRoomId(id);
+    }
 }
