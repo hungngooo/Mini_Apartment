@@ -5,6 +5,7 @@ import com.miniApartment.miniApartment.Entity.IDemoExample;
 import com.miniApartment.miniApartment.Response.EHttpStatus;
 import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ContractService;
+import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import org.simpleframework.xml.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,14 @@ public class ContractController {
     @GetMapping("/getContractByRoom/{roomId}")
     public Response<?> getContractByRoom(@PathVariable int roomId) {
         return new Response<>(EHttpStatus.OK, contractService.getContractByRoom(roomId));
+    }
+    @GetMapping("/getRepesentative")
+    public Response<?> getRepesentativeByRoomId(@RequestParam int roomId){
+        return new Response<>(EHttpStatus.OK, contractService.getRepesentativeByRoomId(roomId));
+    }
+    @PostMapping("/addNewContract")
+    public Response<?> addNewContract(@RequestBody CreateContractDTO createContractDTO) {
+        return new Response<>(EHttpStatus.OK, contractService.addNewContract(createContractDTO));
     }
 //    @PutMapping("/updateStatus/{contractId}/{status}")
 //    public Contract updateStatus(@PathVariable int contractId, @PathVariable int status) {

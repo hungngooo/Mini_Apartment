@@ -28,6 +28,8 @@ public interface TenantRepository extends JpaRepository<Tenants, Long> {
     @Query(value = "delete User u where u.email = :email")
     void deleteUserByEmail(String email);
 
+    boolean existsByEmail(String email);
+
     @Query(value = "select * from tenants  where email = :email", nativeQuery = true)
     Tenants getTenantByEmail(@Param("email") String email);
 
@@ -61,4 +63,6 @@ public interface TenantRepository extends JpaRepository<Tenants, Long> {
             @Param("vehicleType") String vehicleType,
             @Param("vehicleColor") String vehicleColor,
             @Param("residenceStatus") String residenceStatus);
+
+
 }

@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(name = "tenants")
 public class Tenants {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email")
@@ -29,6 +29,7 @@ public class Tenants {
     private Date dateOfBirth;
     @Column(name = "contact")
     private String contact;
+
     @Column(name = "career")
     private String career;
     @Column(name = "licensePlate")
@@ -40,8 +41,13 @@ public class Tenants {
     @Column(name = "residenceStatus")
     private String residenceStatus;
     @Column(name = "contractId")
-    private int contractId;
+    private String contractId;
     @Column(name = "citizenId")
     private String citizenId;
-
+    @Column(name = "createCitizenIdDate")
+    private Date createCitizenIdDate;
+    @Column(name = "createCitizenIdPlace")
+    private String createCitizenIdPlace;
+    @Column(name = "placeOfPermanet")
+    private String placeOfPermanet;
 }

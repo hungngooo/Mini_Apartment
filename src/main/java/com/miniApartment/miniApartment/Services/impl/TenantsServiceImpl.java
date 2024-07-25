@@ -53,6 +53,9 @@ public class TenantsServiceImpl implements TenantService {
                     ,tenant.getVehicleType(),tenant.getVehicleColor(),tenant.getResidenceStatus());
         }
     }
+
+
+
 //    public Page<Tenants> searchTenantByName(String keySearch){
 //        Pageable paging = PageRequest.of(0, 1);
 //        return tenantRepository.searchTenantsByFirstNameAndLastName(keySearch,paging);

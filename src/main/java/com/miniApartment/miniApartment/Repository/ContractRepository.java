@@ -7,10 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-public interface ContractRepository extends JpaRepository<Contract, Integer> {
+public interface ContractRepository extends JpaRepository<Contract, BigInteger> {
 
     @Query(value = "select \n" +
             "a.name as hovaten,\n" +
@@ -25,4 +26,6 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
     Page<Contract> searchContractByRoomId(String keySearch, Pageable paging);
 
     Page<Contract> getContractByContractId(int roomId, Pageable paging);
+    @Query(value = "SELECT * FROM miniapartment.contract where roomId = :roomId",nativeQuery = true)
+    Contract getRepesentativeByRoomId(int roomId);
 }
