@@ -2,9 +2,13 @@ package com.miniApartment.miniApartment.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 @Entity
+@Getter
+@Setter
 @Table(name = "room")
 public class RoomEntity {
     @Id
@@ -16,4 +20,7 @@ public class RoomEntity {
     private  boolean roomStatus;
     @Column(name = "maxTenant")
     private Integer maxTenant;
+
+
+
 }

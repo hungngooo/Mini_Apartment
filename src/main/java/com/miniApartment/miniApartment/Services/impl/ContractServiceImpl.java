@@ -93,6 +93,9 @@ public class ContractServiceImpl implements ContractService {
                 !contactValidate(createContractDTO.getContact())) {
             throw new IllegalArgumentException("Please check the entered information");
         }
+        if(!validateCopy(createContractDTO.getCopies())) {
+            throw new IllegalArgumentException("Please check the entered information");
+        }
         // This code is to save to contract
         Contract contract = new Contract();
         contract.setContractId(String.valueOf(contractNo));
@@ -112,8 +115,8 @@ public class ContractServiceImpl implements ContractService {
         tenants.setContractId(String.valueOf(contractNo));
         tenants.setEmail(createContractDTO.getEmail());
         tenants.setRoomId(createContractDTO.getRoomId());
-        tenants.setFirstName(createContractDTO.getFirstName());
-        tenants.setLastName(createContractDTO.getLastName());
+        tenants.setFirstName(createContractDTO.getRepresentative().split(" ")[0]);
+        tenants.setLastName(createContractDTO.getRepresentative().substring(1));
         tenants.setGender(createContractDTO.getGender());
         tenants.setDateOfBirth(createContractDTO.getDateOfBirth());
         tenants.setContact(createContractDTO.getContact());
@@ -141,11 +144,19 @@ public class ContractServiceImpl implements ContractService {
         contractDetail.setObligations(createContractDTO.getObligations());
         contractDetail.setCommit(createContractDTO.getCommit());
         contractDetail.setCopies(createContractDTO.getCopies());
+        contractDetail.setRelationship(createContractDTO.getRelationship());
         contractDetailRepository.save(contractDetail);
-        RoomEntity roomEntity = new RoomEntity();
-        roomEntity.setRoomStatus(true);
+        // Update room status
+        RoomEntity roomEntity = roomRepository.findByRoomId(createContractDTO.getRoomId());
+        roomEntity.setRoomStatus(true); // Set the new status for the room
         roomRepository.save(roomEntity);
         return contract;
+    }
+    public boolean validateCopy(int copy) {
+        if(copy <= 2) {
+            return false;
+        }
+        return true;
     }
     public boolean validateDate(Date startDate, Date endDate) {
         Date date = new Date();
