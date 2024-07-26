@@ -12,10 +12,9 @@ import lombok.Setter;
 @Table(name = "contractdetail")
 public class ContractDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int contractId;
+    private String contractId;
     private double totalArea;
-    private double laneArea;
+    private double landArea;
     private double publicArea;
     private double privateArea;
     private String device;
@@ -25,14 +24,14 @@ public class ContractDetail {
     private String obligations;
     private String commit;
     private int copies;
-
+    private String relationship;
     public ContractDetail() {
     }
 
-    public ContractDetail(int contractId, double totalArea, double laneArea, double publicArea, double privateArea, String device, String ownerOrigin, String ownerLimit, String rights, String obligations, String commit, int copies) {
+    public ContractDetail(String contractId, double totalArea, double landArea, double publicArea, double privateArea, String device, String ownerOrigin, String ownerLimit, String rights, String obligations, String commit, int copies, String relationship) {
         this.contractId = contractId;
         this.totalArea = totalArea;
-        this.laneArea = laneArea;
+        this.landArea = landArea;
         this.publicArea = publicArea;
         this.privateArea = privateArea;
         this.device = device;
@@ -42,5 +41,6 @@ public class ContractDetail {
         this.obligations = obligations;
         this.commit = commit;
         this.copies = copies;
+        this.relationship = relationship;
     }
 }
