@@ -1,12 +1,14 @@
 package com.miniApartment.miniApartment.Controller;
 
+
 import com.miniApartment.miniApartment.Entity.IListPayment;
+import com.miniApartment.miniApartment.Response.EHttpStatus;
+import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/payment")
@@ -16,7 +18,9 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @GetMapping("/getPaymentByYear")
-    public ResponseEntity<List<IListPayment>> getPaymentByYear(@RequestParam String year){
-        return ResponseEntity.ok(paymentService.getPaymentByYear(year));
+    public Response<Page<IListPayment>> getPaymentByYear(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                         @RequestParam(defaultValue = "10") Integer pageSize,
+                                                         @RequestParam String year){
+        return new Response<>(EHttpStatus.OK, paymentService.getPaymentByYear(pageNo,pageSize,year));
     }
 }

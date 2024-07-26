@@ -48,9 +48,14 @@ public class TenantsServiceImpl implements TenantService {
     }
     public void updateTenant(List<Tenants> tenantsList){
         for(Tenants tenant: tenantsList){
-            tenantRepository.save(tenant);
+            tenantRepository.updatetenants(tenant.getId(),tenant.getRoomId(),tenant.getGender(),tenant.getDateOfBirth()
+                    ,tenant.getContact(),tenant.getCitizenId(),tenant.getEmail(),tenant.getCareer(),tenant.getLicensePlate()
+                    ,tenant.getVehicleType(),tenant.getVehicleColor(),tenant.getResidenceStatus());
         }
     }
+
+
+
 //    public Page<Tenants> searchTenantByName(String keySearch){
 //        Pageable paging = PageRequest.of(0, 1);
 //        return tenantRepository.searchTenantsByFirstNameAndLastName(keySearch,paging);

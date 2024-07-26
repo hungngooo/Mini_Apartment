@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface TenantService {
      Page<Tenants> getAllTenants(Integer pageNo, Integer pageSize, String keySearch) throws Exception ;
      Tenants addTenant(Tenants tenants);
@@ -15,4 +14,5 @@ public interface TenantService {
      Page<Tenants> getTenantByRoomId(Integer pageNo, Integer pageSize,int roomId);
      Tenants getTenantByEmail(String email);
      void updateTenant(List<Tenants> tenantsList);
+
 }

@@ -1,7 +1,6 @@
 package com.miniApartment.miniApartment.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +9,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "payment")
 public class Payment {
     @Id
+    private Long id;
+    @Column(name = "roomId")
     private int roomId;
+    @Column(name = "year")
     private String year;
+    @Column(name = "month")
     private int month;
-    private double totalCost;
+    @Column(name = "totalFee")
+    private double totalFee;
+    @Column(name = "paid")
+    private double paid;
+    @Column(name = "status")
     private String status;
 }
