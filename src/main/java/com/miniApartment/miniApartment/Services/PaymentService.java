@@ -12,4 +12,5 @@ import java.util.List;
 public interface PaymentService {
 
     Page<IListPayment> getPaymentByYear(Integer pageNo, Integer pageSize,String year);
+    Page<IListPayment> getPaymentByYearAndRoom(Integer pageNo, Integer pageSize, String year, int roomId);
 }

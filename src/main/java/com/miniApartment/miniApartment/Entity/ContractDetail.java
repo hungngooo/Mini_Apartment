@@ -24,11 +24,11 @@ public class ContractDetail {
     private String obligations;
     private String commit;
     private int copies;
-
+    private String relationship;
     public ContractDetail() {
     }
 
-    public ContractDetail(String contractId, double totalArea, double landArea, double publicArea, double privateArea, String device, String ownerOrigin, String ownerLimit, String rights, String obligations, String commit, int copies) {
+    public ContractDetail(String contractId, double totalArea, double landArea, double publicArea, double privateArea, String device, String ownerOrigin, String ownerLimit, String rights, String obligations, String commit, int copies, String relationship) {
         this.contractId = contractId;
         this.totalArea = totalArea;
         this.landArea = landArea;
@@ -41,5 +41,6 @@ public class ContractDetail {
         this.obligations = obligations;
         this.commit = commit;
         this.copies = copies;
+        this.relationship = relationship;
     }
 }

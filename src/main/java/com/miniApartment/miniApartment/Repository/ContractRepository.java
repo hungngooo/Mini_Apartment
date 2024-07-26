@@ -28,4 +28,5 @@ public interface ContractRepository extends JpaRepository<Contract, BigInteger> 
     Page<Contract> getContractByContractId(int roomId, Pageable paging);
     @Query(value = "SELECT * FROM miniapartment.contract where roomId = :roomId",nativeQuery = true)
     Contract getRepesentativeByRoomId(int roomId);
+
 }

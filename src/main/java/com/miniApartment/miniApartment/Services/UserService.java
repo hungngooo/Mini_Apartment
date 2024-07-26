@@ -17,7 +17,7 @@ public interface UserService {
 //    UserInfoDTO getUserById(String id);
     UserInfoDTO getUserByEmail(String email);
     User addUser(User user);
-    void updateUser(UserInfoDTO userInfoDTO) ;
+    String updateUser(UserInfoDTO userInfoDTO) ;
     boolean checkCurrentPass(String email, String currentPass);
     boolean changePassword(ChangePasswordDTO passwordDTO);
 }

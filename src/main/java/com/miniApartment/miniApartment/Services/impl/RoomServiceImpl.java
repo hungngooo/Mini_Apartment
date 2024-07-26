@@ -14,4 +14,6 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomEntity> getAllRoomAvailable() {
         return roomRepository.getRoomEntityAvailable();
     }
+    @Override
+    public List<RoomEntity> getAllRoom(){return roomRepository.findAll();}
 }

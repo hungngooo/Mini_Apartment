@@ -50,4 +50,5 @@ public class CreateContractDTO {
     private String createCitizenIdPlace;
     private String placeOfPermanet;
     private boolean roomStatus;
+    private String relationship;
 }

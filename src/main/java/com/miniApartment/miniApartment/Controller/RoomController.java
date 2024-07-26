@@ -19,4 +19,6 @@ public class RoomController {
     public Response<?> getRoomAvailable(){
         return new Response<>(EHttpStatus.OK,roomService.getAllRoomAvailable());
     }
+    @GetMapping("/getAllRoom")
+    public Response<?> getAllRoom(){return new Response<>(EHttpStatus.OK,roomService.getAllRoom());}
 }

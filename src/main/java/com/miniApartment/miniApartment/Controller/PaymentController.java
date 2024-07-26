@@ -23,4 +23,10 @@ public class PaymentController {
                                                          @RequestParam String year){
         return new Response<>(EHttpStatus.OK, paymentService.getPaymentByYear(pageNo,pageSize,year));
     }
+    @GetMapping("/getPaymentByYearAndRoom")
+    public Response<Page<IListPayment>> getPaymentByYearAndRoom(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                         @RequestParam(defaultValue = "10") Integer pageSize,
+                                                         @RequestParam String year, @RequestParam int roomId){
+        return new Response<>(EHttpStatus.OK, paymentService.getPaymentByYearAndRoom(pageNo,pageSize,year,roomId));
+    }
 }

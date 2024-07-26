@@ -9,13 +9,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 @Service
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
+    @Override
     public Page<IListPayment> getPaymentByYear(Integer pageNo, Integer pageSize,String year){
         Pageable paging = PageRequest.of(pageNo, pageSize);
         return paymentRepository.getListPaymentByYear(year,paging);
+    }
+    @Override
+    public Page<IListPayment> getPaymentByYearAndRoom(Integer pageNo, Integer pageSize, String year,int roomId){
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        return paymentRepository.getListPaymentByYearAndRoomId(year,roomId,paging);
     }
 }
