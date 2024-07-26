@@ -36,8 +36,8 @@ public class UserController {
     }
     @PostMapping("/editProfile")
     public Response<?> editProfile(@RequestBody UserInfoDTO user){
-        userService.updateUser(user);
-        return new Response<>(EHttpStatus.OK,"update succsess");
+
+        return new Response<>(EHttpStatus.OK,userService.updateUser(user));
     }
     @PostMapping("/changePassword")
     public Response<?> changePassword(@RequestBody ChangePasswordDTO passwordDTO) {
