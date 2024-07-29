@@ -85,6 +85,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public Contract addNewContract(CreateContractDTO createContractDTO) {
+
         UUID contractNo = UUID.randomUUID();
         if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
                 !validateDate(createContractDTO.getSigninDate(), createContractDTO.getExpireDate()) ||
@@ -100,6 +101,7 @@ public class ContractServiceImpl implements ContractService {
 //            throw new IllegalArgumentException("Room ID already exists.");
 //        }
         // This code is to save to contract
+
         Contract contract = new Contract();
         contract.setContractId(String.valueOf(contractNo));
         contract.setRoomId(createContractDTO.getRoomId());
@@ -156,6 +158,7 @@ public class ContractServiceImpl implements ContractService {
         roomEntity.setRoomStatus(true); // Set the new status for the room
         roomRepository.save(roomEntity);
         return contract;
+
     }
     public boolean validateCopy(int copy) {
         if(copy <= 2) {

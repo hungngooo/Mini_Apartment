@@ -46,7 +46,13 @@ public class ContractController {
     }
     @PostMapping("/addNewContract")
     public Response<?> addNewContract(@RequestBody CreateContractDTO createContractDTO) {
-        return new Response<>(EHttpStatus.OK, contractService.addNewContract(createContractDTO));
+        try{
+            contractService.addNewContract(createContractDTO);
+            System.out.println(createContractDTO);
+        }catch (Exception e) {
+            return new Response<>(EHttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        return new Response<>(EHttpStatus.OK, "Add new contract OK");
     }
 //    @PutMapping("/updateStatus/{contractId}/{status}")
 //    public Contract updateStatus(@PathVariable int contractId, @PathVariable int status) {
