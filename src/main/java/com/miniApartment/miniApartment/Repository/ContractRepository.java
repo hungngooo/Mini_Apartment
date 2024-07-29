@@ -22,7 +22,7 @@ public interface ContractRepository extends JpaRepository<Contract, BigInteger> 
             "table1 as c", nativeQuery = true)
     List<IDemoExample> getExample();
     Contract getContractByRoomId(int id);
-
+    boolean existsByRoomId(int roomId);
     Page<Contract> searchContractByRoomId(String keySearch, Pageable paging);
 
     Page<Contract> getContractByContractId(int roomId, Pageable paging);

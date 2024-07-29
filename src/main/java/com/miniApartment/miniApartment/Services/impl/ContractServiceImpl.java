@@ -96,6 +96,9 @@ public class ContractServiceImpl implements ContractService {
         if(!validateCopy(createContractDTO.getCopies())) {
             throw new IllegalArgumentException("Please check the entered information");
         }
+//        if (contractRepository.existsByRoomId(createContractDTO.getRoomId())) {
+//            throw new IllegalArgumentException("Room ID already exists.");
+//        }
         // This code is to save to contract
         Contract contract = new Contract();
         contract.setContractId(String.valueOf(contractNo));
@@ -115,8 +118,10 @@ public class ContractServiceImpl implements ContractService {
         tenants.setContractId(String.valueOf(contractNo));
         tenants.setEmail(createContractDTO.getEmail());
         tenants.setRoomId(createContractDTO.getRoomId());
-        tenants.setFirstName(createContractDTO.getRepresentative().split(" ")[0]);
-        tenants.setLastName(createContractDTO.getRepresentative().substring(1));
+        String representative = createContractDTO.getRepresentative();
+        String[] nameParts = representative.split(" ", 2);
+        tenants.setFirstName(nameParts[0]); // Lấy chữ đầu tiên
+        tenants.setLastName(nameParts.length > 1 ? nameParts[1] : ""); // Lấy phần còn lại của chuỗi
         tenants.setGender(createContractDTO.getGender());
         tenants.setDateOfBirth(createContractDTO.getDateOfBirth());
         tenants.setContact(createContractDTO.getContact());
