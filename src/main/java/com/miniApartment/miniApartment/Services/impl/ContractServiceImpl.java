@@ -8,6 +8,7 @@ import com.miniApartment.miniApartment.Repository.TenantRepository;
 import com.miniApartment.miniApartment.Response.EHttpStatus;
 import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ContractService;
+import com.miniApartment.miniApartment.dto.ContractResponseDTO;
 import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
 import jakarta.mail.internet.AddressException;
@@ -84,21 +85,18 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Contract addNewContract(CreateContractDTO createContractDTO) {
+    public ContractResponseDTO addNewContract(CreateContractDTO createContractDTO) {
 
         UUID contractNo = UUID.randomUUID();
-        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
-                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getExpireDate()) ||
-                !validateEmail(createContractDTO.getEmail()) ||
-                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
-                !contactValidate(createContractDTO.getContact())) {
-            throw new IllegalArgumentException("Please check the entered information");
-        }
-        if(!validateCopy(createContractDTO.getCopies())) {
-            throw new IllegalArgumentException("Please check the entered information");
-        }
-//        if (contractRepository.existsByRoomId(createContractDTO.getRoomId())) {
-//            throw new IllegalArgumentException("Room ID already exists.");
+//        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
+//                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getExpireDate()) ||
+//                !validateEmail(createContractDTO.getEmail()) ||
+//                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
+//                !contactValidate(createContractDTO.getContact())) {
+//            throw new IllegalArgumentException("Please check the entered information");
+//        }
+//        if(!validateCopy(createContractDTO.getCopies())) {
+//            throw new IllegalArgumentException("Please check the entered information");
 //        }
         // This code is to save to contract
 
@@ -157,7 +155,12 @@ public class ContractServiceImpl implements ContractService {
         RoomEntity roomEntity = roomRepository.findByRoomId(createContractDTO.getRoomId());
         roomEntity.setRoomStatus(true); // Set the new status for the room
         roomRepository.save(roomEntity);
-        return contract;
+        //set response dto
+        ContractResponseDTO responseDTO = new ContractResponseDTO();
+        responseDTO.setContractId(createContractDTO.getContractId());
+        responseDTO.setContractStatus(createContractDTO.getContractStatus());
+        responseDTO.setMessage("Contract is created successfully");
+        return responseDTO;
 
     }
     public boolean validateCopy(int copy) {

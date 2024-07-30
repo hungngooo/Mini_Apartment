@@ -5,6 +5,7 @@ import com.miniApartment.miniApartment.Entity.IDemoExample;
 import com.miniApartment.miniApartment.Response.EHttpStatus;
 import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ContractService;
+import com.miniApartment.miniApartment.dto.ContractResponseDTO;
 import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import org.simpleframework.xml.Path;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +47,13 @@ public class ContractController {
     }
     @PostMapping("/addNewContract")
     public Response<?> addNewContract(@RequestBody CreateContractDTO createContractDTO) {
-        try{
-            contractService.addNewContract(createContractDTO);
-            System.out.println(createContractDTO);
-        }catch (Exception e) {
+        ContractResponseDTO responseDTO;
+        try {
+            responseDTO = contractService.addNewContract(createContractDTO);
+        } catch (Exception e) {
             return new Response<>(EHttpStatus.BAD_REQUEST, e.getMessage());
         }
-        return new Response<>(EHttpStatus.OK, "Add new contract OK");
+        return new Response<>(EHttpStatus.OK, responseDTO);
     }
 //    @PutMapping("/updateStatus/{contractId}/{status}")
 //    public Contract updateStatus(@PathVariable int contractId, @PathVariable int status) {
