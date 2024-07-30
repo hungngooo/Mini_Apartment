@@ -26,7 +26,7 @@ public class CreateContractDTO {
     private String email;
     private String firstName;
     private String lastName;
-    private Boolean gender;
+    private int gender;
     private Date dateOfBirth;
     private String contact;
     private String career;

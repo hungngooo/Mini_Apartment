@@ -82,10 +82,10 @@ public class TenantsServiceImpl implements TenantService {
             System.err.println("Room ID must be greater than zero");
             return false;
         }
-        if (tenant.getGender() == null) {
-            System.err.println("Gender cannot be null");
-            return false;
-        }
+//        if (tenant.getGender() == null) {
+//            System.err.println("Gender cannot be null");
+//            return false;
+//        }
         if (tenant.getDateOfBirth() == null) {
             System.err.println("Date of Birth cannot be null");
             return false;

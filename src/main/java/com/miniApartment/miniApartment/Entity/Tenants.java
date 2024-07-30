@@ -24,7 +24,7 @@ public class Tenants {
     @Column(name = "lastName")
     private String lastName;
     @Column(name = "gender")
-    private Boolean gender;
+    private int gender;
     @Column(name = "dateOfBirth")
     private Date dateOfBirth;
     @Column(name = "contact")

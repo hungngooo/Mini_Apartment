@@ -24,7 +24,7 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
     @Column(name = "gender")
-    private Boolean gender;
+    private int gender;
     @Column(name = "dateOfBirth")
     private Date dateOfBirth;
     @Column(name = "placeOfPermanet")
@@ -44,7 +44,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String userId, String firstName, String lastName, Boolean gender, Date dateOfBirth, String placeOfPermanet, String email, String contact, String password, int roleId, String image, String citizenId) {
+    public User(Long id, String userId, String firstName, String lastName, int gender, Date dateOfBirth, String placeOfPermanet, String email, String contact, String password, int roleId, String image, String citizenId) {
         this.id = id;
         this.userId = userId;
         this.firstName = firstName;

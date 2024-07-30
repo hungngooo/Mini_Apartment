@@ -53,7 +53,7 @@ public interface TenantRepository extends JpaRepository<Tenants, Long> {
     void updatetenants(
             @Param("id") long id,
             @Param("roomId") int roomId,
-            @Param("gender") boolean gender,
+            @Param("gender") int gender,
             @Param("dateOfBirth") Date dateOfBirth,
             @Param("contact") String contact,
             @Param("citizenId") String citizenId,

@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "citizenId = :citizenId " +
             "WHERE email = :email", nativeQuery = true)
     void updateUserByEmail(
-            @Param("gender") boolean gender,
+            @Param("gender") int gender,
             @Param("dateOfBirth") Date dateOfBirth,
             @Param("placeOfPermanet") String placeOfPermanet,
             @Param("contact") String contact,

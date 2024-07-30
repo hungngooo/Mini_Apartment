@@ -12,7 +12,7 @@ import java.util.Date;
 public class UserInfoDTO {
     private String firstName;
     private String lastName;
-    private Boolean gender;
+    private int gender;
     private Date dateOfBirth;
     private String placeOfPermanet;
     private String email;
