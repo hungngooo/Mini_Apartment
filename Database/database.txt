@@ -1,14 +1,15 @@
 -- create database miniApartment
 -- drop database miniApartment
 use miniApartment;
-CREATE TABLE `role` (
+CREATE TABLE role (
 	id int auto_increment primary key,
-    roleId INT,
+    roleId INT unique,
     roleName VARCHAR(20)
 );
+CREATE INDEX role_id ON role(roleId);
 create table contract(
 	id bigint primary key auto_increment,
-    contractId varchar(255),
+    contractId varchar(255) unique,
     roomId int,
     numberOfTenant int,
     rentalFee decimal,
@@ -20,25 +21,27 @@ create table contract(
     contractStatus int,
 	representative nvarchar(100)
 );
-CREATE INDEX contractId ON contract(contractId);
+-- CREATE INDEX contractId ON contract(contractId);
+-- CREATE UNIQUE INDEX index_unique_column ON contract(contractId);
 create table contractDetail(
 	contractId varchar(255) primary key,
     totalArea decimal,
-    landArear decimal,
+    landArea decimal,
     publicArea decimal,
     privateArea decimal,
     device nvarchar(255),
-    ownerOrgirin nvarchar(255),
+    ownerOrigin nvarchar(255),
     ownerLimit nvarchar(255),
 	rights nvarchar(255),
     obligations nvarchar(255),
-    `commit` nvarchar(255),
+    commit nvarchar(255),
     copies int,
+    relationship varchar(20),
      FOREIGN KEY (contractId) REFERENCES contract(contractId)
 );
 create table `tenants`(
 	id bigint auto_increment primary key,
-	email varchar(30),
+	email varchar(30) unique,
     roomId int,
     firstName NVARCHAR(15),
     lastName NVARCHAR(15),
@@ -57,8 +60,9 @@ create table `tenants`(
     placeOfPermanet NVARCHAR(100),
     foreign key(contractId) references contract(contractId)
 );
+CREATE INDEX idex_role_id ON role(roleId);
 CREATE INDEX idx_users_email ON tenants(email);
-CREATE TABLE `users` (
+CREATE TABLE users (
 	id bigint auto_increment primary key,
     userId VARCHAR(255),
     firstName NVARCHAR(15),
@@ -78,8 +82,8 @@ CREATE TABLE `users` (
 create table expensesDetail(
 	paymentId bigint auto_increment primary key,
     roomId int,
-	`year` year,
-    `month` int,
+	year year,
+    month int,
     rentalFee decimal,
     electricity decimal,
     electricPreviousMeter double,
@@ -92,21 +96,21 @@ create table expensesDetail(
     securityDeposite decimal,
     debt decimal,
     fine decimal,
-    `status` varchar(20)
+    status varchar(20)
 );
 create table payment(
 	id bigint primary key,
 	roomId int,
-	`year` year,
-    `month` int,
+	year year,
+    month int,
     totalFee decimal,
     paid decimal,
-    `status` varchar(20),
+    status varchar(20),
 	foreign key (id) references expensesDetail(paymentId)
 );
 create table room(
 	id bigint auto_increment primary key,
-	roomId int,
+	roomId int unique,
 	roomStatus bit,
     maxTenant int
 );
@@ -123,15 +127,15 @@ ALTER TABLE contract ADD CONSTRAINT room_ibfk_1 FOREIGN KEY(roomId) REFERENCES r
 --     expTime datetime,
 --
 -- )
-INSERT INTO `miniapartment`.`role`
-(`roleId`,
-`roleName`)
+INSERT INTO miniapartment.`role`
+(roleId,
+roleName)
 VALUES
 (1,
 'citizen');
-INSERT INTO `miniapartment`.`role`
-(`roleId`,
-`roleName`)
+INSERT INTO miniapartment.`role`
+(roleId,
+roleName)
 VALUES
 (2,
 'admin');
@@ -170,27 +174,26 @@ INSERT INTO room (roomId, roomStatus) VALUES (504, 0);
 INSERT INTO room (roomId, roomStatus) VALUES (505, 0);
 INSERT INTO room (roomId, roomStatus) VALUES (506, 0);
 --
-INSERT INTO `miniapartment`.`contract`
-(`contractId`,`roomId`,`numberOfTenant`,`rentalFee`,`securityDeposite`,`paymentCycle`,`signinDate`,`moveinDate`,`expireDate`,`contractStatus`,`representative`)
+INSERT INTO miniapartment.`contract`
+(contractId,`roomId`,`numberOfTenant`,`rentalFee`,`securityDeposite`,`paymentCycle`,`signinDate`,`moveinDate`,`expireDate`,`contractStatus`,`representative`)
 VALUES
 ('1',101,1,'12000','122222',1,'2024-6-24','2024-6-26','2024-7-24',1,'tran tuan minh');
 
-INSERT INTO `miniapartment`.`tenants`
-(`email`,`roomId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`contact`,`citizenId`
+INSERT INTO miniapartment.`tenants`
+(email,`roomId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`contact`,`citizenId`
 ,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
 VALUES
 ('minhtt14@fpt.com',101,'minh','tran tuan',1,'2003-12-24',0398707242,'024203123031',
 'student','99AA-99999','wave','black','Failed',1);
-INSERT INTO `miniapartment`.`tenants`
-(`email`,`roomId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`contact`,`citizenId`
+INSERT INTO miniapartment.`tenants`
+(email,`roomId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`contact`,`citizenId`
 ,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
 VALUES
 ('trantuanminhbg2003@gmail.com',101,'minh','tran tuan',1,'2003-12-24',0398707242,'024203123031',
 'student','99AA-99999','wave','black','Failed',1);
-INSERT INTO `miniapartment`.`tenants`
-(`email`,`roomId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`contact`,`citizenId`
+INSERT INTO miniapartment.`tenants`
+(email,`roomId`,`firstName`,`lastName`,`gender`,`dateOfBirth`,`contact`,`citizenId`
 ,`career`,`licensePLate`,`vehicleType`,`vehicleColor`,`residenceStatus`,`contractId`)
 VALUES
 ('minhtthe173206@fpt.edu.vn',101,'minh','tran tuan',1,'2003-12-24',0398707242,'024203123031',
 'student','99AA-99999','wave','black','Failed',1);
-

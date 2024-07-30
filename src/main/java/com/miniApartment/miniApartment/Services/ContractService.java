@@ -6,6 +6,7 @@ import com.miniApartment.miniApartment.Entity.IDemoExample;
 import com.miniApartment.miniApartment.Entity.Tenants;
 import com.miniApartment.miniApartment.Repository.ContractRepository;
 import com.miniApartment.miniApartment.Response.Response;
+import com.miniApartment.miniApartment.dto.ContractResponseDTO;
 import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,6 @@ public interface ContractService {
     public List<IDemoExample> getExample();
     public Contract getContractByRoom(int id);
     RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId);
-    Contract addNewContract(CreateContractDTO createContractDTO);
+    ContractResponseDTO addNewContract(CreateContractDTO createContractDTO);
 }
 
