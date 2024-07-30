@@ -5,6 +5,8 @@ import com.miniApartment.miniApartment.Entity.Payment;
 import com.miniApartment.miniApartment.Repository.ExpensesDetailRepository;
 import com.miniApartment.miniApartment.Repository.PaymentRepository;
 import com.miniApartment.miniApartment.Services.ExpensesService;
+import com.miniApartment.miniApartment.dto.ExpensesStatusDTO;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +23,7 @@ public class ExpensesServiceImpl implements ExpensesService {
     private PaymentRepository paymentRepository;
 
     @Override
-    public String addNewExpenses(ExpensesDetailEntity entity) {
+    public String addNewExpenses(@NotNull ExpensesDetailEntity entity) {
         if (validateExpensesDetail(entity)) {
             if (checkExpensesExist(entity.getRoomId(), entity.getYear(), entity.getMonth())) {
                 entity.setElectricity((entity.getElectricCurrentMeter() - entity.getElectricPreviousMeter()) * 3800);
@@ -39,7 +41,7 @@ public class ExpensesServiceImpl implements ExpensesService {
         return true;
     }
 
-    private void addPaymentEntity(ExpensesDetailEntity expensesDetailEntity) {
+    private void addPaymentEntity(@NotNull ExpensesDetailEntity expensesDetailEntity) {
         Payment payment = new Payment();
         payment.setId(expensesDetailEntity.getId());
         payment.setRoomId(expensesDetailEntity.getRoomId());
@@ -65,7 +67,26 @@ public class ExpensesServiceImpl implements ExpensesService {
         return repository.getExpensesDetailEntitiesByRoomId(room, year, paging);
     }
 
-    private boolean validateExpensesDetail(ExpensesDetailEntity expensesDetail) {
+    @Override
+    public ExpensesDetailEntity getExpensesByMonthAndRomm(String year, int month, int room) {
+        return repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(room, year, month);
+    }
+
+    @Override
+    public String updateExpensesStatus(@NotNull ExpensesStatusDTO dto) {
+        try {
+            ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(dto.getRoomId(), dto.getYear(),dto.getMonth());
+            if (entity == null) return "Expenses does not exist";
+            entity.setStatus(dto.getStatus());
+            entity.setYear(dto.getYear());
+            repository.save(entity);
+            return "update success";
+        } catch (Exception e){
+            return "update fail: "+e.getMessage();
+        }
+    }
+
+    private boolean validateExpensesDetail(@NotNull ExpensesDetailEntity expensesDetail) {
         if (expensesDetail.getRoomId() <= 0) {
             System.err.println("Room ID must be greater than zero");
             return false;
