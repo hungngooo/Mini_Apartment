@@ -5,8 +5,6 @@ import com.miniApartment.miniApartment.Repository.ContractDetailRepository;
 import com.miniApartment.miniApartment.Repository.ContractRepository;
 import com.miniApartment.miniApartment.Repository.RoomRepository;
 import com.miniApartment.miniApartment.Repository.TenantRepository;
-import com.miniApartment.miniApartment.Response.EHttpStatus;
-import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ContractService;
 import com.miniApartment.miniApartment.dto.ContractResponseDTO;
 import com.miniApartment.miniApartment.dto.CreateContractDTO;
@@ -21,8 +19,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -73,12 +69,10 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId) {
-        Date date = new Date();
-        int month = date.getMonth();
+    public RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId, int month) {
         Contract contract = contractRepository.getRepesentativeByRoomId(roomId);
         RentalFeeOfContractDTO rentalFeeOfContractDTO = new RentalFeeOfContractDTO(contract);
-        if (month != contract.getSigninDate().getMonth()) {
+        if (month != contract.getSigninDate().getMonth()+1) {
             rentalFeeOfContractDTO.setSecurityDeposite(BigDecimal.valueOf(0));
         }
         return rentalFeeOfContractDTO;

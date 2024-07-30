@@ -42,8 +42,8 @@ public class ContractController {
         return new Response<>(EHttpStatus.OK, contractService.getContractByRoom(roomId));
     }
     @GetMapping("/getRepesentative")
-    public Response<?> getRepesentativeByRoomId(@RequestParam int roomId){
-        return new Response<>(EHttpStatus.OK, contractService.getRepesentativeByRoomId(roomId));
+    public Response<?> getRepesentativeByRoomId(@RequestParam int roomId,@RequestParam int month){
+        return new Response<>(EHttpStatus.OK, contractService.getRepesentativeByRoomId(roomId,month));
     }
     @PostMapping("/addNewContract")
     public Response<?> addNewContract(@RequestBody CreateContractDTO createContractDTO) {
