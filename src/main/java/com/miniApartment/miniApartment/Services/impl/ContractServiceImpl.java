@@ -88,16 +88,16 @@ public class ContractServiceImpl implements ContractService {
     public ContractResponseDTO addNewContract(CreateContractDTO createContractDTO) {
 
         UUID contractNo = UUID.randomUUID();
-//        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
-//                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getExpireDate()) ||
-//                !validateEmail(createContractDTO.getEmail()) ||
-//                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
-//                !contactValidate(createContractDTO.getContact())) {
-//            throw new IllegalArgumentException("Please check the entered information");
-//        }
-//        if(!validateCopy(createContractDTO.getCopies())) {
-//            throw new IllegalArgumentException("Please check the entered information");
-//        }
+        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
+                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getExpireDate()) ||
+                !validateEmail(createContractDTO.getEmail()) ||
+                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
+                !contactValidate(createContractDTO.getContact())) {
+            throw new IllegalArgumentException("Please check the entered information");
+        }
+        if(!validateCopy(createContractDTO.getCopies())) {
+            throw new IllegalArgumentException("Please check the entered information");
+        }
         // This code is to save to contract
 
         Contract contract = new Contract();
@@ -157,8 +157,8 @@ public class ContractServiceImpl implements ContractService {
         roomRepository.save(roomEntity);
         //set response dto
         ContractResponseDTO responseDTO = new ContractResponseDTO();
-        responseDTO.setContractId(createContractDTO.getContractId());
-        responseDTO.setContractStatus(createContractDTO.getContractStatus());
+        responseDTO.setContractId(contract.getContractId());
+        responseDTO.setContractStatus(contract.getContractStatus());
         responseDTO.setMessage("Contract is created successfully");
         return responseDTO;
 
