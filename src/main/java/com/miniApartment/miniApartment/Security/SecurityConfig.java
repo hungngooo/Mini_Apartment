@@ -44,6 +44,8 @@ public class SecurityConfig {
             , "/api/user/**"
             , "/mail/**"
             , "/contract/**"
+            ,"/swagger-ui/**"
+            , "/v3/api-docs/**"
     };
 
     @Bean
@@ -56,6 +58,12 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+//        http
+//                .authorizeRequests()
+//                .anyRequest().permitAll()  // Cho phép tất cả các yêu cầu
+//                .and()
+//                .csrf(csrf -> csrf.disable());  // Vô hiệu hóa CSRF nếu cần
+//        return http.build();
     }
 
 
