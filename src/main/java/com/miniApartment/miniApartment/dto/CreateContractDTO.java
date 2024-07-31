@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import com.miniApartment.miniApartment.Entity.roomStatus;
 
 @Data
 @Getter
@@ -49,6 +50,6 @@ public class CreateContractDTO {
     private Date createCitizenIdDate;
     private String createCitizenIdPlace;
     private String placeOfPermanet;
-    private boolean roomStatus;
+    private roomStatus roomStatus;
     private String relationship;
 }

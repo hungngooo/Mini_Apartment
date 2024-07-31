@@ -14,6 +14,5 @@ public interface TenantService {
      Page<Tenants> getTenantByRoomId(Integer pageNo, Integer pageSize,int roomId);
      Tenants getTenantByEmail(String email);
      void updateTenant(List<Tenants> tenantsList);
-
-
+     int countTenants();
 }
