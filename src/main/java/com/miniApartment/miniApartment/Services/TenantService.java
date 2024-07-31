@@ -15,4 +15,5 @@ public interface TenantService {
      Tenants getTenantByEmail(String email);
      void updateTenant(List<Tenants> tenantsList);
 
+
 }

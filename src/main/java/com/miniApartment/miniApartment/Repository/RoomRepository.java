@@ -10,4 +10,5 @@ public interface RoomRepository extends JpaRepository<RoomEntity,Long> {
     @Query(value = "select r from RoomEntity r where r.roomStatus = true")
     List<RoomEntity> getRoomEntityAvailable();
     RoomEntity findByRoomId(int roomId);
+
 }
