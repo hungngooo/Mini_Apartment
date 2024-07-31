@@ -111,7 +111,7 @@ create table payment(
 create table room(
 	id bigint auto_increment primary key,
 	roomId int unique,
-	roomStatus bit,
+	roomStatus enum('vacant','occupied', 'reserved'),
     maxTenant int
 );
 
@@ -139,61 +139,61 @@ roleName)
 VALUES
 (2,
 'admin');
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (101, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (102, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (103, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (104, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (105, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (106, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (107, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (108, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (109, 0, 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (110, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (101, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (102, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (103, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (104, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (105, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (106, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (107, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (108, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (109, 'vacant', 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (110, 'vacant', 4);
 
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (201, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (202, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (203, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (204, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (205, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (206, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (207, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (208, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (209, 0, 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (210, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (201, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (202, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (203, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (204, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (205, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (206, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (207, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (208, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (209, 'vacant', 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (210, 'vacant', 4);
 
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (301, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (302, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (303, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (304, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (305, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (306, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (307, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (308, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (309, 0, 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (310, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (301, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (302, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (303, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (304, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (305, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (306, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (307, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (308, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (309, 'vacant', 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (310, 'vacant', 4);
 
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (401, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (402, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (403, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (404, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (405, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (406, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (407, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (408, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (409, 'vacant', 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (410, 'vacant', 4);
 
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (401, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (402, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (403, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (404, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (405, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (406, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (407, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (408, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (409, 0, 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (410, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (501, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (502, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (503, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (504, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (505, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (506, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (507, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (508, 'vacant', 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (509, 'vacant', 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (510, 'vacant', 4);
 
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (501, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (502, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (503, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (504, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (505, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (506, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (507, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (508, 0, 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (509, 0, 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (510, 0, 4);
 
 --
 INSERT INTO miniapartment.`contract`
