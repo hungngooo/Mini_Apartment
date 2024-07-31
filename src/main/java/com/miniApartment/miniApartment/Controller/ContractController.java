@@ -32,10 +32,8 @@ public class ContractController {
     }
 
     @GetMapping("/getContractByContractId")
-    public Response<Page<Contract>> getContractByContractId(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                            @RequestParam(defaultValue = "10") Integer pageSize,
-                                                            @RequestParam int contractId) {
-        return new Response<>(EHttpStatus.OK,contractService.getContractByContractId(pageNo,pageSize,contractId));
+    public Response<?> getContractByContractId(@RequestParam String contractId) {
+        return new Response<>(EHttpStatus.OK,contractService.getContractByContractId(contractId));
     }
     @GetMapping("/getContractByRoom/{roomId}")
     public Response<?> getContractByRoom(@PathVariable int roomId) {
@@ -54,6 +52,10 @@ public class ContractController {
             return new Response<>(EHttpStatus.BAD_REQUEST, e.getMessage());
         }
         return new Response<>(EHttpStatus.OK, responseDTO);
+    }
+    @GetMapping("/findContractById")
+    public Response<?> findContractByid(@RequestParam int id) {
+        return new Response<>(EHttpStatus.OK, contractService.findContractById(id));
     }
 //    @PutMapping("/updateStatus/{contractId}/{status}")
 //    public Contract updateStatus(@PathVariable int contractId, @PathVariable int status) {

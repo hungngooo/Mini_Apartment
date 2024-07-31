@@ -14,10 +14,11 @@ import java.util.Optional;
 @Service
 public interface ContractService {
     public Page<Contract> getAllContract(Integer pageNo, Integer pageSize, String keySearch)throws Exception;
-    Page<Contract> getContractByContractId(Integer pageNo, Integer pageSize, int roomId);
+    Contract getContractByContractId(String contractId);
     public List<IDemoExample> getExample();
     public Contract getContractByRoom(int id);
     RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId,int month);
     ContractResponseDTO addNewContract(CreateContractDTO createContractDTO);
+    Contract findContractById(int id);
 }
 

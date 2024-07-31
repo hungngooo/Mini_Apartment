@@ -45,7 +45,7 @@ create table `tenants`(
     roomId int,
     firstName NVARCHAR(15),
     lastName NVARCHAR(15),
-    gender BIT,
+    gender int,
     dateOfBirth DATE,
     contact VARCHAR(15),
     citizenId varchar(255),
@@ -67,7 +67,7 @@ CREATE TABLE users (
     userId VARCHAR(255),
     firstName NVARCHAR(15),
     lastName NVARCHAR(15),
-    gender BIT,
+    gender int,
     dateOfBirth DATE,
     placeOfPermanet NVARCHAR(100),
     email VARCHAR(30),
@@ -139,40 +139,62 @@ roleName)
 VALUES
 (2,
 'admin');
-INSERT INTO room (roomId, roomStatus) VALUES (101, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (102, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (103, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (104, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (105, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (106, 0);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (101, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (102, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (103, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (104, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (105, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (106, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (107, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (108, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (109, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (110, 0, 4);
 
-INSERT INTO room (roomId, roomStatus) VALUES (201, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (202, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (203, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (204, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (205, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (206, 0);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (201, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (202, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (203, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (204, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (205, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (206, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (207, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (208, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (209, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (210, 0, 4);
 
-INSERT INTO room (roomId, roomStatus) VALUES (301, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (302, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (303, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (304, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (305, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (306, 0);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (301, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (302, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (303, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (304, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (305, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (306, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (307, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (308, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (309, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (310, 0, 4);
 
-INSERT INTO room (roomId, roomStatus) VALUES (401, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (402, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (403, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (404, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (405, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (406, 0);
 
-INSERT INTO room (roomId, roomStatus) VALUES (501, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (502, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (503, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (504, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (505, 0);
-INSERT INTO room (roomId, roomStatus) VALUES (506, 0);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (401, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (402, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (403, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (404, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (405, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (406, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (407, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (408, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (409, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (410, 0, 4);
+
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (501, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (502, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (503, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (504, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (505, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (506, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (507, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (508, 0, 2);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (509, 0, 4);
+INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (510, 0, 4);
+
 --
 INSERT INTO miniapartment.`contract`
 (contractId,`roomId`,`numberOfTenant`,`rentalFee`,`securityDeposite`,`paymentCycle`,`signinDate`,`moveinDate`,`expireDate`,`contractStatus`,`representative`)
