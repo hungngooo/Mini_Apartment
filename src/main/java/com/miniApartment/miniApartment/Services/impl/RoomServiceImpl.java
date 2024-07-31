@@ -1,5 +1,6 @@
 package com.miniApartment.miniApartment.Services.impl;
 
+import com.miniApartment.miniApartment.Entity.IRoomByStatus;
 import com.miniApartment.miniApartment.Entity.RoomEntity;
 import com.miniApartment.miniApartment.Repository.RoomRepository;
 import com.miniApartment.miniApartment.Services.RoomService;
@@ -20,8 +21,8 @@ public class RoomServiceImpl implements RoomService {
     public int countRoom() {
         return roomRepository.countRoom();
     }
-//    @Override
-//    public List<Object[]> countRoomByStatus() {
-//        return roomRepository.countRoomStatus();
-//    }
+    @Override
+    public IRoomByStatus countRoomByStatus() {
+        return roomRepository.countRoomStatus();
+    }
 }

@@ -26,8 +26,8 @@ public class RoomController {
         return new Response<>(EHttpStatus.OK,roomService.countRoom());
     }
 
-//    @GetMapping("/countRoomByStatus")
-//    public Response<?> countRoomByStatus(){
-//        return new Response<>(EHttpStatus.OK,roomService.countRoomByStatus());
-//    }
+    @GetMapping("/countRoomByStatus")
+    public Response<?> countRoomByStatus(){
+        return new Response<>(EHttpStatus.OK,roomService.countRoomByStatus());
+    }
 }

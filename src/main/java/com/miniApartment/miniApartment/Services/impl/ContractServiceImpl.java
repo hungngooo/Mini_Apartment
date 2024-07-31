@@ -146,7 +146,7 @@ public class ContractServiceImpl implements ContractService {
         contractDetailRepository.save(contractDetail);
         // Update room status
         RoomEntity roomEntity = roomRepository.findByRoomId(createContractDTO.getRoomId());
-        roomEntity.setRoomStatus(roomStatus.reserved); // Set the new status for the room
+        roomEntity.setRoomStatus("reserved"); // Set the new status for the room
         roomRepository.save(roomEntity);
         //set response dto
         ContractResponseDTO responseDTO = new ContractResponseDTO();

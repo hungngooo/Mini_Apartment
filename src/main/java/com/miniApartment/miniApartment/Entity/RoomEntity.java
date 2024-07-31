@@ -17,7 +17,7 @@ public class RoomEntity {
     @Column(name = "roomId")
     private int roomId;
     @Column(name = "roomStatus")
-    private  roomStatus roomStatus;
+    private String roomStatus;
     @Column(name = "maxTenant")
     private Integer maxTenant;
 
