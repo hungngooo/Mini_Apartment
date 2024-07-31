@@ -25,8 +25,9 @@ public interface ContractRepository extends JpaRepository<Contract, BigInteger> 
     boolean existsByRoomId(int roomId);
     Page<Contract> searchContractByRoomId(String keySearch, Pageable paging);
 
-    Page<Contract> getContractByContractId(int roomId, Pageable paging);
+    Contract findContractByContractId(String contractId);
     @Query(value = "SELECT * FROM miniapartment.contract where roomId = :roomId",nativeQuery = true)
     Contract getRepesentativeByRoomId(int roomId);
 
+    Contract findContractById(int id);
 }

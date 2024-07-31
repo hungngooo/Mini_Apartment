@@ -21,4 +21,13 @@ public class RoomController {
     }
     @GetMapping("/getAllRoom")
     public Response<?> getAllRoom(){return new Response<>(EHttpStatus.OK,roomService.getAllRoom());}
+    @GetMapping("/roomCount")
+    public Response<?> roomCount(){
+        return new Response<>(EHttpStatus.OK,roomService.countRoom());
+    }
+
+//    @GetMapping("/countRoomByStatus")
+//    public Response<?> countRoomByStatus(){
+//        return new Response<>(EHttpStatus.OK,roomService.countRoomByStatus());
+//    }
 }

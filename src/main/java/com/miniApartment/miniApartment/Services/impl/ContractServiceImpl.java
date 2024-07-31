@@ -52,9 +52,8 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Page<Contract> getContractByContractId(Integer pageNo, Integer pageSize, int roomId) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        return contractRepository.getContractByContractId(roomId, paging);
+    public Contract getContractByContractId(String contractId) {
+        return contractRepository.findContractByContractId(contractId);
     }
 
 
@@ -147,7 +146,7 @@ public class ContractServiceImpl implements ContractService {
         contractDetailRepository.save(contractDetail);
         // Update room status
         RoomEntity roomEntity = roomRepository.findByRoomId(createContractDTO.getRoomId());
-        roomEntity.setRoomStatus(true); // Set the new status for the room
+        roomEntity.setRoomStatus(roomStatus.reserved); // Set the new status for the room
         roomRepository.save(roomEntity);
         //set response dto
         ContractResponseDTO responseDTO = new ContractResponseDTO();
@@ -157,6 +156,13 @@ public class ContractServiceImpl implements ContractService {
         return responseDTO;
 
     }
+
+    @Override
+    public Contract findContractById(int id) {
+        return contractRepository.findContractById(id);
+    }
+
+
     public boolean validateCopy(int copy) {
         if(copy <= 2) {
             return false;

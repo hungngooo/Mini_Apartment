@@ -64,5 +64,6 @@ public interface TenantRepository extends JpaRepository<Tenants, Long> {
             @Param("vehicleColor") String vehicleColor,
             @Param("residenceStatus") String residenceStatus);
 
-
+    @Query(value = "select count(*) from tenants", nativeQuery = true)
+    int countTenants();
 }

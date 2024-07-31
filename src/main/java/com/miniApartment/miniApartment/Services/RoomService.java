@@ -8,4 +8,8 @@ public interface RoomService {
     List<RoomEntity> getAllRoomAvailable();
 
     List<RoomEntity> getAllRoom();
+
+    int countRoom();
+
+//    List<Object[]> countRoomByStatus();
 }
