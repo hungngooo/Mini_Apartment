@@ -16,4 +16,12 @@ public class RoomServiceImpl implements RoomService {
     }
     @Override
     public List<RoomEntity> getAllRoom(){return roomRepository.findAll();}
+    @Override
+    public int countRoom() {
+        return roomRepository.countRoom();
+    }
+//    @Override
+//    public List<Object[]> countRoomByStatus() {
+//        return roomRepository.countRoomStatus();
+//    }
 }
