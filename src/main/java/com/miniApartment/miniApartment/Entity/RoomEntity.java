@@ -16,6 +16,7 @@ public class RoomEntity {
     private Long id;
     @Column(name = "roomId")
     private int roomId;
+
     @Column(name = "roomStatus")
     private String roomStatus;
     @Column(name = "maxTenant")
