@@ -50,6 +50,6 @@ public class CreateContractDTO {
     private Date createCitizenIdDate;
     private String createCitizenIdPlace;
     private String placeOfPermanet;
-    private roomStatus roomStatus;
+    private String roomStatus;
     private String relationship;
 }
