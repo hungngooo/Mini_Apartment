@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Arrays;
 import java.util.List;
 
-public interface PaymentRepository extends JpaRepository<Payment,Integer> {
+public interface PaymentRepository extends JpaRepository<Payment,Long> {
     @Query(value = "SELECT \n" +
             "    roomId,\n" +
             "    SUM(CASE WHEN `month` = 1 THEN paid ELSE 0 END) AS Jan,\n" +

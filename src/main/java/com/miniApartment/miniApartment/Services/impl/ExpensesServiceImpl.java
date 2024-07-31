@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -57,13 +59,13 @@ public class ExpensesServiceImpl implements ExpensesService {
 
     @Override
     public Page<ExpensesDetailEntity> getExpensesDetailByMonth(Integer pageNo, Integer pageSize, String year, String month) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("roomId"));
         return repository.getExpensesDetailEntitiesByMonth(month, year, paging);
     }
 
     @Override
     public Page<ExpensesDetailEntity> getExpensesDetailByRoom(Integer pageNo, Integer pageSize, String year, int room) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("month"));
         return repository.getExpensesDetailEntitiesByRoomId(room, year, paging);
     }
 
@@ -83,6 +85,18 @@ public class ExpensesServiceImpl implements ExpensesService {
             return "update success";
         } catch (Exception e){
             return "update fail: "+e.getMessage();
+        }
+    }
+    @Override
+    public String deleteExpenses(String year, int month, int room) {
+        try {
+            ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(room, year,month);
+            Optional<Payment> paymentEntity = paymentRepository.findById(entity.getId());
+            if (entity == null) return "Expenses does not exist";
+            repository.deleteById(entity.getId());
+            return "delete success";
+        } catch (Exception e){
+            return "delete fail: "+e.getMessage();
         }
     }
 

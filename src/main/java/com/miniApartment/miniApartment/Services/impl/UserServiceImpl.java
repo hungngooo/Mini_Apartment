@@ -66,10 +66,10 @@ public class UserServiceImpl implements UserService {
         return false;
     }
     private boolean validateUserInfo(UserInfoDTO userInfoDTO) {
-//        if (userInfoDTO.getGender() == null) {
-//            System.err.println("Gender cannot be null");
-//            return false;
-//        }
+        if (userInfoDTO.getGender() ==0) {
+            System.err.println("Gender cannot be null");
+            return false;
+        }
         if (userInfoDTO.getDateOfBirth() == null) {
             System.err.println("Date of Birth cannot be null");
             return false;

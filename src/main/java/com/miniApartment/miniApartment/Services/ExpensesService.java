@@ -16,4 +16,6 @@ public interface ExpensesService {
 
 
     String updateExpensesStatus(@NotNull ExpensesStatusDTO dto);
+
+    String deleteExpenses(String year, int month, int room);
 }

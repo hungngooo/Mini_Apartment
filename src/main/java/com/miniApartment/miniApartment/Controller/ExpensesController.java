@@ -42,4 +42,9 @@ public class ExpensesController {
     public Response<?> updateExpensesStatus(@RequestBody ExpensesStatusDTO dto){
         return new Response<>(EHttpStatus.OK,expensesService.updateExpensesStatus(dto));
     }
+    @DeleteMapping("/deleteExpenses")
+    public Response<?> deleteExpenses(@RequestParam String year, @RequestParam int month, @RequestParam int roomId){
+        return new Response<>(EHttpStatus.OK, expensesService.deleteExpenses(year,month,roomId));
+    }
+
 }
