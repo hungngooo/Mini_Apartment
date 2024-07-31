@@ -11,6 +11,7 @@ import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -71,7 +72,7 @@ public class ContractServiceImpl implements ContractService {
     public RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId, int month) {
         Contract contract = contractRepository.getRepesentativeByRoomId(roomId);
         RentalFeeOfContractDTO rentalFeeOfContractDTO = new RentalFeeOfContractDTO(contract);
-        if (month != contract.getSigninDate().getMonth()+1) {
+        if (month != contract.getSigninDate().getMonth() + 1) {
             rentalFeeOfContractDTO.setSecurityDeposite(BigDecimal.valueOf(0));
         }
         return rentalFeeOfContractDTO;
@@ -82,15 +83,14 @@ public class ContractServiceImpl implements ContractService {
 
         UUID contractNo = UUID.randomUUID();
         if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
-                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getExpireDate()) ||
+                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getMoveinDate(), createContractDTO.getExpireDate()) ||
                 !validateEmail(createContractDTO.getEmail()) ||
                 !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
-                !contactValidate(createContractDTO.getContact())) {
+                !contactValidate(createContractDTO.getContact()) ||
+                !validateCopy(createContractDTO.getCopies())) {
             throw new IllegalArgumentException("Please check the entered information");
         }
-        if(!validateCopy(createContractDTO.getCopies())) {
-            throw new IllegalArgumentException("Please check the entered information");
-        }
+
         // This code is to save to contract
 
         Contract contract = new Contract();
@@ -162,36 +162,70 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.findContractById(id);
     }
 
+    @Override
+    public Contract updateContract(int id, Contract contract) {
+        // Tìm hợp đồng hiện có bằng contractId
+        Contract existingContract = contractRepository.findContractByRoomId(id);
+        // Kiểm tra xem hợp đồng có tồn tại hay không
+        if (existingContract == null) {
+            throw new EntityNotFoundException("Contract not found with roomId: " + id);
+        }
+
+        // Cập nhật các giá trị của hợp đồng hiện có với các giá trị từ contract truyền vào
+        existingContract.setRentalFee(contract.getRentalFee());
+        existingContract.setSecurityDeposite(contract.getSecurityDeposite());
+        existingContract.setPaymentCycle(contract.getPaymentCycle());
+        existingContract.setSigninDate(contract.getSigninDate());
+        existingContract.setMoveinDate(contract.getMoveinDate());
+        existingContract.setExpireDate(contract.getExpireDate());
+        existingContract.setContractStatus(contract.getContractStatus());
+
+        // validate Date
+        if (!validateDate(existingContract.getSigninDate(), existingContract.getMoveinDate(), existingContract.getExpireDate())) {
+            throw new IllegalArgumentException("Please check the entered information");
+        }
+        // Lưu hợp đồng đã cập nhật
+        contractRepository.save(existingContract);
+
+        // Trả về hợp đồng đã cập nhật
+        return existingContract;
+    }
+
 
     public boolean validateCopy(int copy) {
-        if(copy <= 2) {
+        if (copy <= 2) {
             return false;
         }
         return true;
     }
-    public boolean validateDate(Date startDate, Date endDate) {
+
+    public boolean validateDate(Date startDate, Date moveInDate, Date endDate) {
         Date date = new Date();
-        if (startDate == null || endDate == null) {
+        if (startDate == null || endDate == null || moveInDate == null) {
             return false;
         }
-        if(startDate.after(endDate)) {
+        if (moveInDate.before(startDate)) {
             return false;
         }
-        if(endDate.equals(date)) {
+        if (startDate.after(endDate)) {
+            return false;
+        }
+        if (!endDate.after(date)) {
             return false;
         }
         return true;
     }
+
     public boolean contactValidate(String phoneNum) {
-        try {
-            if (phoneNum.length() == 10 && (phoneNum.startsWith("08") || phoneNum.startsWith("03")
-                    || phoneNum.startsWith("09") || phoneNum.startsWith("05") || phoneNum.startsWith("07")))
-                return true;
-            return false;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+
+        if (phoneNum.length() == 10 && (phoneNum.startsWith("08") || phoneNum.startsWith("03")
+                || phoneNum.startsWith("09") || phoneNum.startsWith("05") || phoneNum.startsWith("07")))
+            return true;
+        return false;
+
+
     }
+
     public boolean validateRoom(int roomNumber, int numberOfPeople) {
         String roomStr = String.valueOf(roomNumber);
 
@@ -216,6 +250,7 @@ public class ContractServiceImpl implements ContractService {
         }
         return false;
     }
+
     public boolean validateEmail(String email) {
         try {
             InternetAddress internetAddress = new InternetAddress(email);
@@ -225,24 +260,4 @@ public class ContractServiceImpl implements ContractService {
             return false;
         }
     }
-//    @Override
-//    public void addNewContract(
-//                               //requestdto
-//                                ) {
-//        UUID contractNo = UUID.randomUUID();
-//        //validate dto request
-//
-//        //set request dto -> entity
-//        //ContractEntity contract = New Contract();
-//        //contracty.setContractID(contractNo)
-//
-////        contractRepository.save(contract);
-////tenantsEntity tenants = new ...
-//        //tent.contract(contractNo)
-////        tenantRepository.save(tenants);
-//        //tenent.set(
-//
-//
-////
-//    }
 }

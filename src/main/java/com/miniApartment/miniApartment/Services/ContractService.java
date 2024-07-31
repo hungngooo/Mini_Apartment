@@ -9,16 +9,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface ContractService {
-    public Page<Contract> getAllContract(Integer pageNo, Integer pageSize, String keySearch)throws Exception;
+    public Page<Contract> getAllContract(Integer pageNo, Integer pageSize, String keySearch) throws Exception;
+
     Contract getContractByContractId(String contractId);
+
     public List<IDemoExample> getExample();
+
     public Contract getContractByRoom(int id);
-    RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId,int month);
+
+    RentalFeeOfContractDTO getRepesentativeByRoomId(int roomId, int month);
+
     ContractResponseDTO addNewContract(CreateContractDTO createContractDTO);
+
     Contract findContractById(int id);
+
+    Contract updateContract(int id, Contract contract);
 }
 
