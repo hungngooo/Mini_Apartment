@@ -9,6 +9,7 @@ import com.miniApartment.miniApartment.Services.ContractService;
 import com.miniApartment.miniApartment.dto.ContractResponseDTO;
 import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
+import com.miniApartment.miniApartment.dto.UpdateContractDTO;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -65,7 +67,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public Contract getContractByRoom(int id) {
-        return contractRepository.getContractByRoomId(id);
+        return contractRepository.findContractByRoomId(id);
     }
 
     @Override
@@ -163,32 +165,38 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Contract updateContract(int id, Contract contract) {
-        // Tìm hợp đồng hiện có bằng contractId
-        Contract existingContract = contractRepository.findContractByRoomId(id);
-        // Kiểm tra xem hợp đồng có tồn tại hay không
-        if (existingContract == null) {
-            throw new EntityNotFoundException("Contract not found with roomId: " + id);
+    public Contract updateContract(int roomId, UpdateContractDTO updateContractDTO) {
+        Optional<Contract> optionalContract = contractRepository.findByRoomId(roomId);
+        if (optionalContract.isPresent()) {
+            Contract contract = optionalContract.get();
+            if (updateContractDTO.getRentalFee() != null) {
+                contract.setRentalFee(updateContractDTO.getRentalFee());
+            }
+            if (updateContractDTO.getSecurityDeposite() != null) {
+                contract.setSecurityDeposite(updateContractDTO.getSecurityDeposite());
+            }
+            if (updateContractDTO.getPaymentCycle() != 0) {
+                contract.setPaymentCycle(updateContractDTO.getPaymentCycle());
+            }
+            if (updateContractDTO.getSigninDate() != null) {
+                contract.setSigninDate(updateContractDTO.getSigninDate());
+            }
+            if (updateContractDTO.getMoveinDate() != null) {
+                contract.setMoveinDate(updateContractDTO.getMoveinDate());
+            }
+            if (updateContractDTO.getExpireDate() != null) {
+                contract.setExpireDate(updateContractDTO.getExpireDate());
+            }
+            if (updateContractDTO.getContractStatus() != 0) {
+                contract.setContractStatus(updateContractDTO.getContractStatus());
+            }
+            if (updateContractDTO.getRepresentative() != null) {
+                contract.setRepresentative(updateContractDTO.getRepresentative());
+            }
+            return contractRepository.save(contract);
+        } else {
+            throw new IllegalArgumentException("Contract not found with roomId " + roomId);
         }
-
-        // Cập nhật các giá trị của hợp đồng hiện có với các giá trị từ contract truyền vào
-        existingContract.setRentalFee(contract.getRentalFee());
-        existingContract.setSecurityDeposite(contract.getSecurityDeposite());
-        existingContract.setPaymentCycle(contract.getPaymentCycle());
-        existingContract.setSigninDate(contract.getSigninDate());
-        existingContract.setMoveinDate(contract.getMoveinDate());
-        existingContract.setExpireDate(contract.getExpireDate());
-        existingContract.setContractStatus(contract.getContractStatus());
-
-        // validate Date
-        if (!validateDate(existingContract.getSigninDate(), existingContract.getMoveinDate(), existingContract.getExpireDate())) {
-            throw new IllegalArgumentException("Please check the entered information");
-        }
-        // Lưu hợp đồng đã cập nhật
-        contractRepository.save(existingContract);
-
-        // Trả về hợp đồng đã cập nhật
-        return existingContract;
     }
 
 

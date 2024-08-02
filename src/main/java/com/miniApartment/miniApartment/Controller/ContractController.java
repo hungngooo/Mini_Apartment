@@ -7,6 +7,7 @@ import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ContractService;
 import com.miniApartment.miniApartment.dto.ContractResponseDTO;
 import com.miniApartment.miniApartment.dto.CreateContractDTO;
+import com.miniApartment.miniApartment.dto.UpdateContractDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -59,14 +60,10 @@ public class ContractController {
         return new Response<>(EHttpStatus.OK, contractService.findContractById(id));
     }
 
-    @PutMapping("/updateContract/{roomId}")
-    public Response<?> updateContract(@PathVariable int roomId, @RequestBody Contract contract) {
-        try {
-            Contract updatedContract = contractService.updateContract(roomId, contract);
-            return new Response<>(EHttpStatus.OK, updatedContract);
-        } catch (Exception e) {
-            return new Response<>(EHttpStatus.INVALID_INFORMATION, e);
-        }
+    @PutMapping("/updateContract")
+    public Response<?> updateContract(@RequestParam int roomId, @RequestBody UpdateContractDTO updateContractDTO) {
+        Contract updatedContract = contractService.updateContract(roomId, updateContractDTO);
+        return new Response<>(EHttpStatus.OK, updatedContract);
     }
 
     @GetMapping("/getExample")
