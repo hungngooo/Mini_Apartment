@@ -111,8 +111,9 @@ create table payment(
 create table room(
 	id bigint auto_increment primary key,
 	roomId int unique,
-	roomStatus enum('vacant','occupied', 'reserved'),
-    maxTenant int
+	roomStatus varchar(20),
+    maxTenant int,
+    rentalFee decimal
 );
 
 -- ALTER TABLE users ADD CONSTRAINT tenant_user FOREIGN KEY(email) REFERENCES tenants(email);
@@ -193,6 +194,14 @@ INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (507, 'vacant', 2);
 INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (508, 'vacant', 2);
 INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (509, 'vacant', 4);
 INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (510, 'vacant', 4);
+SET SQL_SAFE_UPDATES = 0;
+UPDATE room
+SET rentalFee = 2000000
+WHERE maxTenant = 2;
+
+UPDATE room
+SET rentalFee = 4000000
+WHERE maxTenant = 4;
 
 
 --

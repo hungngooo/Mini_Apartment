@@ -2,6 +2,7 @@ package com.miniApartment.miniApartment.Repository;
 
 import com.miniApartment.miniApartment.Entity.IRoomByStatus;
 import com.miniApartment.miniApartment.Entity.RoomEntity;
+import com.miniApartment.miniApartment.dto.RoomDetailListDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,4 +21,7 @@ public interface RoomRepository extends JpaRepository<RoomEntity,Long> {
             "SUM(CASE WHEN r.roomStatus = 'reserved' THEN 1 ELSE 0 END) AS reservedCount " +
             "FROM RoomEntity r")
     IRoomByStatus countRoomStatus();
+
+    @Query(value = "select new com.miniApartment.miniApartment.dto.RoomDetailListDTO(r.roomId,r.rentalFee,r.roomStatus) from RoomEntity r")
+    List<RoomDetailListDTO> getRoomDetail();
 }
