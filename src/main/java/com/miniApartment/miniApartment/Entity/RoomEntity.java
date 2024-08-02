@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Getter
@@ -21,6 +23,8 @@ public class RoomEntity {
     private String roomStatus;
     @Column(name = "maxTenant")
     private Integer maxTenant;
+    @Column(name = "rentalFee")
+    private BigDecimal rentalFee;
 
 
 
