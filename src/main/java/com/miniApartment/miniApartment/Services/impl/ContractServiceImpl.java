@@ -12,7 +12,6 @@ import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
 import com.miniApartment.miniApartment.dto.UpdateContractDTO;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -93,6 +92,7 @@ public class ContractServiceImpl implements ContractService {
             throw new IllegalArgumentException("Please check the entered information");
         }
 
+
         // This code is to save to contract
 
         Contract contract = new Contract();
@@ -166,6 +166,9 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public Contract updateContract(int roomId, UpdateContractDTO updateContractDTO) {
+        if (!validateDate(updateContractDTO.getSigninDate(), updateContractDTO.getMoveinDate(), updateContractDTO.getExpireDate())) {
+            throw new IllegalArgumentException("Please check the entered information");
+        }
         Optional<Contract> optionalContract = contractRepository.findByRoomId(roomId);
         if (optionalContract.isPresent()) {
             Contract contract = optionalContract.get();
@@ -236,7 +239,10 @@ public class ContractServiceImpl implements ContractService {
 
     public boolean validateRoom(int roomNumber, int numberOfPeople) {
         String roomStr = String.valueOf(roomNumber);
-
+        boolean existsByRoomId = contractRepository.existsByRoomId(roomNumber);
+        if(existsByRoomId) {
+            return false;
+        }
         // Kiểm tra độ dài của số phòng
         if (roomStr.length() != 3) {
             return false;
@@ -256,6 +262,7 @@ public class ContractServiceImpl implements ContractService {
                 return numberOfPeople <= 4;
             }
         }
+
         return false;
     }
 

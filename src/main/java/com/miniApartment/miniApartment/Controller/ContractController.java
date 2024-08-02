@@ -61,8 +61,8 @@ public class ContractController {
     }
 
     @PutMapping("/updateContract")
-    public Response<?> updateContract(@RequestParam int roomId, @RequestBody UpdateContractDTO updateContractDTO) {
-        Contract updatedContract = contractService.updateContract(roomId, updateContractDTO);
+    public Response<?> updateContract(@RequestParam int id, @RequestBody UpdateContractDTO updateContractDTO) {
+        Contract updatedContract = contractService.updateContract(id, updateContractDTO);
         return new Response<>(EHttpStatus.OK, updatedContract);
     }
 
