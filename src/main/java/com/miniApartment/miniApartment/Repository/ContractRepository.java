@@ -21,12 +21,14 @@ public interface ContractRepository extends JpaRepository<Contract, BigInteger> 
             "table1 as b,\n" +
             "table1 as c", nativeQuery = true)
     List<IDemoExample> getExample();
-    Contract getContractByRoomId(int id);
     boolean existsByRoomId(int roomId);
     Page<Contract> searchContractByRoomId(String keySearch, Pageable paging);
     Contract findContractByContractId(String contractId);
     @Query(value = "SELECT * FROM miniapartment.contract where roomId = :roomId",nativeQuery = true)
     Contract getRepesentativeByRoomId(int roomId);
     Contract findContractByRoomId(int id);
+    @Query(value = "SELECT * from miniapartment.contract where roomId = :roomId", nativeQuery = true)
+    Optional<Contract> findByRoomId(int roomId);
     Contract findContractById(int id);
+
 }

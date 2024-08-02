@@ -5,6 +5,7 @@ import com.miniApartment.miniApartment.Entity.IDemoExample;
 import com.miniApartment.miniApartment.dto.ContractResponseDTO;
 import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
+import com.miniApartment.miniApartment.dto.UpdateContractDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,6 @@ public interface ContractService {
 
     Contract findContractById(int id);
 
-    Contract updateContract(int id, Contract contract);
+    Contract updateContract(int roomId, UpdateContractDTO updateContractDTO);
 }
 
