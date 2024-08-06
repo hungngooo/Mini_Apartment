@@ -6,10 +6,7 @@ import com.miniApartment.miniApartment.Repository.ContractRepository;
 import com.miniApartment.miniApartment.Repository.RoomRepository;
 import com.miniApartment.miniApartment.Repository.TenantRepository;
 import com.miniApartment.miniApartment.Services.ContractService;
-import com.miniApartment.miniApartment.dto.ContractResponseDTO;
-import com.miniApartment.miniApartment.dto.CreateContractDTO;
-import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
-import com.miniApartment.miniApartment.dto.UpdateContractDTO;
+import com.miniApartment.miniApartment.dto.*;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,18 +80,32 @@ public class ContractServiceImpl implements ContractService {
     public ContractResponseDTO addNewContract(CreateContractDTO createContractDTO) {
 
         UUID contractNo = UUID.randomUUID();
-        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
-                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getMoveinDate(), createContractDTO.getExpireDate()) ||
-                !validateEmail(createContractDTO.getEmail()) ||
-                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
-                !contactValidate(createContractDTO.getContact()) ||
-                !validateCopy(createContractDTO.getCopies())) {
-            throw new IllegalArgumentException("Please check the entered information");
-        }
+//        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
+//                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getMoveinDate(), createContractDTO.getExpireDate()) ||
+//                !validateEmail(createContractDTO.getEmail()) ||
+//                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
+//                !contactValidate(createContractDTO.getContact()) ||
+//                !validateCopy(createContractDTO.getCopies())) {
+//            throw new IllegalArgumentException("Please check the entered information");
+//        }
+        // Save Contract
+        Contract contract = saveContract(createContractDTO, contractNo);
 
+        // Save Tenants
+        saveTenants(createContractDTO.getTenants(), contractNo, createContractDTO.getRoomId());
 
-        // This code is to save to contract
+        // Save ContractDetail
+        saveContractDetail(createContractDTO, contractNo);
 
+        // Update room status
+        updateRoomStatus(createContractDTO.getRoomId());
+
+        // Set response DTO
+        return createResponseDTO(contract);
+
+    }
+
+    private Contract saveContract(CreateContractDTO createContractDTO, UUID contractNo) {
         Contract contract = new Contract();
         contract.setContractId(String.valueOf(contractNo));
         contract.setRoomId(createContractDTO.getRoomId());
@@ -107,32 +118,40 @@ public class ContractServiceImpl implements ContractService {
         contract.setExpireDate(createContractDTO.getExpireDate());
         contract.setContractStatus(1); // status = 1 là in Lease term, 2 là Approaching Expiration, 3 là Past Expiration
         contract.setRepresentative(createContractDTO.getRepresentative());
-        contractRepository.save(contract);
-        // This code is to save to tenant
-        Tenants tenants = new Tenants();
-        tenants.setContractId(String.valueOf(contractNo));
-        tenants.setEmail(createContractDTO.getEmail());
-        tenants.setRoomId(createContractDTO.getRoomId());
-        String representative = createContractDTO.getRepresentative();
-        String[] nameParts = representative.split(" ", 2);
-        tenants.setFirstName(nameParts[0]); // Lấy chữ đầu tiên
-        tenants.setLastName(nameParts.length > 1 ? nameParts[1] : ""); // Lấy phần còn lại của chuỗi
-        tenants.setGender(createContractDTO.getGender());
-        tenants.setDateOfBirth(createContractDTO.getDateOfBirth());
-        tenants.setContact(createContractDTO.getContact());
-        tenants.setCitizenId(createContractDTO.getCitizenId());
-        tenants.setCreateCitizenIdDate(createContractDTO.getCreateCitizenIdDate());
-        tenants.setCreateCitizenIdPlace(createContractDTO.getCreateCitizenIdPlace());
-        tenants.setCareer(createContractDTO.getCareer());
-        tenants.setLicensePlate(createContractDTO.getLicensePlate());
-        tenants.setVehicleType(createContractDTO.getVehicleType());
-        tenants.setVehicleColor(createContractDTO.getVehicleColor());
-        tenants.setResidenceStatus(createContractDTO.getResidenceStatus());
-        tenants.setPlaceOfPermanet(createContractDTO.getPlaceOfPermanet());
-        tenantRepository.save(tenants);
-        // This code is to save to contractDetail
+        // ... (set other fields)
+        return contractRepository.save(contract);
+    }
+
+    private void saveTenants(List<TenantDTO> tenantDTOs, UUID contractNo, int roomId) {
+        for (TenantDTO tenantDTO : tenantDTOs) {
+            Tenants tenant = new Tenants();
+            tenant.setContractId(String.valueOf(contractNo));
+            tenant.setRoomId(roomId);
+            tenant.setFirstName(tenantDTO.getFirstName());
+            tenant.setLastName(tenantDTO.getLastName());
+            tenant.setGender(tenantDTO.getGender());
+            tenant.setDateOfBirth(tenantDTO.getDateOfBirth());
+            tenant.setContact(tenantDTO.getContact());
+            tenant.setEmail(tenantDTO.getEmail());
+            tenant.setCareer(tenantDTO.getCareer());
+            tenant.setLicensePlate(tenantDTO.getLicensePlate());
+            tenant.setVehicleType(tenantDTO.getVehicleType());
+            tenant.setVehicleColor(tenantDTO.getVehicleColor());
+            tenant.setRelationship(tenantDTO.getRelationship());
+            tenant.setCitizenId(tenantDTO.getCitizenId());
+            tenant.setCreateCitizenIdPlace(tenantDTO.getCreateCitizenIdPlace());
+            tenant.setCreateCitizenIdDate(tenantDTO.getCreateCitizenIdDate());
+            tenant.setResidenceStatus("Failed");
+            tenant.setPlaceOfPermanet(tenantDTO.getPlaceOfPermanet());
+            // Set other tenant fields from tenantDTO
+            tenantRepository.save(tenant);
+        }
+    }
+
+    private void saveContractDetail(CreateContractDTO createContractDTO, UUID contractNo) {
         ContractDetail contractDetail = new ContractDetail();
         contractDetail.setContractId(String.valueOf(contractNo));
+        // Set other contract detail fields
         contractDetail.setTotalArea(createContractDTO.getTotalArea());
         contractDetail.setLandArea(createContractDTO.getLandArea());
         contractDetail.setPublicArea(createContractDTO.getPublicArea());
@@ -144,19 +163,21 @@ public class ContractServiceImpl implements ContractService {
         contractDetail.setObligations(createContractDTO.getObligations());
         contractDetail.setCommit(createContractDTO.getCommit());
         contractDetail.setCopies(createContractDTO.getCopies());
-        contractDetail.setRelationship(createContractDTO.getRelationship());
         contractDetailRepository.save(contractDetail);
-        // Update room status
-        RoomEntity roomEntity = roomRepository.findByRoomId(createContractDTO.getRoomId());
-        roomEntity.setRoomStatus("reserved"); // Set the new status for the room
-        roomRepository.save(roomEntity);
-        //set response dto
+    }
+
+    private ContractResponseDTO createResponseDTO(Contract contract) {
         ContractResponseDTO responseDTO = new ContractResponseDTO();
         responseDTO.setContractId(contract.getContractId());
         responseDTO.setContractStatus(contract.getContractStatus());
         responseDTO.setMessage("Contract is created successfully");
         return responseDTO;
+    }
 
+    private void updateRoomStatus(int roomId) {
+        RoomEntity roomEntity = roomRepository.findByRoomId(roomId);
+        roomEntity.setRoomStatus("reserved");
+        roomRepository.save(roomEntity);
     }
 
     @Override
@@ -240,7 +261,7 @@ public class ContractServiceImpl implements ContractService {
     public boolean validateRoom(int roomNumber, int numberOfPeople) {
         String roomStr = String.valueOf(roomNumber);
         boolean existsByRoomId = contractRepository.existsByRoomId(roomNumber);
-        if(existsByRoomId) {
+        if (existsByRoomId) {
             return false;
         }
         // Kiểm tra độ dài của số phòng

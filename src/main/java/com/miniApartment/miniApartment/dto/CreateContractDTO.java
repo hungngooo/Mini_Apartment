@@ -7,12 +7,14 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
 @Getter
 @Setter
 public class CreateContractDTO {
+    private List<TenantDTO> tenants;
     private String contractId;
     private int roomId;
     private BigDecimal rentalFee;

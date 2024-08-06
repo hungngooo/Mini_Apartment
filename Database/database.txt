@@ -4,12 +4,12 @@ use miniApartment;
 CREATE TABLE role (
 	id int auto_increment primary key,
     roleId INT unique,
-    roleName VARCHAR(20)
+    roleName NVARCHAR(20)
 );
 CREATE INDEX role_id ON role(roleId);
 create table contract(
 	id bigint primary key auto_increment,
-    contractId varchar(255) unique,
+    contractId NVARCHAR(255) unique,
     roomId int,
     numberOfTenant int,
     rentalFee decimal,
@@ -19,62 +19,63 @@ create table contract(
     moveinDate date,
     expireDate date,
     contractStatus int,
-	representative nvarchar(100)
+	representative NVARCHAR(100)
 );
 -- CREATE INDEX contractId ON contract(contractId);
 -- CREATE UNIQUE INDEX index_unique_column ON contract(contractId);
 create table contractDetail(
-	contractId varchar(255) primary key,
+	contractId NVARCHAR(255) primary key,
     totalArea decimal,
     landArea decimal,
     publicArea decimal,
     privateArea decimal,
-    device nvarchar(255),
-    ownerOrigin nvarchar(255),
-    ownerLimit nvarchar(255),
-	rights nvarchar(255),
-    obligations nvarchar(255),
-    commit nvarchar(255),
+    device NVARCHAR(255),
+    ownerOrigin NVARCHAR(255),
+    ownerLimit NVARCHAR(255),
+	rights NVARCHAR(255),
+    obligations NVARCHAR(255),
+    commit NVARCHAR(255),
     copies int,
-    relationship varchar(20),
+
      FOREIGN KEY (contractId) REFERENCES contract(contractId)
 );
 create table `tenants`(
 	id bigint auto_increment primary key,
-	email varchar(30) unique,
+	email NVARCHAR(30) unique,
     roomId int,
     firstName NVARCHAR(15),
     lastName NVARCHAR(15),
     gender int,
     dateOfBirth DATE,
-    contact VARCHAR(15),
-    citizenId varchar(255),
+    contact NVARCHAR(15),
+    citizenId NVARCHAR(255),
     createCitizenIdDate Date,
-    createCitizenIdPlace nvarchar(99),
-    career varchar(25),
-    licensePLate varchar(25),
-    vehicleType varchar(20),
-    vehicleColor varchar(20),
-    residenceStatus varchar(20),
-    contractId varchar(255),
+    createCitizenIdPlace NVARCHAR(99),
+    career NVARCHAR(25),
+    licensePLate NVARCHAR(25),
+    vehicleType NVARCHAR(20),
+    vehicleColor NVARCHAR(20),
+    residenceStatus NVARCHAR(20),
+    contractId NVARCHAR(255),
     placeOfPermanet NVARCHAR(100),
+    relationship NVARCHAR(20),
     foreign key(contractId) references contract(contractId)
 );
 CREATE INDEX idex_role_id ON role(roleId);
 CREATE INDEX idx_users_email ON tenants(email);
 CREATE TABLE users (
 	id bigint auto_increment primary key,
-    userId VARCHAR(255),
+    userId NVARCHAR(255),
     firstName NVARCHAR(15),
     lastName NVARCHAR(15),
     gender int,
     dateOfBirth DATE,
     placeOfPermanet NVARCHAR(100),
-    email VARCHAR(30),
-    contact VARCHAR(15),
-    citizenId varchar(255),
-    password VARCHAR(255),
-    image varchar(255),
+    email NVARCHAR(30),
+    contact NVARCHAR(15),
+    citizenId NVARCHAR(255),
+    password NVARCHAR(255),
+    image NVARCHAR(255),
     roleId INT,
     FOREIGN KEY (roleId) REFERENCES Role(roleId),
     FOREIGN KEY (email) REFERENCES tenants(email)
@@ -96,7 +97,7 @@ create table expensesDetail(
     securityDeposite decimal,
     debt decimal,
     fine decimal,
-    status varchar(20)
+    status NVARCHAR(20)
 );
 create table payment(
 	id bigint primary key,
@@ -105,13 +106,13 @@ create table payment(
     month int,
     totalFee decimal,
     paid decimal,
-    status varchar(20),
+    status NVARCHAR(20),
 	foreign key (id) references expensesDetail(paymentId)
 );
 create table room(
 	id bigint auto_increment primary key,
 	roomId int unique,
-	roomStatus varchar(20),
+	roomStatus NVARCHAR(20),
     maxTenant int,
     rentalFee decimal
 );
@@ -123,8 +124,8 @@ CREATE INDEX room_id ON room (roomId);
 ALTER TABLE contract ADD CONSTRAINT room_ibfk_1 FOREIGN KEY(roomId) REFERENCES room(roomId);
 -- ALTER TABLE users ADD CONSTRAINT tenants_unique UNIQUE(email);
 -- create table `token`(
--- 	email VARCHAR(255),
---     token varchar(255),
+-- 	email NVARCHAR(255),
+--     token NVARCHAR(255),
 --     expTime datetime,
 --
 -- )
