@@ -17,10 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ContractServiceImpl implements ContractService {
@@ -296,4 +293,24 @@ public class ContractServiceImpl implements ContractService {
             return false;
         }
     }
+    @Override
+    public List<TenantsByMonthDTO> countTenantsEachMonth() {
+        List<Object[]> results = contractRepository.countTenantsEachMonth();
+        List<TenantsByMonthDTO> tenantsByMonthList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            int month = ((Number) result[0]).intValue();
+            int tenantCount = ((Number) result[1]).intValue();
+            tenantsByMonthList.add(new TenantsByMonthDTO(month, tenantCount));
+        }
+
+        return tenantsByMonthList;
+    }
+
+    @Override
+    public List<TenantThisMonthDTO> getRoomTenantInfoForCurrentMonth(int currentMonth) {
+        int lastMonth = currentMonth == 1 ? 12 : currentMonth - 1;
+        return contractRepository.findTenantThisMonth(lastMonth,currentMonth);
+    }
+
 }

@@ -70,4 +70,14 @@ public class ContractController {
     public ResponseEntity<List<IDemoExample>> getExample() {
         return ResponseEntity.ok(contractService.getExample());
     }
+
+    @GetMapping("/countTenantsEachMonth")
+    public Response<?> countTenantsEachMonth() {
+        return new Response<>(EHttpStatus.OK, contractService.countTenantsEachMonth());
+    }
+
+    @GetMapping("/getRoomTenantThisMonth")
+    public Response<?> getRoomTenantInfoForCurrentMonth(@RequestParam int currentMonth) {
+        return new Response<>(EHttpStatus.OK, contractService.getRoomTenantInfoForCurrentMonth(currentMonth));
+    }
 }
