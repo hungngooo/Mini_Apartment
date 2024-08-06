@@ -4,5 +4,4 @@ public interface IDemoExample {
     String getHovaten();
     String getTuoi();
     String getDiachi();
-
 }
