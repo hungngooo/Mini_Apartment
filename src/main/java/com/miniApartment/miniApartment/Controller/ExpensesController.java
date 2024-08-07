@@ -6,11 +6,13 @@ import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ExpensesService;
 import com.miniApartment.miniApartment.dto.ExpensesStatusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/expenses")
 @CrossOrigin
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class ExpensesController {
     @Autowired
     private ExpensesService expensesService;
