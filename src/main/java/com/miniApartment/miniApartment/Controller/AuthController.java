@@ -13,10 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,7 +35,7 @@ public class AuthController {
     @Autowired
     private UserInfoService userInfoService;
     @Autowired
-    private UserService userService;
+    private UserInfoService userDetailsService;
 
     @Autowired
     private JwtService jwtService;
@@ -148,26 +152,30 @@ public class AuthController {
     }
 
     @PostMapping("/verifyOtpLogin")
-    public ResponseEntity<?> verifyOtpLogin(@RequestBody LoginVerifyOtpDTO loginVerifyOtpDTO) {
+    public Response<?> verifyOtpLogin(@RequestBody LoginVerifyOtpDTO loginVerifyOtpDTO) {
         String email = loginVerifyOtpDTO.getEmail();
         String otp = loginVerifyOtpDTO.getOtp();
 
         if (!otpStore.containsKey(email)) {
-            return new ResponseEntity<>("OTP not found or expired!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.BAD_REQUEST, "OTP not found or expired!");
         }
 
         OtpDetails otpDetails = otpStore.get(email);
         if (otpDetails.getExpiryTime().isBefore(LocalDateTime.now())) {
             otpStore.remove(email);
-            return new ResponseEntity<>("OTP expired!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.BAD_REQUEST, "OTP expired!");
         }
 
         if (!otpDetails.getOtp().equals(otp)) {
-            return new ResponseEntity<>("Invalid OTP!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.BAD_REQUEST, "Invalid OTP!");
         }
         otpStore.remove(email);
         String token = jwtService.generateToken(email);
-        return ResponseEntity.ok(token);
+        String refreshToken = jwtService.generateNewRefrershToken(email);
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setAccessToken(token);
+        tokenDTO.setRefreshToken(refreshToken);
+        return new Response<>(EHttpStatus.OK, tokenDTO);
     }
 
 
@@ -179,9 +187,8 @@ public class AuthController {
         LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
         otpStore.put(LoginDTO.getEmail(), new OtpDetails(String.valueOf(otp), expiredTime));
         emailService.sendMail(LoginDTO.getEmail(), "Resent OTP", "Here is OTP " + otp);
-            return new ResponseEntity<>("OTP resent to your email. Please verify to login.", HttpStatus.OK);
+        return new ResponseEntity<>("OTP resent to your email. Please verify to login.", HttpStatus.OK);
     }
-
 
 
     @PostMapping("/forgetPassword")
@@ -223,13 +230,37 @@ public class AuthController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody LoginDTO loginDTO) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(loginDTO.getEmail());
-        } else {
-            throw new UsernameNotFoundException("invalid user request !");
+
+    @GetMapping("/checkToken")
+    public Response<?> checkToken(@RequestHeader("Authorization") String authHeader) {
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
         }
+        switch (jwtService.checkTokenExprired(token)){
+            case 0: return new Response<>(EHttpStatus.OK, "ok");
+            case 1: return new Response<>(EHttpStatus.UNAUTHORIZED, "expired token");
+            case 2:return new Response<>(EHttpStatus.INVALID_INFORMATION, "invalid token");
+        }
+        return null;
+    }
+    @PostMapping("/refreshToken")
+    public Response<?> getAccesstokenByRefreshtoken(@RequestBody Map<String, String> body){
+        String token = body.get("token");
+        switch (jwtService.validateRefreshToken(token)){
+            case 0: return  new Response<>(EHttpStatus.OK,jwtService.generateTokenByRefreshtoken(token));
+            case 1: return new Response<>(EHttpStatus.UNAUTHORIZED, "expired token");
+            case 2:return new Response<>(EHttpStatus.INVALID_INFORMATION, "invalid token");
+        }
+        return null;
+    }
+    @GetMapping("/deleteToken")
+    public Response<?> deleteTokenInDB(@RequestHeader("Authorization") String authHeader){
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        jwtService.deleteToken(token);
+        return new Response<>(EHttpStatus.OK,"ok");
     }
 }
