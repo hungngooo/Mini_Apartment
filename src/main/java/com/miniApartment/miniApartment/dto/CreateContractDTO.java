@@ -7,12 +7,14 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import com.miniApartment.miniApartment.Entity.roomStatus;
+import java.util.List;
+
 
 @Data
 @Getter
 @Setter
 public class CreateContractDTO {
+    private List<TenantDTO> tenants;
     private String contractId;
     private int roomId;
     private BigDecimal rentalFee;
@@ -50,6 +52,6 @@ public class CreateContractDTO {
     private Date createCitizenIdDate;
     private String createCitizenIdPlace;
     private String placeOfPermanet;
-    private roomStatus roomStatus;
+    private String roomStatus;
     private String relationship;
 }

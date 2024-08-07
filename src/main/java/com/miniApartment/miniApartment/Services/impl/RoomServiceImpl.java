@@ -4,6 +4,7 @@ import com.miniApartment.miniApartment.Entity.IRoomByStatus;
 import com.miniApartment.miniApartment.Entity.RoomEntity;
 import com.miniApartment.miniApartment.Repository.RoomRepository;
 import com.miniApartment.miniApartment.Services.RoomService;
+import com.miniApartment.miniApartment.dto.RoomDetailListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,9 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public IRoomByStatus countRoomByStatus() {
         return roomRepository.countRoomStatus();
+    }
+    @Override
+    public List<RoomDetailListDTO> getRoomDetail() {
+        return roomRepository.getRoomDetail();
     }
 }

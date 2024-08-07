@@ -6,12 +6,9 @@ import com.miniApartment.miniApartment.Repository.ContractRepository;
 import com.miniApartment.miniApartment.Repository.RoomRepository;
 import com.miniApartment.miniApartment.Repository.TenantRepository;
 import com.miniApartment.miniApartment.Services.ContractService;
-import com.miniApartment.miniApartment.dto.ContractResponseDTO;
-import com.miniApartment.miniApartment.dto.CreateContractDTO;
-import com.miniApartment.miniApartment.dto.RentalFeeOfContractDTO;
+import com.miniApartment.miniApartment.dto.*;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ContractServiceImpl implements ContractService {
@@ -65,7 +60,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public Contract getContractByRoom(int id) {
-        return contractRepository.getContractByRoomId(id);
+        return contractRepository.findContractByRoomId(id);
     }
 
     @Override
@@ -82,17 +77,32 @@ public class ContractServiceImpl implements ContractService {
     public ContractResponseDTO addNewContract(CreateContractDTO createContractDTO) {
 
         UUID contractNo = UUID.randomUUID();
-        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
-                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getMoveinDate(), createContractDTO.getExpireDate()) ||
-                !validateEmail(createContractDTO.getEmail()) ||
-                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
-                !contactValidate(createContractDTO.getContact()) ||
-                !validateCopy(createContractDTO.getCopies())) {
-            throw new IllegalArgumentException("Please check the entered information");
-        }
+//        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
+//                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getMoveinDate(), createContractDTO.getExpireDate()) ||
+//                !validateEmail(createContractDTO.getEmail()) ||
+//                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
+//                !contactValidate(createContractDTO.getContact()) ||
+//                !validateCopy(createContractDTO.getCopies())) {
+//            throw new IllegalArgumentException("Please check the entered information");
+//        }
+        // Save Contract
+        Contract contract = saveContract(createContractDTO, contractNo);
 
-        // This code is to save to contract
+        // Save Tenants
+        saveTenants(createContractDTO.getTenants(), contractNo, createContractDTO.getRoomId());
 
+        // Save ContractDetail
+        saveContractDetail(createContractDTO, contractNo);
+
+        // Update room status
+        updateRoomStatus(createContractDTO.getRoomId());
+
+        // Set response DTO
+        return createResponseDTO(contract);
+
+    }
+
+    private Contract saveContract(CreateContractDTO createContractDTO, UUID contractNo) {
         Contract contract = new Contract();
         contract.setContractId(String.valueOf(contractNo));
         contract.setRoomId(createContractDTO.getRoomId());
@@ -105,32 +115,40 @@ public class ContractServiceImpl implements ContractService {
         contract.setExpireDate(createContractDTO.getExpireDate());
         contract.setContractStatus(1); // status = 1 là in Lease term, 2 là Approaching Expiration, 3 là Past Expiration
         contract.setRepresentative(createContractDTO.getRepresentative());
-        contractRepository.save(contract);
-        // This code is to save to tenant
-        Tenants tenants = new Tenants();
-        tenants.setContractId(String.valueOf(contractNo));
-        tenants.setEmail(createContractDTO.getEmail());
-        tenants.setRoomId(createContractDTO.getRoomId());
-        String representative = createContractDTO.getRepresentative();
-        String[] nameParts = representative.split(" ", 2);
-        tenants.setFirstName(nameParts[0]); // Lấy chữ đầu tiên
-        tenants.setLastName(nameParts.length > 1 ? nameParts[1] : ""); // Lấy phần còn lại của chuỗi
-        tenants.setGender(createContractDTO.getGender());
-        tenants.setDateOfBirth(createContractDTO.getDateOfBirth());
-        tenants.setContact(createContractDTO.getContact());
-        tenants.setCitizenId(createContractDTO.getCitizenId());
-        tenants.setCreateCitizenIdDate(createContractDTO.getCreateCitizenIdDate());
-        tenants.setCreateCitizenIdPlace(createContractDTO.getCreateCitizenIdPlace());
-        tenants.setCareer(createContractDTO.getCareer());
-        tenants.setLicensePlate(createContractDTO.getLicensePlate());
-        tenants.setVehicleType(createContractDTO.getVehicleType());
-        tenants.setVehicleColor(createContractDTO.getVehicleColor());
-        tenants.setResidenceStatus(createContractDTO.getResidenceStatus());
-        tenants.setPlaceOfPermanet(createContractDTO.getPlaceOfPermanet());
-        tenantRepository.save(tenants);
-        // This code is to save to contractDetail
+        // ... (set other fields)
+        return contractRepository.save(contract);
+    }
+
+    private void saveTenants(List<TenantDTO> tenantDTOs, UUID contractNo, int roomId) {
+        for (TenantDTO tenantDTO : tenantDTOs) {
+            Tenants tenant = new Tenants();
+            tenant.setContractId(String.valueOf(contractNo));
+            tenant.setRoomId(roomId);
+            tenant.setFirstName(tenantDTO.getFirstName());
+            tenant.setLastName(tenantDTO.getLastName());
+            tenant.setGender(tenantDTO.getGender());
+            tenant.setDateOfBirth(tenantDTO.getDateOfBirth());
+            tenant.setContact(tenantDTO.getContact());
+            tenant.setEmail(tenantDTO.getEmail());
+            tenant.setCareer(tenantDTO.getCareer());
+            tenant.setLicensePlate(tenantDTO.getLicensePlate());
+            tenant.setVehicleType(tenantDTO.getVehicleType());
+            tenant.setVehicleColor(tenantDTO.getVehicleColor());
+            tenant.setRelationship(tenantDTO.getRelationship());
+            tenant.setCitizenId(tenantDTO.getCitizenId());
+            tenant.setCreateCitizenIdPlace(tenantDTO.getCreateCitizenIdPlace());
+            tenant.setCreateCitizenIdDate(tenantDTO.getCreateCitizenIdDate());
+            tenant.setResidenceStatus("Failed");
+            tenant.setPlaceOfPermanet(tenantDTO.getPlaceOfPermanet());
+            // Set other tenant fields from tenantDTO
+            tenantRepository.save(tenant);
+        }
+    }
+
+    private void saveContractDetail(CreateContractDTO createContractDTO, UUID contractNo) {
         ContractDetail contractDetail = new ContractDetail();
         contractDetail.setContractId(String.valueOf(contractNo));
+        // Set other contract detail fields
         contractDetail.setTotalArea(createContractDTO.getTotalArea());
         contractDetail.setLandArea(createContractDTO.getLandArea());
         contractDetail.setPublicArea(createContractDTO.getPublicArea());
@@ -142,19 +160,21 @@ public class ContractServiceImpl implements ContractService {
         contractDetail.setObligations(createContractDTO.getObligations());
         contractDetail.setCommit(createContractDTO.getCommit());
         contractDetail.setCopies(createContractDTO.getCopies());
-        contractDetail.setRelationship(createContractDTO.getRelationship());
         contractDetailRepository.save(contractDetail);
-        // Update room status
-        RoomEntity roomEntity = roomRepository.findByRoomId(createContractDTO.getRoomId());
-        roomEntity.setRoomStatus("reserved"); // Set the new status for the room
-        roomRepository.save(roomEntity);
-        //set response dto
+    }
+
+    private ContractResponseDTO createResponseDTO(Contract contract) {
         ContractResponseDTO responseDTO = new ContractResponseDTO();
         responseDTO.setContractId(contract.getContractId());
         responseDTO.setContractStatus(contract.getContractStatus());
         responseDTO.setMessage("Contract is created successfully");
         return responseDTO;
+    }
 
+    private void updateRoomStatus(int roomId) {
+        RoomEntity roomEntity = roomRepository.findByRoomId(roomId);
+        roomEntity.setRoomStatus("reserved");
+        roomRepository.save(roomEntity);
     }
 
     @Override
@@ -163,32 +183,41 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Contract updateContract(int id, Contract contract) {
-        // Tìm hợp đồng hiện có bằng contractId
-        Contract existingContract = contractRepository.findContractByRoomId(id);
-        // Kiểm tra xem hợp đồng có tồn tại hay không
-        if (existingContract == null) {
-            throw new EntityNotFoundException("Contract not found with roomId: " + id);
-        }
-
-        // Cập nhật các giá trị của hợp đồng hiện có với các giá trị từ contract truyền vào
-        existingContract.setRentalFee(contract.getRentalFee());
-        existingContract.setSecurityDeposite(contract.getSecurityDeposite());
-        existingContract.setPaymentCycle(contract.getPaymentCycle());
-        existingContract.setSigninDate(contract.getSigninDate());
-        existingContract.setMoveinDate(contract.getMoveinDate());
-        existingContract.setExpireDate(contract.getExpireDate());
-        existingContract.setContractStatus(contract.getContractStatus());
-
-        // validate Date
-        if (!validateDate(existingContract.getSigninDate(), existingContract.getMoveinDate(), existingContract.getExpireDate())) {
+    public Contract updateContract(int roomId, UpdateContractDTO updateContractDTO) {
+        if (!validateDate(updateContractDTO.getSigninDate(), updateContractDTO.getMoveinDate(), updateContractDTO.getExpireDate())) {
             throw new IllegalArgumentException("Please check the entered information");
         }
-        // Lưu hợp đồng đã cập nhật
-        contractRepository.save(existingContract);
-
-        // Trả về hợp đồng đã cập nhật
-        return existingContract;
+        Optional<Contract> optionalContract = contractRepository.findByRoomId(roomId);
+        if (optionalContract.isPresent()) {
+            Contract contract = optionalContract.get();
+            if (updateContractDTO.getRentalFee() != null) {
+                contract.setRentalFee(updateContractDTO.getRentalFee());
+            }
+            if (updateContractDTO.getSecurityDeposite() != null) {
+                contract.setSecurityDeposite(updateContractDTO.getSecurityDeposite());
+            }
+            if (updateContractDTO.getPaymentCycle() != 0) {
+                contract.setPaymentCycle(updateContractDTO.getPaymentCycle());
+            }
+            if (updateContractDTO.getSigninDate() != null) {
+                contract.setSigninDate(updateContractDTO.getSigninDate());
+            }
+            if (updateContractDTO.getMoveinDate() != null) {
+                contract.setMoveinDate(updateContractDTO.getMoveinDate());
+            }
+            if (updateContractDTO.getExpireDate() != null) {
+                contract.setExpireDate(updateContractDTO.getExpireDate());
+            }
+            if (updateContractDTO.getContractStatus() != 0) {
+                contract.setContractStatus(updateContractDTO.getContractStatus());
+            }
+            if (updateContractDTO.getRepresentative() != null) {
+                contract.setRepresentative(updateContractDTO.getRepresentative());
+            }
+            return contractRepository.save(contract);
+        } else {
+            throw new IllegalArgumentException("Contract not found with roomId " + roomId);
+        }
     }
 
 
@@ -228,7 +257,10 @@ public class ContractServiceImpl implements ContractService {
 
     public boolean validateRoom(int roomNumber, int numberOfPeople) {
         String roomStr = String.valueOf(roomNumber);
-
+        boolean existsByRoomId = contractRepository.existsByRoomId(roomNumber);
+        if (existsByRoomId) {
+            return false;
+        }
         // Kiểm tra độ dài của số phòng
         if (roomStr.length() != 3) {
             return false;
@@ -248,6 +280,7 @@ public class ContractServiceImpl implements ContractService {
                 return numberOfPeople <= 4;
             }
         }
+
         return false;
     }
 
@@ -260,4 +293,24 @@ public class ContractServiceImpl implements ContractService {
             return false;
         }
     }
+    @Override
+    public List<TenantsByMonthDTO> countTenantsEachMonth() {
+        List<Object[]> results = contractRepository.countTenantsEachMonth();
+        List<TenantsByMonthDTO> tenantsByMonthList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            int month = ((Number) result[0]).intValue();
+            int tenantCount = ((Number) result[1]).intValue();
+            tenantsByMonthList.add(new TenantsByMonthDTO(month, tenantCount));
+        }
+
+        return tenantsByMonthList;
+    }
+
+    @Override
+    public List<TenantThisMonthDTO> getRoomTenantInfoForCurrentMonth(int currentMonth) {
+        int lastMonth = currentMonth == 1 ? 12 : currentMonth - 1;
+        return contractRepository.findTenantThisMonth(lastMonth,currentMonth);
+    }
+
 }
