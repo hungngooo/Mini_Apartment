@@ -29,5 +29,7 @@ public interface ContractService {
 
 
     List<TenantThisMonthDTO> getRoomTenantInfoForCurrentMonth(int currentMonth);
+
+    int countTenants(int month);
 }
 

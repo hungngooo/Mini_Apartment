@@ -313,4 +313,8 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.findTenantThisMonth(lastMonth,currentMonth);
     }
 
+    @Override
+    public int countTenants(int month) {
+        return contractRepository.countAllTenant(month);
+    }
 }
