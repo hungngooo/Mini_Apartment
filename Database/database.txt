@@ -112,6 +112,9 @@ create table payment(
 	year year,
     month int,
     totalFee decimal,
+    createDate Date,
+    dueDate Date,
+    paymentDate Date,
     paid decimal,
     status NVARCHAR(20),
 	foreign key (id) references expensesDetail(paymentId)
