@@ -91,8 +91,9 @@ public class ExpensesServiceImpl implements ExpensesService {
     public String deleteExpenses(String year, int month, int room) {
         try {
             ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(room, year,month);
-            Optional<Payment> paymentEntity = paymentRepository.findById(entity.getId());
             if (entity == null) return "Expenses does not exist";
+            Optional<Payment> paymentEntity = paymentRepository.findById(entity.getId());
+            paymentRepository.deleteById(paymentEntity.get().getId());
             repository.deleteById(entity.getId());
             return "delete success";
         } catch (Exception e){

@@ -80,6 +80,13 @@ CREATE TABLE users (
     FOREIGN KEY (roleId) REFERENCES Role(roleId),
     FOREIGN KEY (email) REFERENCES tenants(email)
 );
+create table token(
+	id bigint auto_increment primary key,
+	email VARCHAR(30),
+    expriredToken Date,
+    refreshToken varchar(255),
+    FOREIGN KEY (email) REFERENCES users(email)
+);
 create table expensesDetail(
 	paymentId bigint auto_increment primary key,
     roomId int,

@@ -4,6 +4,7 @@ import com.miniApartment.miniApartment.Response.EHttpStatus;
 import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/room")
 @CrossOrigin
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class RoomController {
     @Autowired
     private RoomService roomService;
@@ -25,7 +27,6 @@ public class RoomController {
     public Response<?> roomCount(){
         return new Response<>(EHttpStatus.OK,roomService.countRoom());
     }
-
     @GetMapping("/countRoomByStatus")
     public Response<?> countRoomByStatus(){
         return new Response<>(EHttpStatus.OK,roomService.countRoomByStatus());

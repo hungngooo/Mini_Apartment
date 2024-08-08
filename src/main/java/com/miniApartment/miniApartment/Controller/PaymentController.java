@@ -9,6 +9,7 @@ import com.miniApartment.miniApartment.dto.OnTimePaymentMonthsDTO;
 import com.miniApartment.miniApartment.dto.PaymentStatusRoomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/payment")
 @CrossOrigin
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
