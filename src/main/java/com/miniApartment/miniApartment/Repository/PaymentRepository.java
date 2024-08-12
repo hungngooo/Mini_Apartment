@@ -62,4 +62,31 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
             "GROUP BY \n" +
             "    roomId",nativeQuery = true)
     Page<IListPayment> getListPaymentByYearAndRoomId(String year,int roomId, Pageable pageable);
+    @Query(value = "SELECT \n" +
+            "    roomId,\n" +
+            "    SUM(CASE WHEN `month` = 1 THEN paid ELSE 0 END) AS Jan,\n" +
+            "    SUM(CASE WHEN `month` = 2 THEN paid ELSE 0 END) AS Feb,\n" +
+            "    SUM(CASE WHEN `month` = 3 THEN paid ELSE 0 END) AS Mar,\n" +
+            "    SUM(CASE WHEN `month` = 4 THEN paid ELSE 0 END) AS Apr,\n" +
+            "    SUM(CASE WHEN `month` = 5 THEN paid ELSE 0 END) AS May,\n" +
+            "    SUM(CASE WHEN `month` = 6 THEN paid ELSE 0 END) AS Jun,\n" +
+            "    SUM(CASE WHEN `month` = 7 THEN paid ELSE 0 END) AS Jul,\n" +
+            "    SUM(CASE WHEN `month` = 8 THEN paid ELSE 0 END) AS Aug,\n" +
+            "    SUM(CASE WHEN `month` = 9 THEN paid ELSE 0 END) AS Sep,\n" +
+            "    SUM(CASE WHEN `month` = 10 THEN paid ELSE 0 END) AS Oct,\n" +
+            "    SUM(CASE WHEN `month` = 11 THEN paid ELSE 0 END) AS Nov,\n" +
+            "    SUM(CASE WHEN `month` = 12 THEN paid ELSE 0 END) AS `Dec`,\n" +
+            "    CASE \n" +
+            "\t\tWHEN SUM(paid) >= SUM(totalFee) THEN 'Paid'\n" +
+            "        WHEN SUM(paid) > 0 AND SUM(paid) < SUM(totalFee) THEN 'Partial Paid'\n" +
+            "        ELSE 'Unpaid'\n" +
+            "        end as `status`\n" +
+            "FROM \n" +
+            "    payment\n" +
+            "    where `year` = :year and roomId =  :roomId \n" +
+            "GROUP BY \n" +
+            "    roomId",nativeQuery = true)
+    IListPayment getListPaymentByYearAndRoomId(String year,int roomId);
+    @Query(value = "select c.roomId from Tenants t join Contract c on t.contractId = c.contractId where t.email = :email")
+    int getRoomIdByEmail(String email);
 }

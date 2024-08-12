@@ -2,6 +2,7 @@ package com.miniApartment.miniApartment.Services.impl;
 
 import com.miniApartment.miniApartment.Entity.IListPayment;
 import com.miniApartment.miniApartment.Repository.PaymentRepository;
+import com.miniApartment.miniApartment.Services.JwtService;
 import com.miniApartment.miniApartment.Services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,14 +14,25 @@ import org.springframework.stereotype.Service;
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private JwtService jwtService;
     @Override
-    public Page<IListPayment> getPaymentByYear(Integer pageNo, Integer pageSize,String year){
+    public Page<IListPayment> getPaymentByYear(Integer pageNo, Integer pageSize, String year) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
-        return paymentRepository.getListPaymentByYear(year,paging);
+        return paymentRepository.getListPaymentByYear(year, paging);
     }
+
     @Override
-    public Page<IListPayment> getPaymentByYearAndRoom(Integer pageNo, Integer pageSize, String year,int roomId){
+    public Page<IListPayment> getPaymentByYearAndRoom(Integer pageNo, Integer pageSize, String year, int roomId) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
-        return paymentRepository.getListPaymentByYearAndRoomId(year,roomId,paging);
+        return paymentRepository.getListPaymentByYearAndRoomId(year, roomId, paging);
     }
+
+    @Override
+    public IListPayment getPaymentByYearAndEmail(String year, String token) {
+        String email = jwtService.extractUsername(token);
+        int roomId = paymentRepository.getRoomIdByEmail(email);
+        return paymentRepository.getListPaymentByYearAndRoomId(year, roomId);
+    }
+
 }

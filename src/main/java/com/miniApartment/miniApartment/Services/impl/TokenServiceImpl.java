@@ -4,6 +4,7 @@ import com.miniApartment.miniApartment.Entity.TokenEntity;
 import com.miniApartment.miniApartment.Entity.User;
 import com.miniApartment.miniApartment.Repository.TokenRepository;
 import com.miniApartment.miniApartment.Repository.UserRepository;
+import com.miniApartment.miniApartment.Services.JwtService;
 import com.miniApartment.miniApartment.Services.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,12 +26,12 @@ public class TokenServiceImpl implements TokenService {
 
     public void updateToken(String token, String email) {
         TokenEntity tokenEntity = tokenRepository.getTokenEntitiesByEmail(email);
+        Claims claims1 = extractRefreshToken(token);
         if (tokenEntity == null) {
-            Claims claims1 = extractRefreshToken(token);
             tokenEntity = new TokenEntity();
             tokenEntity.setEmail(email);
-            tokenEntity.setExpriredToken(claims1.getExpiration());
         }
+        tokenEntity.setExpriredToken(claims1.getExpiration());
         tokenEntity.setRefreshToken(token);
         tokenRepository.save(tokenEntity);
     }

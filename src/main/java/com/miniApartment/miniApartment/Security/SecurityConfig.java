@@ -60,12 +60,17 @@ public class SecurityConfig {
             , "/api/expenses/**"
 //            , "/api/user/**"
     };
+    private static final String[] urlRoleCitizen = {
+            "/api/payment_citizen/**",
+            "/api/expenses_citizen/**",
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(url).permitAll()
                         .requestMatchers(urlRoleAdmin).hasRole("ADMIN")
+                        .requestMatchers(urlRoleCitizen).hasRole("CITIZEN")
                 )
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/user/**").authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/admin/**").authenticated())

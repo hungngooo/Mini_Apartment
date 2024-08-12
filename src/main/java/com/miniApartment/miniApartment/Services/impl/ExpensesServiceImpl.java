@@ -5,6 +5,7 @@ import com.miniApartment.miniApartment.Entity.Payment;
 import com.miniApartment.miniApartment.Repository.ExpensesDetailRepository;
 import com.miniApartment.miniApartment.Repository.PaymentRepository;
 import com.miniApartment.miniApartment.Services.ExpensesService;
+import com.miniApartment.miniApartment.Services.JwtService;
 import com.miniApartment.miniApartment.dto.ExpensesStatusDTO;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,8 @@ public class ExpensesServiceImpl implements ExpensesService {
     private ExpensesDetailRepository repository;
     @Autowired
     private PaymentRepository paymentRepository;
-
+    @Autowired
+    private JwtService jwtService;
     @Override
     public String addNewExpenses(@NotNull ExpensesDetailEntity entity) {
         if (validateExpensesDetail(entity)) {
@@ -77,27 +79,28 @@ public class ExpensesServiceImpl implements ExpensesService {
     @Override
     public String updateExpensesStatus(@NotNull ExpensesStatusDTO dto) {
         try {
-            ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(dto.getRoomId(), dto.getYear(),dto.getMonth());
+            ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(dto.getRoomId(), dto.getYear(), dto.getMonth());
             if (entity == null) return "Expenses does not exist";
             entity.setStatus(dto.getStatus());
             entity.setYear(dto.getYear());
             repository.save(entity);
             return "update success";
-        } catch (Exception e){
-            return "update fail: "+e.getMessage();
+        } catch (Exception e) {
+            return "update fail: " + e.getMessage();
         }
     }
+
     @Override
     public String deleteExpenses(String year, int month, int room) {
         try {
-            ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(room, year,month);
+            ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(room, year, month);
             if (entity == null) return "Expenses does not exist";
             Optional<Payment> paymentEntity = paymentRepository.findById(entity.getId());
             paymentRepository.deleteById(paymentEntity.get().getId());
             repository.deleteById(entity.getId());
             return "delete success";
-        } catch (Exception e){
-            return "delete fail: "+e.getMessage();
+        } catch (Exception e) {
+            return "delete fail: " + e.getMessage();
         }
     }
 
