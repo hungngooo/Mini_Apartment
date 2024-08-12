@@ -49,8 +49,5 @@ public class TenantController {
         tenantService.updateTenant(tenantsList);
         return new Response<>(EHttpStatus.OK,"update sucess");
     }
-    @GetMapping("/tenantCount")
-    public Response<?> tenantCount(){
-        return new Response<>(EHttpStatus.OK,tenantService.countTenants());
-    }
+
 }

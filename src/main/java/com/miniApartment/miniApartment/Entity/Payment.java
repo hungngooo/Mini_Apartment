@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Data
 @Getter
 @Setter
@@ -21,6 +23,12 @@ public class Payment {
     private int month;
     @Column(name = "totalFee")
     private double totalFee;
+    @Column(name = "createDate")
+    private Date createDate;
+    @Column(name = "dueDate")
+    private Date dueDate;
+    @Column(name = "paymentDate")
+    private Date paymentDate;
     @Column(name = "paid")
     private double paid;
     @Column(name = "status")

@@ -5,24 +5,22 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 
 @Data
 @Entity
 @Getter
 @Setter
-@Table(name = "room")
-public class RoomEntity {
+@Table(name = "roomStatusMonths")
+public class RoomStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "year")
+    private int year;
+    @Column(name = "month")
+    private int month;
     @Column(name = "roomId")
     private int roomId;
-    @Column(name = "maxTenant")
-    private Integer maxTenant;
-    @Column(name = "rentalFee")
-    private BigDecimal rentalFee;
-
-
-
+    @Column(name = "roomStatus")
+    private String roomStatus;
 }

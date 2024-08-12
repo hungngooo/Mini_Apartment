@@ -58,6 +58,7 @@ public class SecurityConfig {
             , "/api/room/**"
             , "/api/payment/**"
             , "/api/expenses/**"
+            , "/api/roomStatus/**"
 //            , "/api/user/**"
     };
     private static final String[] urlRoleCitizen = {

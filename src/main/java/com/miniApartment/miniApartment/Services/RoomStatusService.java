@@ -6,14 +6,11 @@ import com.miniApartment.miniApartment.dto.RoomDetailListDTO;
 
 import java.util.List;
 
-public interface RoomService {
+public interface RoomStatusService {
 
+    List<Integer> getAllRoomAvailable(int month, int year);
 
-    List<RoomEntity> getAllRoom();
+    IRoomByStatus countRoomByStatus(int month, int year);
 
-
-    int countRoom();
-
-
-//    List<Object[]> countRoomByStatus();
+    List<RoomDetailListDTO> getRoomDetail(int month, int year);
 }

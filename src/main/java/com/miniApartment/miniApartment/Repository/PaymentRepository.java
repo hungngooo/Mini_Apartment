@@ -2,13 +2,14 @@ package com.miniApartment.miniApartment.Repository;
 
 import com.miniApartment.miniApartment.Entity.IListPayment;
 import com.miniApartment.miniApartment.Entity.Payment;
+import com.miniApartment.miniApartment.dto.OnTimePaymentMonthsDTO;
+import com.miniApartment.miniApartment.dto.PaymentStatusRoomDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.repository.query.Param;
 
-import java.util.Arrays;
 import java.util.List;
 
 public interface PaymentRepository extends JpaRepository<Payment,Long> {
@@ -62,6 +63,19 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
             "GROUP BY \n" +
             "    roomId",nativeQuery = true)
     Page<IListPayment> getListPaymentByYearAndRoomId(String year,int roomId, Pageable pageable);
+
+    @Query(value = "SELECT new com.miniApartment.miniApartment.dto.OnTimePaymentMonthsDTO(\n" +
+            "    p.month, \n" +
+            "    COUNT(*), \n" +
+            "    SUM(CASE WHEN p.dueDate > p.paymentDate AND p.status='paid' THEN 1 ELSE 0 END))\n" +
+            "FROM \n" +
+            "    Payment p\n" +
+            "GROUP BY \n" +
+            "    p.month")
+    List<OnTimePaymentMonthsDTO> getOnTimePaymentMonths();
+    @Query(value = "select new com.miniApartment.miniApartment.dto.PaymentStatusRoomDTO(roomId, totalFee, dueDate, paymentDate, status) " +
+            "from Payment where month = :month")
+    List<PaymentStatusRoomDTO> getPaymentRate(@Param("month") int month);
     @Query(value = "SELECT \n" +
             "    roomId,\n" +
             "    SUM(CASE WHEN `month` = 1 THEN paid ELSE 0 END) AS Jan,\n" +
