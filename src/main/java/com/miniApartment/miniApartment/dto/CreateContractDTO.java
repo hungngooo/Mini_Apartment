@@ -49,6 +49,7 @@ public class CreateContractDTO {
     private String obligations;
     private String commit;
     private int copies;
+    private String contract;
     private Date createCitizenIdDate;
     private String createCitizenIdPlace;
     private String placeOfPermanet;
