@@ -103,4 +103,8 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     IListPayment getListPaymentByYearAndRoomId(String year,int roomId);
     @Query(value = "select c.roomId from Tenants t join Contract c on t.contractId = c.contractId where t.email = :email")
     int getRoomIdByEmail(String email);
+    @Query(value = "select p.totalFee from Payment p where p.roomId = :roomId and p.month = :month and p.year = :year")
+    double getTotalPrice(int roomId, int month,int year);
+    @Query(value = "select p from Payment p where p.roomId = :roomId and p.month = :month and p.year = :year")
+    Payment getPaymentsByRoomIdAndYearAndMonth(int roomId, int month,int year);
 }

@@ -50,6 +50,7 @@ public class SecurityConfig {
             , "/contract/**"
             ,"/swagger-ui/**"
             , "/v3/api-docs/**"
+            , "/getPaymentFromBank"
     };
     private static final String[] urlRoleAdmin = {
              "/api/file/upload"
