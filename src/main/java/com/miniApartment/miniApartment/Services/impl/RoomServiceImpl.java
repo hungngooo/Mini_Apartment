@@ -13,21 +13,12 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
     @Autowired
     private RoomRepository roomRepository;
-    public List<RoomEntity> getAllRoomAvailable() {
-        return roomRepository.getRoomEntityAvailable();
-    }
+
     @Override
     public List<RoomEntity> getAllRoom(){return roomRepository.findAll();}
     @Override
     public int countRoom() {
         return roomRepository.countRoom();
     }
-    @Override
-    public IRoomByStatus countRoomByStatus() {
-        return roomRepository.countRoomStatus();
-    }
-    @Override
-    public List<RoomDetailListDTO> getRoomDetail() {
-        return roomRepository.getRoomDetail();
-    }
+
 }

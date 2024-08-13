@@ -58,4 +58,6 @@ public interface ContractRepository extends JpaRepository<Contract, BigInteger> 
             " from RoomEntity r left join Contract c on r.roomId = c.roomId group by r.roomId, r.maxTenant")
     List<TenantThisMonthDTO> findTenantThisMonth(@Param("lastMonth") int lastMonth, @Param("currentMonth") int currentMonth);
 
+    @Query(value = "select COALESCE(sum(c.numberOfTenant), 0) from Contract c where :month BETWEEN MONTH(c.moveinDate) AND MONTH(c.expireDate)", nativeQuery = true)
+    int countAllTenant(@Param("month") int month);
 }

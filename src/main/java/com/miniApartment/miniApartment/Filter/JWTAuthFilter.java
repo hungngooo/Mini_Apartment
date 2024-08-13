@@ -29,11 +29,16 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
+        // skip filter
+        if (request.getRequestURI().startsWith("/auth/checkToken") || request.getRequestURI().startsWith("/auth/refreshToken")
+                || request.getRequestURI().startsWith("/auth/deleteToken")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         if (authHeader != null && authHeader.startsWith("Bearer")) {
             token = authHeader.substring(7);
             username = jwtService.extractUsername(token);
         }
-
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtService.validateToken(token, userDetails)) {

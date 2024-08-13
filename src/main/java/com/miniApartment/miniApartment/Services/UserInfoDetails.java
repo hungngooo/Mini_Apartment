@@ -25,12 +25,12 @@ public class UserInfoDetails implements UserDetails {
         // Ánh xạ roleId sang quyền tương ứng
         switch (roleId) {
             case 1:
-                return Collections.singletonList(new SimpleGrantedAuthority("citizen"));
+                return Collections.singletonList(new SimpleGrantedAuthority("ROLE_CITIZEN"));
             case 2:
-                return Collections.singletonList(new SimpleGrantedAuthority("admin"));
+                return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
             // Thêm các role khác nếu cần
             default:
-                return Collections.singletonList(new SimpleGrantedAuthority("citizen"));
+                return Collections.singletonList(new SimpleGrantedAuthority("ROLE_CITIZEN"));
         }
     }
 
@@ -46,7 +46,7 @@ public class UserInfoDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return email;
     }
 
     @Override

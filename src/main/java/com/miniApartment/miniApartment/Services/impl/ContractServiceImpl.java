@@ -1,10 +1,7 @@
 package com.miniApartment.miniApartment.Services.impl;
 
 import com.miniApartment.miniApartment.Entity.*;
-import com.miniApartment.miniApartment.Repository.ContractDetailRepository;
-import com.miniApartment.miniApartment.Repository.ContractRepository;
-import com.miniApartment.miniApartment.Repository.RoomRepository;
-import com.miniApartment.miniApartment.Repository.TenantRepository;
+import com.miniApartment.miniApartment.Repository.*;
 import com.miniApartment.miniApartment.Services.ContractService;
 import com.miniApartment.miniApartment.Services.MinioService;
 import com.miniApartment.miniApartment.dto.*;
@@ -41,6 +38,8 @@ public class ContractServiceImpl implements ContractService {
     private RoomRepository roomRepository;
     @Autowired
     private MinioService minioService;
+    @Autowired
+    private RoomStatusRepository roomStatusRepository;
 
     @Override
     public Page<Contract> getAllContract(Integer pageNo, Integer pageSize, String keySearch) throws Exception {
@@ -107,8 +106,9 @@ public class ContractServiceImpl implements ContractService {
         ContractDetail contractDetail = saveContractDetail(createContractDTO, contractNo);
 
         // Update room status
-        updateRoomStatus(createContractDTO.getRoomId());
-        // Generate PDF
+
+
+        updateRoomStatus(createContractDTO.getRoomId(),createContractDTO.getSigninDate());
 
         // Set response DTO
         return createResponseDTO(contract);
@@ -244,10 +244,12 @@ public class ContractServiceImpl implements ContractService {
         return responseDTO;
     }
 
-    private void updateRoomStatus(int roomId) {
-        RoomEntity roomEntity = roomRepository.findByRoomId(roomId);
-        roomEntity.setRoomStatus("reserved");
-        roomRepository.save(roomEntity);
+    private void updateRoomStatus(int roomId, Date signinDate) {
+        int month = signinDate.getMonth() + 1;
+        int year = signinDate.getYear();
+        RoomStatus roomStatus = roomStatusRepository.findRoomStatusByRoomIdAndMonthAndYear(roomId, month, year);
+        roomStatus.setRoomStatus("reserved");
+        roomStatusRepository.save(roomStatus);
     }
 
     @Override
@@ -366,7 +368,6 @@ public class ContractServiceImpl implements ContractService {
             return false;
         }
     }
-
     @Override
     public List<TenantsByMonthDTO> countTenantsEachMonth() {
         List<Object[]> results = contractRepository.countTenantsEachMonth();
@@ -381,14 +382,14 @@ public class ContractServiceImpl implements ContractService {
         return tenantsByMonthList;
     }
 
-
-
-
-
     @Override
     public List<TenantThisMonthDTO> getRoomTenantInfoForCurrentMonth(int currentMonth) {
         int lastMonth = currentMonth == 1 ? 12 : currentMonth - 1;
         return contractRepository.findTenantThisMonth(lastMonth, currentMonth);
     }
 
+    @Override
+    public int countTenants(int month) {
+        return contractRepository.countAllTenant(month);
+    }
 }

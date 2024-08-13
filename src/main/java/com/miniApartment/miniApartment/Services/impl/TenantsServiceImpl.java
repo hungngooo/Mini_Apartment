@@ -78,11 +78,7 @@ public class TenantsServiceImpl implements TenantService {
         }
     }
 
-    @Override
-    public int countTenants() {
 
-        return tenantRepository.countTenants();
-    }
 
     private boolean validateTenant(Tenants tenant) {
         if (tenant.getId() == null) {

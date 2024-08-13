@@ -80,6 +80,13 @@ CREATE TABLE users (
     FOREIGN KEY (roleId) REFERENCES Role(roleId),
     FOREIGN KEY (email) REFERENCES tenants(email)
 );
+create table token(
+	id bigint auto_increment primary key,
+	email VARCHAR(30),
+    expriredToken Date,
+    refreshToken varchar(255),
+    FOREIGN KEY (email) REFERENCES users(email)
+);
 create table expensesDetail(
 	paymentId bigint auto_increment primary key,
     roomId int,
@@ -105,6 +112,9 @@ create table payment(
 	year year,
     month int,
     totalFee decimal,
+    createDate Date,
+    dueDate Date,
+    paymentDate Date,
     paid decimal,
     status NVARCHAR(20),
 	foreign key (id) references expensesDetail(paymentId)
@@ -112,11 +122,17 @@ create table payment(
 create table room(
 	id bigint auto_increment primary key,
 	roomId int unique,
-	roomStatus NVARCHAR(20),
     maxTenant int,
     rentalFee decimal
 );
-
+create table roomStatusMonths(
+	id bigint auto_increment primary key,
+    year int,
+    month int,
+    roomId int,
+    roomStatus nvarchar(20),
+    foreign key (roomId) references room(roomId)
+);
 -- ALTER TABLE users ADD CONSTRAINT tenant_user FOREIGN KEY(email) REFERENCES tenants(email);
 CREATE INDEX idex_room_id ON room(roomId);
 ALTER TABLE payment ADD CONSTRAINT payment_ibfk_2 FOREIGN KEY(roomId) REFERENCES room(roomId);
@@ -141,60 +157,61 @@ roleName)
 VALUES
 (2,
 'admin');
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (101, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (102, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (103, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (104, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (105, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (106, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (107, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (108, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (109, 'vacant', 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (110, 'vacant', 4);
+INSERT INTO room (roomId, maxTenant) VALUES (101, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (102, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (103, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (104, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (105, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (106, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (107, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (108, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (109, 4);
+INSERT INTO room (roomId, maxTenant) VALUES (110, 4);
 
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (201, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (202, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (203, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (204, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (205, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (206, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (207, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (208, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (209, 'vacant', 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (210, 'vacant', 4);
+INSERT INTO room (roomId, maxTenant) VALUES (201, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (202, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (203, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (204, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (205, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (206, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (207, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (208, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (209, 4);
+INSERT INTO room (roomId, maxTenant) VALUES (210, 4);
 
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (301, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (302, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (303, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (304, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (305, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (306, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (307, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (308, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (309, 'vacant', 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (310, 'vacant', 4);
+INSERT INTO room (roomId, maxTenant) VALUES (301, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (302, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (303, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (304, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (305, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (306, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (307, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (308, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (309, 4);
+INSERT INTO room (roomId, maxTenant) VALUES (310, 4);
 
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (401, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (402, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (403, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (404, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (405, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (406, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (407, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (408, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (409, 'vacant', 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (410, 'vacant', 4);
+INSERT INTO room (roomId, maxTenant) VALUES (401, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (402, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (403, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (404, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (405, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (406, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (407, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (408, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (409, 4);
+INSERT INTO room (roomId, maxTenant) VALUES (410, 4);
 
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (501, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (502, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (503, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (504, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (505, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (506, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (507, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (508, 'vacant', 2);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (509, 'vacant', 4);
-INSERT INTO room (roomId, roomStatus, maxTenant) VALUES (510, 'vacant', 4);
+INSERT INTO room (roomId, maxTenant) VALUES (501, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (502, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (503, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (504, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (505, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (506, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (507, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (508, 2);
+INSERT INTO room (roomId, maxTenant) VALUES (509, 4);
+INSERT INTO room (roomId, maxTenant) VALUES (510, 4);
+
 SET SQL_SAFE_UPDATES = 0;
 UPDATE room
 SET rentalFee = 2000000
@@ -203,6 +220,153 @@ WHERE maxTenant = 2;
 UPDATE room
 SET rentalFee = 4000000
 WHERE maxTenant = 4;
+
+INSERT INTO roomStatusMonths (year, month, roomId, roomStatus)
+VALUES
+-- Tháng 1
+(2024, 1, 101, 'occupied'), (2024, 1, 102, 'reserved'), (2024, 1, 103, 'vacant'), (2024, 1, 104, 'occupied'), (2024, 1, 105, 'reserved'),
+(2024, 1, 106, 'vacant'), (2024, 1, 107, 'occupied'), (2024, 1, 108, 'reserved'), (2024, 1, 109, 'vacant'), (2024, 1, 110, 'occupied'),
+(2024, 1, 201, 'reserved'), (2024, 1, 202, 'vacant'), (2024, 1, 203, 'occupied'), (2024, 1, 204, 'reserved'), (2024, 1, 205, 'vacant'),
+(2024, 1, 206, 'occupied'), (2024, 1, 207, 'reserved'), (2024, 1, 208, 'vacant'), (2024, 1, 209, 'occupied'), (2024, 1, 210, 'reserved'),
+(2024, 1, 301, 'vacant'), (2024, 1, 302, 'occupied'), (2024, 1, 303, 'reserved'), (2024, 1, 304, 'vacant'), (2024, 1, 305, 'occupied'),
+(2024, 1, 306, 'reserved'), (2024, 1, 307, 'vacant'), (2024, 1, 308, 'occupied'), (2024, 1, 309, 'reserved'), (2024, 1, 310, 'vacant'),
+(2024, 1, 401, 'occupied'), (2024, 1, 402, 'reserved'), (2024, 1, 403, 'vacant'), (2024, 1, 404, 'occupied'), (2024, 1, 405, 'reserved'),
+(2024, 1, 406, 'vacant'), (2024, 1, 407, 'occupied'), (2024, 1, 408, 'reserved'), (2024, 1, 409, 'vacant'), (2024, 1, 410, 'occupied'),
+(2024, 1, 501, 'reserved'), (2024, 1, 502, 'vacant'), (2024, 1, 503, 'occupied'), (2024, 1, 504, 'reserved'), (2024, 1, 505, 'vacant'),
+(2024, 1, 506, 'occupied'), (2024, 1, 507, 'reserved'), (2024, 1, 508, 'vacant'), (2024, 1, 509, 'occupied'), (2024, 1, 510, 'reserved'),
+
+-- Tháng 2
+(2024, 2, 101, 'reserved'), (2024, 2, 102, 'vacant'), (2024, 2, 103, 'occupied'), (2024, 2, 104, 'reserved'), (2024, 2, 105, 'vacant'),
+(2024, 2, 106, 'occupied'), (2024, 2, 107, 'reserved'), (2024, 2, 108, 'vacant'), (2024, 2, 109, 'occupied'), (2024, 2, 110, 'reserved'),
+(2024, 2, 201, 'vacant'), (2024, 2, 202, 'occupied'), (2024, 2, 203, 'reserved'), (2024, 2, 204, 'vacant'), (2024, 2, 205, 'occupied'),
+(2024, 2, 206, 'reserved'), (2024, 2, 207, 'vacant'), (2024, 2, 208, 'occupied'), (2024, 2, 209, 'reserved'), (2024, 2, 210, 'vacant'),
+(2024, 2, 301, 'occupied'), (2024, 2, 302, 'reserved'), (2024, 2, 303, 'vacant'), (2024, 2, 304, 'occupied'), (2024, 2, 305, 'reserved'),
+(2024, 2, 306, 'vacant'), (2024, 2, 307, 'occupied'), (2024, 2, 308, 'reserved'), (2024, 2, 309, 'vacant'), (2024, 2, 310, 'occupied'),
+(2024, 2, 401, 'reserved'), (2024, 2, 402, 'vacant'), (2024, 2, 403, 'occupied'), (2024, 2, 404, 'reserved'), (2024, 2, 405, 'vacant'),
+(2024, 2, 406, 'occupied'), (2024, 2, 407, 'reserved'), (2024, 2, 408, 'vacant'), (2024, 2, 409, 'occupied'), (2024, 2, 410, 'reserved'),
+(2024, 2, 501, 'vacant'), (2024, 2, 502, 'occupied'), (2024, 2, 503, 'reserved'), (2024, 2, 504, 'vacant'), (2024, 2, 505, 'occupied'),
+(2024, 2, 506, 'reserved'), (2024, 2, 507, 'vacant'), (2024, 2, 508, 'occupied'), (2024, 2, 509, 'reserved'), (2024, 2, 510, 'vacant'),
+
+-- Tháng 3
+(2024, 3, 101, 'vacant'), (2024, 3, 102, 'occupied'), (2024, 3, 103, 'reserved'), (2024, 3, 104, 'vacant'), (2024, 3, 105, 'occupied'),
+(2024, 3, 106, 'reserved'), (2024, 3, 107, 'vacant'), (2024, 3, 108, 'occupied'), (2024, 3, 109, 'reserved'), (2024, 3, 110, 'vacant'),
+(2024, 3, 201, 'occupied'), (2024, 3, 202, 'reserved'), (2024, 3, 203, 'vacant'), (2024, 3, 204, 'occupied'), (2024, 3, 205, 'reserved'),
+(2024, 3, 206, 'vacant'), (2024, 3, 207, 'occupied'), (2024, 3, 208, 'reserved'), (2024, 3, 209, 'vacant'), (2024, 3, 210, 'occupied'),
+(2024, 3, 301, 'reserved'), (2024, 3, 302, 'vacant'), (2024, 3, 303, 'occupied'), (2024, 3, 304, 'reserved'), (2024, 3, 305, 'vacant'),
+(2024, 3, 306, 'occupied'), (2024, 3, 307, 'reserved'), (2024, 3, 308, 'vacant'), (2024, 3, 309, 'occupied'), (2024, 3, 310, 'reserved'),
+(2024, 3, 401, 'vacant'), (2024, 3, 402, 'occupied'), (2024, 3, 403, 'reserved'), (2024, 3, 404, 'vacant'), (2024, 3, 405, 'occupied'),
+(2024, 3, 406, 'reserved'), (2024, 3, 407, 'vacant'), (2024, 3, 408, 'occupied'), (2024, 3, 409, 'reserved'), (2024, 3, 410, 'vacant'),
+(2024, 3, 501, 'occupied'), (2024, 3, 502, 'reserved'), (2024, 3, 503, 'vacant'), (2024, 3, 504, 'occupied'), (2024, 3, 505, 'reserved'),
+(2024, 3, 506, 'vacant'), (2024, 3, 507, 'occupied'), (2024, 3, 508, 'reserved'), (2024, 3, 509, 'vacant'), (2024, 3, 510, 'occupied'),
+
+-- Tháng 4
+(2024, 4, 101, 'occupied'), (2024, 4, 102, 'reserved'), (2024, 4, 103, 'vacant'), (2024, 4, 104, 'occupied'), (2024, 4, 105, 'reserved'),
+(2024, 4, 106, 'vacant'), (2024, 4, 107, 'occupied'), (2024, 4, 108, 'reserved'), (2024, 4, 109, 'vacant'), (2024, 4, 110, 'occupied'),
+(2024, 4, 201, 'reserved'), (2024, 4, 202, 'vacant'), (2024, 4, 203, 'occupied'), (2024, 4, 204, 'reserved'), (2024, 4, 205, 'vacant'),
+(2024, 4, 206, 'occupied'), (2024, 4, 207, 'reserved'), (2024, 4, 208, 'vacant'), (2024, 4, 209, 'occupied'), (2024, 4, 210, 'reserved'),
+(2024, 4, 301, 'vacant'), (2024, 4, 302, 'occupied'), (2024, 4, 303, 'reserved'), (2024, 4, 304, 'vacant'), (2024, 4, 305, 'occupied'),
+(2024, 4, 306, 'reserved'), (2024, 4, 307, 'vacant'), (2024, 4, 308, 'occupied'), (2024, 4, 309, 'reserved'), (2024, 4, 310, 'vacant'),
+(2024, 4, 401, 'occupied'), (2024, 4, 402, 'reserved'), (2024, 4, 403, 'vacant'), (2024, 4, 404, 'occupied'), (2024, 4, 405, 'reserved'),
+(2024, 4, 406, 'vacant'), (2024, 4, 407, 'occupied'), (2024, 4, 408, 'reserved'), (2024, 4, 409, 'vacant'), (2024, 4, 410, 'occupied'),
+(2024, 4, 501, 'reserved'), (2024, 4, 502, 'vacant'), (2024, 4, 503, 'occupied'), (2024, 4, 504, 'reserved'), (2024, 4, 505, 'vacant'),
+(2024, 4, 506, 'occupied'), (2024, 4, 507, 'reserved'), (2024, 4, 508, 'vacant'), (2024, 4, 509, 'occupied'), (2024, 4, 510, 'reserved'),
+
+-- Tháng 5
+(2024, 5, 101, 'reserved'), (2024, 5, 102, 'vacant'), (2024, 5, 103, 'occupied'), (2024, 5, 104, 'reserved'), (2024, 5, 105, 'vacant'),
+(2024, 5, 106, 'occupied'), (2024, 5, 107, 'reserved'), (2024, 5, 108, 'vacant'), (2024, 5, 109, 'occupied'), (2024, 5, 110, 'reserved'),
+(2024, 5, 201, 'vacant'), (2024, 5, 202, 'occupied'), (2024, 5, 203, 'reserved'), (2024, 5, 204, 'vacant'), (2024, 5, 205, 'occupied'),
+(2024, 5, 206, 'reserved'), (2024, 5, 207, 'vacant'), (2024, 5, 208, 'occupied'), (2024, 5, 209, 'reserved'), (2024, 5, 210, 'vacant'),
+(2024, 5, 301, 'occupied'), (2024, 5, 302, 'reserved'), (2024, 5, 303, 'vacant'), (2024, 5, 304, 'occupied'), (2024, 5, 305, 'reserved'),
+(2024, 5, 306, 'vacant'), (2024, 5, 307, 'occupied'), (2024, 5, 308, 'reserved'), (2024, 5, 309, 'vacant'), (2024, 5, 310, 'occupied'),
+(2024, 5, 401, 'reserved'), (2024, 5, 402, 'vacant'), (2024, 5, 403, 'occupied'), (2024, 5, 404, 'reserved'), (2024, 5, 405, 'vacant'),
+(2024, 5, 406, 'occupied'), (2024, 5, 407, 'reserved'), (2024, 5, 408, 'vacant'), (2024, 5, 409, 'occupied'), (2024, 5, 410, 'reserved'),
+(2024, 5, 501, 'vacant'), (2024, 5, 502, 'occupied'), (2024, 5, 503, 'reserved'), (2024, 5, 504, 'vacant'), (2024, 5, 505, 'occupied'),
+(2024, 5, 506, 'reserved'), (2024, 5, 507, 'vacant'), (2024, 5, 508, 'occupied'), (2024, 5, 509, 'reserved'), (2024, 5, 510, 'vacant'),
+
+-- Tháng 6
+(2024, 6, 101, 'vacant'), (2024, 6, 102, 'occupied'), (2024, 6, 103, 'reserved'), (2024, 6, 104, 'vacant'), (2024, 6, 105, 'occupied'),
+(2024, 6, 106, 'reserved'), (2024, 6, 107, 'vacant'), (2024, 6, 108, 'occupied'), (2024, 6, 109, 'reserved'), (2024, 6, 110, 'vacant'),
+(2024, 6, 201, 'occupied'), (2024, 6, 202, 'reserved'), (2024, 6, 203, 'vacant'), (2024, 6, 204, 'occupied'), (2024, 6, 205, 'reserved'),
+(2024, 6, 206, 'vacant'), (2024, 6, 207, 'occupied'), (2024, 6, 208, 'reserved'), (2024, 6, 209, 'vacant'), (2024, 6, 210, 'occupied'),
+(2024, 6, 301, 'reserved'), (2024, 6, 302, 'vacant'), (2024, 6, 303, 'occupied'), (2024, 6, 304, 'reserved'), (2024, 6, 305, 'vacant'),
+(2024, 6, 306, 'occupied'), (2024, 6, 307, 'reserved'), (2024, 6, 308, 'vacant'), (2024, 6, 309, 'occupied'), (2024, 6, 310, 'reserved'),
+(2024, 6, 401, 'vacant'), (2024, 6, 402, 'occupied'), (2024, 6, 403, 'reserved'), (2024, 6, 404, 'vacant'), (2024, 6, 405, 'occupied'),
+(2024, 6, 406, 'reserved'), (2024, 6, 407, 'vacant'), (2024, 6, 408, 'occupied'), (2024, 6, 409, 'reserved'), (2024, 6, 410, 'vacant'),
+(2024, 6, 501, 'occupied'), (2024, 6, 502, 'reserved'), (2024, 6, 503, 'vacant'), (2024, 6, 504, 'occupied'), (2024, 6, 505, 'reserved'),
+(2024, 6, 506, 'vacant'), (2024, 6, 507, 'occupied'), (2024, 6, 508, 'reserved'), (2024, 6, 509, 'vacant'), (2024, 6, 510, 'occupied'),
+
+-- Tháng 7
+(2024, 7, 101, 'occupied'), (2024, 7, 102, 'reserved'), (2024, 7, 103, 'vacant'), (2024, 7, 104, 'occupied'), (2024, 7, 105, 'reserved'),
+(2024, 7, 106, 'vacant'), (2024, 7, 107, 'occupied'), (2024, 7, 108, 'reserved'), (2024, 7, 109, 'vacant'), (2024, 7, 110, 'occupied'),
+(2024, 7, 201, 'reserved'), (2024, 7, 202, 'vacant'), (2024, 7, 203, 'occupied'), (2024, 7, 204, 'reserved'), (2024, 7, 205, 'vacant'),
+(2024, 7, 206, 'occupied'), (2024, 7, 207, 'reserved'), (2024, 7, 208, 'vacant'), (2024, 7, 209, 'occupied'), (2024, 7, 210, 'reserved'),
+(2024, 7, 301, 'vacant'), (2024, 7, 302, 'occupied'), (2024, 7, 303, 'reserved'), (2024, 7, 304, 'vacant'), (2024, 7, 305, 'occupied'),
+(2024, 7, 306, 'reserved'), (2024, 7, 307, 'vacant'), (2024, 7, 308, 'occupied'), (2024, 7, 309, 'reserved'), (2024, 7, 310, 'vacant'),
+(2024, 7, 401, 'occupied'), (2024, 7, 402, 'reserved'), (2024, 7, 403, 'vacant'), (2024, 7, 404, 'occupied'), (2024, 7, 405, 'reserved'),
+(2024, 7, 406, 'vacant'), (2024, 7, 407, 'occupied'), (2024, 7, 408, 'reserved'), (2024, 7, 409, 'vacant'), (2024, 7, 410, 'occupied'),
+(2024, 7, 501, 'reserved'), (2024, 7, 502, 'vacant'), (2024, 7, 503, 'occupied'), (2024, 7, 504, 'reserved'), (2024, 7, 505, 'vacant'),
+(2024, 7, 506, 'occupied'), (2024, 7, 507, 'reserved'), (2024, 7, 508, 'vacant'), (2024, 7, 509, 'occupied'), (2024, 7, 510, 'reserved'),
+
+-- Tháng 8
+(2024, 8, 101, 'reserved'), (2024, 8, 102, 'vacant'), (2024, 8, 103, 'occupied'), (2024, 8, 104, 'reserved'), (2024, 8, 105, 'vacant'),
+(2024, 8, 106, 'occupied'), (2024, 8, 107, 'reserved'), (2024, 8, 108, 'vacant'), (2024, 8, 109, 'occupied'), (2024, 8, 110, 'reserved'),
+(2024, 8, 201, 'vacant'), (2024, 8, 202, 'occupied'), (2024, 8, 203, 'reserved'), (2024, 8, 204, 'vacant'), (2024, 8, 205, 'occupied'),
+(2024, 8, 206, 'reserved'), (2024, 8, 207, 'vacant'), (2024, 8, 208, 'occupied'), (2024, 8, 209, 'reserved'), (2024, 8, 210, 'vacant'),
+(2024, 8, 301, 'occupied'), (2024, 8, 302, 'reserved'), (2024, 8, 303, 'vacant'), (2024, 8, 304, 'occupied'), (2024, 8, 305, 'reserved'),
+(2024, 8, 306, 'vacant'), (2024, 8, 307, 'occupied'), (2024, 8, 308, 'reserved'), (2024, 8, 309, 'vacant'), (2024, 8, 310, 'occupied'),
+(2024, 8, 401, 'reserved'), (2024, 8, 402, 'vacant'), (2024, 8, 403, 'occupied'), (2024, 8, 404, 'reserved'), (2024, 8, 405, 'vacant'),
+(2024, 8, 406, 'occupied'), (2024, 8, 407, 'reserved'), (2024, 8, 408, 'vacant'), (2024, 8, 409, 'occupied'), (2024, 8, 410, 'reserved'),
+(2024, 8, 501, 'vacant'), (2024, 8, 502, 'occupied'), (2024, 8, 503, 'reserved'), (2024, 8, 504, 'vacant'), (2024, 8, 505, 'occupied'),
+(2024, 8, 506, 'reserved'), (2024, 8, 507, 'vacant'), (2024, 8, 508, 'occupied'), (2024, 8, 509, 'reserved'), (2024, 8, 510, 'vacant'),
+
+-- Tháng 9
+(2024, 9, 101, 'vacant'), (2024, 9, 102, 'occupied'), (2024, 9, 103, 'reserved'), (2024, 9, 104, 'vacant'), (2024, 9, 105, 'occupied'),
+(2024, 9, 106, 'reserved'), (2024, 9, 107, 'vacant'), (2024, 9, 108, 'occupied'), (2024, 9, 109, 'reserved'), (2024, 9, 110, 'vacant'),
+(2024, 9, 201, 'occupied'), (2024, 9, 202, 'reserved'), (2024, 9, 203, 'vacant'), (2024, 9, 204, 'occupied'), (2024, 9, 205, 'reserved'),
+(2024, 9, 206, 'vacant'), (2024, 9, 207, 'occupied'), (2024, 9, 208, 'reserved'), (2024, 9, 209, 'vacant'), (2024, 9, 210, 'occupied'),
+(2024, 9, 301, 'reserved'), (2024, 9, 302, 'vacant'), (2024, 9, 303, 'occupied'), (2024, 9, 304, 'reserved'), (2024, 9, 305, 'vacant'),
+(2024, 9, 306, 'occupied'), (2024, 9, 307, 'reserved'), (2024, 9, 308, 'vacant'), (2024, 9, 309, 'occupied'), (2024, 9, 310, 'reserved'),
+(2024, 9, 401, 'vacant'), (2024, 9, 402, 'occupied'), (2024, 9, 403, 'reserved'), (2024, 9, 404, 'vacant'), (2024, 9, 405, 'occupied'),
+(2024, 9, 406, 'reserved'), (2024, 9, 407, 'vacant'), (2024, 9, 408, 'occupied'), (2024, 9, 409, 'reserved'), (2024, 9, 410, 'vacant'),
+(2024, 9, 501, 'occupied'), (2024, 9, 502, 'reserved'), (2024, 9, 503, 'vacant'), (2024, 9, 504, 'occupied'), (2024, 9, 505, 'reserved'),
+(2024, 9, 506, 'vacant'), (2024, 9, 507, 'occupied'), (2024, 9, 508, 'reserved'), (2024, 9, 509, 'vacant'), (2024, 9, 510, 'occupied'),
+
+-- Tháng 10
+(2024, 10, 101, 'occupied'), (2024, 10, 102, 'reserved'), (2024, 10, 103, 'vacant'), (2024, 10, 104, 'occupied'), (2024, 10, 105, 'reserved'),
+(2024, 10, 106, 'vacant'), (2024, 10, 107, 'occupied'), (2024, 10, 108, 'reserved'), (2024, 10, 109, 'vacant'), (2024, 10, 110, 'occupied'),
+(2024, 10, 201, 'reserved'), (2024, 10, 202, 'vacant'), (2024, 10, 203, 'occupied'), (2024, 10, 204, 'reserved'), (2024, 10, 205, 'vacant'),
+(2024, 10, 206, 'occupied'), (2024, 10, 207, 'reserved'), (2024, 10, 208, 'vacant'), (2024, 10, 209, 'occupied'), (2024, 10, 210, 'reserved'),
+(2024, 10, 301, 'vacant'), (2024, 10, 302, 'occupied'), (2024, 10, 303, 'reserved'), (2024, 10, 304, 'vacant'), (2024, 10, 305, 'occupied'),
+(2024, 10, 306, 'reserved'), (2024, 10, 307, 'vacant'), (2024, 10, 308, 'occupied'), (2024, 10, 309, 'reserved'), (2024, 10, 310, 'vacant'),
+(2024, 10, 401, 'occupied'), (2024, 10, 402, 'reserved'), (2024, 10, 403, 'vacant'), (2024, 10, 404, 'occupied'), (2024, 10, 405, 'reserved'),
+(2024, 10, 406, 'vacant'), (2024, 10, 407, 'occupied'), (2024, 10, 408, 'reserved'), (2024, 10, 409, 'vacant'), (2024, 10, 410, 'occupied'),
+(2024, 10, 501, 'reserved'), (2024, 10, 502, 'vacant'), (2024, 10, 503, 'occupied'), (2024, 10, 504, 'reserved'), (2024, 10, 505, 'vacant'),
+(2024, 10, 506, 'occupied'), (2024, 10, 507, 'reserved'), (2024, 10, 508, 'vacant'), (2024, 10, 509, 'occupied'), (2024, 10, 510, 'reserved'),
+
+-- Tháng 11
+(2024, 11, 101, 'reserved'), (2024, 11, 102, 'vacant'), (2024, 11, 103, 'occupied'), (2024, 11, 104, 'reserved'), (2024, 11, 105, 'vacant'),
+(2024, 11, 106, 'occupied'), (2024, 11, 107, 'reserved'), (2024, 11, 108, 'vacant'), (2024, 11, 109, 'occupied'), (2024, 11, 110, 'reserved'),
+(2024, 11, 201, 'vacant'), (2024, 11, 202, 'occupied'), (2024, 11, 203, 'reserved'), (2024, 11, 204, 'vacant'), (2024, 11, 205, 'occupied'),
+(2024, 11, 206, 'reserved'), (2024, 11, 207, 'vacant'), (2024, 11, 208, 'occupied'), (2024, 11, 209, 'reserved'), (2024, 11, 210, 'vacant'),
+(2024, 11, 301, 'occupied'), (2024, 11, 302, 'reserved'), (2024, 11, 303, 'vacant'), (2024, 11, 304, 'occupied'), (2024, 11, 305, 'reserved'),
+(2024, 11, 306, 'vacant'), (2024, 11, 307, 'occupied'), (2024, 11, 308, 'reserved'), (2024, 11, 309, 'vacant'), (2024, 11, 310, 'occupied'),
+(2024, 11, 401, 'reserved'), (2024, 11, 402, 'vacant'), (2024, 11, 403, 'occupied'), (2024, 11, 404, 'reserved'), (2024, 11, 405, 'vacant'),
+(2024, 11, 406, 'occupied'), (2024, 11, 407, 'reserved'), (2024, 11, 408, 'vacant'), (2024, 11, 409, 'occupied'), (2024, 11, 410, 'reserved'),
+(2024, 11, 501, 'vacant'), (2024, 11, 502, 'occupied'), (2024, 11, 503, 'reserved'), (2024, 11, 504, 'vacant'), (2024, 11, 505, 'occupied'),
+(2024, 11, 506, 'reserved'), (2024, 11, 507, 'vacant'), (2024, 11, 508, 'occupied'), (2024, 11, 509, 'reserved'), (2024, 11, 510, 'vacant'),
+
+-- Tháng 12
+(2024, 12, 101, 'vacant'), (2024, 12, 102, 'occupied'), (2024, 12, 103, 'reserved'), (2024, 12, 104, 'vacant'), (2024, 12, 105, 'occupied'),
+(2024, 12, 106, 'reserved'), (2024, 12, 107, 'vacant'), (2024, 12, 108, 'occupied'), (2024, 12, 109, 'reserved'), (2024, 12, 110, 'vacant'),
+(2024, 12, 201, 'occupied'), (2024, 12, 202, 'reserved'), (2024, 12, 203, 'vacant'), (2024, 12, 204, 'occupied'), (2024, 12, 205, 'reserved'),
+(2024, 12, 206, 'vacant'), (2024, 12, 207, 'occupied'), (2024, 12, 208, 'reserved'), (2024, 12, 209, 'vacant'), (2024, 12, 210, 'occupied'),
+(2024, 12, 301, 'reserved'), (2024, 12, 302, 'vacant'), (2024, 12, 303, 'occupied'), (2024, 12, 304, 'reserved'), (2024, 12, 305, 'vacant'),
+(2024, 12, 306, 'occupied'), (2024, 12, 307, 'reserved'), (2024, 12, 308, 'vacant'), (2024, 12, 309, 'occupied'), (2024, 12, 310, 'reserved'),
+(2024, 12, 401, 'vacant'), (2024, 12, 402, 'occupied'), (2024, 12, 403, 'reserved'), (2024, 12, 404, 'vacant'), (2024, 12, 405, 'occupied'),
+(2024, 12, 406, 'reserved'), (2024, 12, 407, 'vacant'), (2024, 12, 408, 'occupied'), (2024, 12, 409, 'reserved'), (2024, 12, 410, 'vacant'),
+(2024, 12, 501, 'occupied'), (2024, 12, 502, 'reserved'), (2024, 12, 503, 'vacant'), (2024, 12, 504, 'occupied'), (2024, 12, 505, 'reserved'),
+(2024, 12, 506, 'vacant'), (2024, 12, 507, 'occupied'), (2024, 12, 508, 'reserved'), (2024, 12, 509, 'vacant'), (2024, 12, 510, 'occupied');
+
 
 
 --

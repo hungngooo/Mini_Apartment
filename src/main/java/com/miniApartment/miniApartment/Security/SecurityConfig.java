@@ -1,5 +1,6 @@
 package com.miniApartment.miniApartment.Security;
 
+import com.miniApartment.miniApartment.Filter.CustomAuthenticationEntryPoint;
 import com.miniApartment.miniApartment.Filter.JWTAuthFilter;
 import com.miniApartment.miniApartment.Services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class SecurityConfig {
 
     @Autowired
     private JWTAuthFilter authFilter;
-
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     // User Creation
     @Bean
     public UserDetailsService userDetailsService() {
@@ -35,35 +37,51 @@ public class SecurityConfig {
 
     // Configuring HttpSecurity
     private static final String[] url = {"/auth/welcome"
-            , "/api/file/upload"
-            , "/api/tenants/**"
+//            , "/api/file/upload"
+//            , "/api/tenants/**"
             , "/auth/**"
-            , "/api/room/**"
-            , "/api/payment/**"
-            , "/api/expenses/**"
+            , "/auth/checkToken"
+            , "/auth/refreshToken"
+//            , "/api/room/**"
+//            , "/api/payment/**"
+//            , "/api/expenses/**"
             , "/api/user/**"
             , "/mail/**"
             , "/contract/**"
             ,"/swagger-ui/**"
             , "/v3/api-docs/**"
     };
+    private static final String[] urlRoleAdmin = {
+             "/api/file/upload"
+            , "/api/tenants/**"
+//            , "/auth/**"
+            , "/api/room/**"
+            , "/api/payment/**"
+            , "/api/expenses/**"
+            , "/api/roomStatus/**"
+//            , "/api/user/**"
+    };
+    private static final String[] urlRoleCitizen = {
+            "/api/payment_citizen/**",
+            "/api/expenses_citizen/**",
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(url).permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(url).permitAll()
+                        .requestMatchers(urlRoleAdmin).hasRole("ADMIN")
+                        .requestMatchers(urlRoleCitizen).hasRole("CITIZEN")
+                )
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/user/**").authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/admin/**").authenticated())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-//        http
-//                .authorizeRequests()
-//                .anyRequest().permitAll()  // Cho phép tất cả các yêu cầu
-//                .and()
-//                .csrf(csrf -> csrf.disable());  // Vô hiệu hóa CSRF nếu cần
-//        return http.build();
     }
 
 

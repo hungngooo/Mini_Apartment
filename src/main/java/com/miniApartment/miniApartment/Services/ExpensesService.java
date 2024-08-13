@@ -11,7 +11,6 @@ public interface ExpensesService {
     Page<ExpensesDetailEntity> getExpensesDetailByMonth(Integer pageNo, Integer pageSize, String year, String month);
 
     Page<ExpensesDetailEntity> getExpensesDetailByRoom(Integer pageNo, Integer pageSize, String year, int room);
-
     ExpensesDetailEntity getExpensesByMonthAndRomm(String year, int month, int room);
 
 

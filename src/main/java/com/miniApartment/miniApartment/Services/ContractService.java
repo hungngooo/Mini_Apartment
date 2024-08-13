@@ -31,5 +31,7 @@ public interface ContractService {
     List<TenantsByMonthDTO> countTenantsEachMonth();
     String uploadContractPdf(int roomId, MultipartFile file);
     List<TenantThisMonthDTO> getRoomTenantInfoForCurrentMonth(int currentMonth);
+
+    int countTenants(int month);
 }
 

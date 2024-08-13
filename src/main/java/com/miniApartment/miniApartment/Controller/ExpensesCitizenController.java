@@ -10,17 +10,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/expenses")
+@RequestMapping("/api/expenses_citizen")
 @CrossOrigin
-@PreAuthorize("hasRole('ROLE_ADMIN')")
-public class ExpensesController {
+@PreAuthorize("hasRole('ROLE_CITIZEN')")
+public class ExpensesCitizenController {
     @Autowired
     private ExpensesService expensesService;
-
-    @PostMapping("/addNewExpenses")
-    public Response<?> addNewExpense(@RequestBody ExpensesDetailEntity expensesDetailEntity) {
-        return new Response<>(EHttpStatus.OK, expensesService.addNewExpenses(expensesDetailEntity));
-    }
 
     @GetMapping("/getExpensesBymonth")
     public Response<?> getExpensesByMonth(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -40,13 +35,4 @@ public class ExpensesController {
     public Response<?> getExpensesByRoom(@RequestParam String year, @RequestParam int month, @RequestParam int roomId) {
         return new Response<>(EHttpStatus.OK, expensesService.getExpensesByMonthAndRomm(year, month, roomId));
     }
-    @PostMapping("/updateStatus")
-    public Response<?> updateExpensesStatus(@RequestBody ExpensesStatusDTO dto){
-        return new Response<>(EHttpStatus.OK,expensesService.updateExpensesStatus(dto));
-    }
-    @DeleteMapping("/deleteExpenses")
-    public Response<?> deleteExpenses(@RequestParam String year, @RequestParam int month, @RequestParam int roomId){
-        return new Response<>(EHttpStatus.OK, expensesService.deleteExpenses(year,month,roomId));
-    }
-
 }

@@ -93,4 +93,8 @@ public class ContractController {
     public Response<?> getRoomTenantInfoForCurrentMonth(@RequestParam int currentMonth) {
         return new Response<>(EHttpStatus.OK, contractService.getRoomTenantInfoForCurrentMonth(currentMonth));
     }
+    @GetMapping("/tenantCount")
+    public Response<?> tenantCount(@RequestParam int month){
+        return new Response<>(EHttpStatus.OK,contractService.countTenants(month));
+    }
 }

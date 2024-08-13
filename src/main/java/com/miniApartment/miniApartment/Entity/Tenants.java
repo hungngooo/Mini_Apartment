@@ -50,5 +50,6 @@ public class Tenants {
     private String createCitizenIdPlace;
     @Column(name = "placeOfPermanet")
     private String placeOfPermanet;
+    @Column(name = "relationship")
     private String relationship;
 }
