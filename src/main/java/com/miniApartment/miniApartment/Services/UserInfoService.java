@@ -35,6 +35,14 @@ public class UserInfoService implements UserDetailsService {
         this.encoder = new BCryptPasswordEncoder();
     }
 
+    public void resentOtp(String email) {
+        otpStore.remove(email);
+        Random random = new Random();
+        int otp = random.nextInt(900000) + 100000;
+        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
+        otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
+        emailService.sendMail(email, "Resent OTP", "Here is OTP " + otp);
+    }
     public void forgetPassword(String email) {
         User user = userRepository.findByEmail1(email);
         if (user == null) {
@@ -45,21 +53,6 @@ public class UserInfoService implements UserDetailsService {
         LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
         otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
         emailService.sendMail(email, "Reset password", "Here is OTP " + otp);
-    }
-    public void resentOtp(String email) {
-        otpStore.remove(email);
-        Random random = new Random();
-        int otp = random.nextInt(900000) + 100000;
-        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
-        otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
-        emailService.sendMail(email, "Resent OTP", "Here is OTP " + otp);
-    }
-    public void loginOtp(String email) {
-        Random random = new Random();
-        int otp = random.nextInt(900000) + 100000;
-        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
-        otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
-        emailService.sendMail(email, "Login Otp", "Here is OTP " + otp);
     }
     public void verifyOtp(OtpForgetPasswordDTO otpForgetPasswordDTO) {
         String email = otpForgetPasswordDTO.getEmail();
@@ -93,6 +86,13 @@ public class UserInfoService implements UserDetailsService {
         User user = userRepository.findByEmail1(email);
         user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
+    }
+    public void loginOtp(String email) {
+        Random random = new Random();
+        int otp = random.nextInt(900000) + 100000;
+        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
+        otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
+        emailService.sendMail(email, "Login Otp", "Here is OTP " + otp);
     }
 
     @Override

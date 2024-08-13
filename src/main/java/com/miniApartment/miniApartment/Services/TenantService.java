@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface TenantService {
+     List<Tenants> findAllTenantsByRoomId(int roomId);
      Page<Tenants> getAllTenants(Integer pageNo, Integer pageSize, String keySearch) throws Exception ;
      Tenants addTenant(Tenants tenants);
      int deleteTenant(String email) throws Exception;

@@ -30,8 +30,8 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
         // skip filter
-        if (request.getRequestURI().startsWith("/auth/checkToken") || request.getRequestURI().startsWith("/auth/refreshToken")
-                || request.getRequestURI().startsWith("/auth/deleteToken")) {
+        if (request.getRequestURI().startsWith("/auth") || request.getRequestURI().startsWith("/auth/refreshToken")
+                || request.getRequestURI().startsWith("/getPaymentFromBank")) {
             filterChain.doFilter(request, response);
             return;
         }

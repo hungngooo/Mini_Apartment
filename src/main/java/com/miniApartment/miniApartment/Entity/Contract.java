@@ -31,7 +31,7 @@ public class Contract {
     private Date signinDate;
     private Date moveinDate;
     private Date expireDate;
-//    private String contract;
+    private String contract;
     private int contractStatus;
     private String representative;
     private int numberOfTenant;
@@ -39,7 +39,7 @@ public class Contract {
     public Contract() {
     }
 
-    public Contract(BigInteger id, String contractId, int roomId, BigDecimal rentalFee, BigDecimal securityDeposite, int paymentCycle, Date signinDate, Date moveinDate, Date expireDate, int contractStatus, String representative, int numberOfTenant) {
+    public Contract(BigInteger id, String contractId, int roomId, BigDecimal rentalFee,String contract, BigDecimal securityDeposite, int paymentCycle, Date signinDate, Date moveinDate, Date expireDate, int contractStatus, String representative, int numberOfTenant) {
         this.id = id;
         this.contractId = contractId;
         this.roomId = roomId;
@@ -47,6 +47,7 @@ public class Contract {
         this.securityDeposite = securityDeposite;
         this.paymentCycle = paymentCycle;
         this.signinDate = signinDate;
+        this.contract = contract;
         this.moveinDate = moveinDate;
         this.expireDate = expireDate;
         this.contractStatus = contractStatus;

@@ -135,20 +135,20 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDto) {
+    public Response<?> authenticateUser(@RequestBody LoginDTO loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
         );
         String email = loginDto.getEmail();
         if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
+            return new Response<>(EHttpStatus.UNAUTHORIZED,"Invalid email or password");
         }
         Random random = new Random();
         int otp = random.nextInt(900000) + 100000;
         LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
         otpStore.put(email, new OtpDetails(String.valueOf(otp), expiredTime));
         emailService.sendMail(email, "Login Otp", "Here is OTP " + otp);
-        return ResponseEntity.ok("Otp is sent successfully, please check the OTP to verify");
+        return new Response(EHttpStatus.OK,"Otp is sent successfully, please check the OTP to verify");
     }
 
     @PostMapping("/verifyOtpLogin")

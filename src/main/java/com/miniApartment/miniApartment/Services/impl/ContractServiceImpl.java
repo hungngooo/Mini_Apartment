@@ -3,7 +3,12 @@ package com.miniApartment.miniApartment.Services.impl;
 import com.miniApartment.miniApartment.Entity.*;
 import com.miniApartment.miniApartment.Repository.*;
 import com.miniApartment.miniApartment.Services.ContractService;
+import com.miniApartment.miniApartment.Services.MinioService;
 import com.miniApartment.miniApartment.dto.*;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.http.Method;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +17,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 @Service
@@ -28,6 +36,8 @@ public class ContractServiceImpl implements ContractService {
     private JavaMailSender javaMailSender;
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private MinioService minioService;
     @Autowired
     private RoomStatusRepository roomStatusRepository;
 
@@ -74,31 +84,98 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractResponseDTO addNewContract(CreateContractDTO createContractDTO) {
-
+        Date date = new Date();
         UUID contractNo = UUID.randomUUID();
-//        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
-//                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getMoveinDate(), createContractDTO.getExpireDate()) ||
-//                !validateEmail(createContractDTO.getEmail()) ||
-//                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
-//                !contactValidate(createContractDTO.getContact()) ||
-//                !validateCopy(createContractDTO.getCopies())) {
-//            throw new IllegalArgumentException("Please check the entered information");
-//        }
+
+        if (tenantRepository.existsByEmail(createContractDTO.getEmail()) ||
+                !validateDate(createContractDTO.getSigninDate(), createContractDTO.getMoveinDate(), createContractDTO.getExpireDate()) ||
+                !validateEmail(createContractDTO.getEmail()) ||
+                !validateRoom(createContractDTO.getRoomId(), createContractDTO.getNumberOfTenant()) ||
+                !contactValidate(createContractDTO.getContact()) ||
+                !validateCopy(createContractDTO.getCopies())) {
+            throw new IllegalArgumentException("Please check the entered information");
+        }
+
         // Save Contract
         Contract contract = saveContract(createContractDTO, contractNo);
 
         // Save Tenants
-        saveTenants(createContractDTO.getTenants(), contractNo, createContractDTO.getRoomId());
+        List<Tenants> tenants = saveTenants(createContractDTO.getTenants(), contractNo, createContractDTO.getRoomId());
 
         // Save ContractDetail
-        saveContractDetail(createContractDTO, contractNo);
+        ContractDetail contractDetail = saveContractDetail(createContractDTO, contractNo);
 
         // Update room status
-        updateRoomStatus(createContractDTO.getRoomId(),createContractDTO.getSigninDate());
+
+
+        updateRoomStatus(createContractDTO.getRoomId(),createContractDTO.getMonth(),createContractDTO.getYear());
 
         // Set response DTO
         return createResponseDTO(contract);
+    }
+    private void updateRoomStatus(int roomId, int month, int year) {
+        RoomStatus roomStatus = roomStatusRepository.findRoomStatusByRoomIdAndMonthAndYear(roomId, month, year);
+        roomStatus.setRoomStatus("reserved");
+        roomStatusRepository.save(roomStatus);
+    }
+    private void savePdfUrlToDatabase(String fileUrl, int roomId) {
+        Contract contract = contractRepository.findContractByRoomId(roomId);
+        contract.setContract(fileUrl);
+        contractRepository.save(contract);
+    }
 
+    private String uploadPdfToMinio(byte[] pdfData, int roomId) {
+        try {
+            String bucketName = "miniapartment";
+            String fileName = "File_Contract_" + roomId;
+            MinioClient minioClient = minioService.getMinioClient();
+            // Create a temporary file
+            Path tempFile = Files.createTempFile(fileName, ".pdf");
+            Files.write(tempFile, pdfData);
+
+            // Upload the file to MinIO
+            minioClient.putObject(
+                    PutObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(fileName)
+                            .stream(Files.newInputStream(tempFile), pdfData.length, -1)
+                            .contentType("application/pdf")
+                            .build()
+            );
+
+            // Delete the temporary file
+            Files.deleteIfExists(tempFile);
+
+            // Return the file URL
+            return minioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.GET)
+                            .bucket(bucketName)
+                            .object(fileName)
+                            .expiry(60 * 60 * 24) // 1 day expiry
+                            .build()
+            );
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to upload PDF to MinIO", e);
+        }
+    }
+    @Override
+    public String uploadContractPdf(int roomId, MultipartFile file) {
+        try {
+            // Convert MultipartFile to byte array
+            byte[] pdfData = file.getBytes();
+
+            // Upload the PDF to MinIO and get the URL
+            String fileUrl = uploadPdfToMinio(pdfData, roomId);
+            String[] urlSplit = fileUrl.split("\\?");
+            // Save the PDF URL to the database
+            savePdfUrlToDatabase(urlSplit[0], roomId);
+
+            return fileUrl;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to upload and save PDF", e);
+        }
     }
 
     private Contract saveContract(CreateContractDTO createContractDTO, UUID contractNo) {
@@ -114,11 +191,11 @@ public class ContractServiceImpl implements ContractService {
         contract.setExpireDate(createContractDTO.getExpireDate());
         contract.setContractStatus(1); // status = 1 là in Lease term, 2 là Approaching Expiration, 3 là Past Expiration
         contract.setRepresentative(createContractDTO.getRepresentative());
-        // ... (set other fields)
         return contractRepository.save(contract);
     }
 
-    private void saveTenants(List<TenantDTO> tenantDTOs, UUID contractNo, int roomId) {
+    private List<Tenants> saveTenants(List<TenantDTO> tenantDTOs, UUID contractNo, int roomId) {
+        List<Tenants> savedTenants = new ArrayList<>();
         for (TenantDTO tenantDTO : tenantDTOs) {
             Tenants tenant = new Tenants();
             tenant.setContractId(String.valueOf(contractNo));
@@ -139,12 +216,13 @@ public class ContractServiceImpl implements ContractService {
             tenant.setCreateCitizenIdDate(tenantDTO.getCreateCitizenIdDate());
             tenant.setResidenceStatus("Failed");
             tenant.setPlaceOfPermanet(tenantDTO.getPlaceOfPermanet());
-            // Set other tenant fields from tenantDTO
-            tenantRepository.save(tenant);
+            // Lưu tenant vào database và thêm vào danh sách savedTenants
+            savedTenants.add(tenantRepository.save(tenant));
         }
+        return savedTenants;
     }
 
-    private void saveContractDetail(CreateContractDTO createContractDTO, UUID contractNo) {
+    private ContractDetail saveContractDetail(CreateContractDTO createContractDTO, UUID contractNo) {
         ContractDetail contractDetail = new ContractDetail();
         contractDetail.setContractId(String.valueOf(contractNo));
         // Set other contract detail fields
@@ -159,7 +237,7 @@ public class ContractServiceImpl implements ContractService {
         contractDetail.setObligations(createContractDTO.getObligations());
         contractDetail.setCommit(createContractDTO.getCommit());
         contractDetail.setCopies(createContractDTO.getCopies());
-        contractDetailRepository.save(contractDetail);
+        return contractDetailRepository.save(contractDetail);
     }
 
     private ContractResponseDTO createResponseDTO(Contract contract) {
@@ -170,13 +248,7 @@ public class ContractServiceImpl implements ContractService {
         return responseDTO;
     }
 
-    private void updateRoomStatus(int roomId, Date signinDate) {
-        int month = signinDate.getMonth() + 1;
-        int year = signinDate.getYear();
-        RoomStatus roomStatus = roomStatusRepository.findRoomStatusByRoomIdAndMonthAndYear(roomId, month, year);
-        roomStatus.setRoomStatus("reserved");
-        roomStatusRepository.save(roomStatus);
-    }
+
 
     @Override
     public Contract findContractById(int id) {
@@ -311,7 +383,7 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<TenantThisMonthDTO> getRoomTenantInfoForCurrentMonth(int currentMonth) {
         int lastMonth = currentMonth == 1 ? 12 : currentMonth - 1;
-        return contractRepository.findTenantThisMonth(lastMonth,currentMonth);
+        return contractRepository.findTenantThisMonth(lastMonth, currentMonth);
     }
 
     @Override

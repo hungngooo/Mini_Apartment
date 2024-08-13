@@ -16,6 +16,11 @@ public class TenantsServiceImpl implements TenantService {
     @Autowired
     private TenantRepository tenantRepository;
 
+    @Override
+    public List<Tenants> findAllTenantsByRoomId(int roomId) {
+        return tenantRepository.findAllByRoomId(roomId);
+    }
+
     public Page<Tenants> getAllTenants(Integer pageNo, Integer pageSize, String keySearch) throws Exception {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         Page<Tenants> pageResult;
