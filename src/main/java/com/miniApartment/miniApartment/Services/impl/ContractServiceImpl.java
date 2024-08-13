@@ -108,12 +108,16 @@ public class ContractServiceImpl implements ContractService {
         // Update room status
 
 
-        updateRoomStatus(createContractDTO.getRoomId(),createContractDTO.getSigninDate());
+        updateRoomStatus(createContractDTO.getRoomId(),createContractDTO.getMonth(),createContractDTO.getYear());
 
         // Set response DTO
         return createResponseDTO(contract);
     }
-
+    private void updateRoomStatus(int roomId, int month, int year) {
+        RoomStatus roomStatus = roomStatusRepository.findRoomStatusByRoomIdAndMonthAndYear(roomId, month, year);
+        roomStatus.setRoomStatus("reserved");
+        roomStatusRepository.save(roomStatus);
+    }
     private void savePdfUrlToDatabase(String fileUrl, int roomId) {
         Contract contract = contractRepository.findContractByRoomId(roomId);
         contract.setContract(fileUrl);
@@ -244,13 +248,7 @@ public class ContractServiceImpl implements ContractService {
         return responseDTO;
     }
 
-    private void updateRoomStatus(int roomId, Date signinDate) {
-        int month = signinDate.getMonth() + 1;
-        int year = signinDate.getYear();
-        RoomStatus roomStatus = roomStatusRepository.findRoomStatusByRoomIdAndMonthAndYear(roomId, month, year);
-        roomStatus.setRoomStatus("reserved");
-        roomStatusRepository.save(roomStatus);
-    }
+
 
     @Override
     public Contract findContractById(int id) {

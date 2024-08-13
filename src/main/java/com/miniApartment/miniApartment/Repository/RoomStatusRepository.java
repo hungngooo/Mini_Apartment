@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface RoomStatusRepository extends JpaRepository<RoomStatus, Long> {
     RoomStatus findRoomStatusByRoomIdAndMonthAndYear(int roomId, int month, int year);
+    RoomStatus findRoomStatusByRoomId(int roomId);
     @Query(value = "select r.roomId from RoomStatus r where (r.month = :month and r.year = :year) and (r.roomStatus = 'reserved' or r.roomStatus = 'occupied')")
     List<Integer> getRoomEntityAvailable(@Param("month") int month, @Param("year") int year);
     @Query(value = "SELECT " +
