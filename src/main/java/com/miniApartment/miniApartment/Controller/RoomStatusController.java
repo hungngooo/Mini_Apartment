@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/roomStatus")
 @CrossOrigin
@@ -17,7 +19,7 @@ public class RoomStatusController {
     @Autowired
     private RoomStatusService roomStatusService;
     @GetMapping("/getRoomAvailable")
-    public Response<?> getRoomAvailable(@RequestParam int month, @RequestParam int year){
+    public Response<?> getRoomAvailable(@RequestParam(required = false) Integer month, @RequestParam(required = false) Integer year){
         return new Response<>(EHttpStatus.OK,roomStatusService.getAllRoomAvailable(month, year));
     }
     @GetMapping("/countRoomByStatus")

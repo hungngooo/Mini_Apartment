@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RoomStatusService {
 
-    List<Integer> getAllRoomAvailable(int month, int year);
+    List<Integer> getAllRoomAvailable(Integer month, Integer year);
 
     IRoomByStatus countRoomByStatus(int month, int year);
 
