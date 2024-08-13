@@ -10,8 +10,10 @@ import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import com.miniApartment.miniApartment.dto.UpdateContractDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -54,6 +56,17 @@ public class ContractController {
         }
         return new Response<>(EHttpStatus.OK, responseDTO);
     }
+    @PostMapping("/uploadContractPdf/{roomId}")
+    public Response<?> uploadContractPdf(@PathVariable int roomId, @RequestParam("file") MultipartFile file) {
+        try {
+            String fileUrl = contractService.uploadContractPdf(roomId, file);
+            return new Response<>(EHttpStatus.OK, fileUrl);
+        } catch (Exception e) {
+            return new Response<>(EHttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+
 
     @GetMapping("/findContractById")
     public Response<?> findContractByid(@RequestParam int id) {

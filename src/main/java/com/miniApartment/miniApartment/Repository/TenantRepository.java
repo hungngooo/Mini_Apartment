@@ -3,6 +3,7 @@ package com.miniApartment.miniApartment.Repository;
 import com.miniApartment.miniApartment.Entity.Tenants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.core.mapping.schema.LiquibaseChangeSetWriter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
@@ -63,7 +64,7 @@ public interface TenantRepository extends JpaRepository<Tenants, Long> {
             @Param("vehicleType") String vehicleType,
             @Param("vehicleColor") String vehicleColor,
             @Param("residenceStatus") String residenceStatus);
-
+    List<Tenants> findAllByRoomId(int roomId);
     @Query(value = "select count(*) from tenants", nativeQuery = true)
     int countTenants();
 }

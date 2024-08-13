@@ -15,6 +15,8 @@ import java.util.List;
 @Setter
 public class CreateContractDTO {
     private List<TenantDTO> tenants;
+    private int month;
+    private int year;
     private String contractId;
     private int roomId;
     private BigDecimal rentalFee;
@@ -49,6 +51,7 @@ public class CreateContractDTO {
     private String obligations;
     private String commit;
     private int copies;
+    private String contract;
     private Date createCitizenIdDate;
     private String createCitizenIdPlace;
     private String placeOfPermanet;
