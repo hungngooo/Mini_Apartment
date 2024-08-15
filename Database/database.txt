@@ -41,7 +41,7 @@ create table contractDetail(
 );
 create table `tenants`(
 	id bigint auto_increment primary key,
-	email NVARCHAR(30) unique,
+	email VARCHAR(30) unique,
     roomId int,
     firstName NVARCHAR(15),
     lastName NVARCHAR(15),
@@ -71,7 +71,7 @@ CREATE TABLE users (
     gender int,
     dateOfBirth DATE,
     placeOfPermanet NVARCHAR(100),
-    email NVARCHAR(30),
+    email VARCHAR(30),
     contact NVARCHAR(15),
     citizenId NVARCHAR(255),
     password NVARCHAR(255),
@@ -125,12 +125,27 @@ create table room(
     maxTenant int,
     rentalFee decimal
 );
+
 create table roomStatusMonths(
 	id bigint auto_increment primary key,
     year int,
     month int,
     roomId int,
     roomStatus nvarchar(20),
+    foreign key (roomId) references room(roomId)
+);
+create table assetTable(
+	id bigint auto_increment primary key,
+    year year,
+    month TINYINT(15),
+    roomId int,
+    itemName varchar(50),
+    unit varchar(20),
+    quantity tinyint(50),
+    value int,
+    maintCycle tinyint(15),
+    maintDate varchar(20),
+    maintStatus varchar(12),
     foreign key (roomId) references room(roomId)
 );
 -- ALTER TABLE users ADD CONSTRAINT tenant_user FOREIGN KEY(email) REFERENCES tenants(email);
@@ -145,6 +160,48 @@ ALTER TABLE contract ADD CONSTRAINT room_ibfk_1 FOREIGN KEY(roomId) REFERENCES r
 --     expTime datetime,
 --
 -- )
+
+INSERT INTO assetTable (year, month, roomId, itemName, unit, quantity, value, maintCycle, maintDate, maintStatus)
+VALUES
+(2024, 3, 101, 'Bed', 'set', 1, 2000, 3, '1/3 - 10/3', 'Pending'),
+(2024, 3, 101, 'Wardrobe', 'piece', 1, 1500, 6, '10/3 - 20/3', 'Scheduled'),
+(2024, 3, 101, 'Refrigerator', 'piece', 1, 2500, 12, '15/3 - 25/3', 'In Progress'),
+
+(2024, 3, 102, 'Dining table', 'set', 1, 3500, 9, '1/3 - 10/3', 'Done'),
+(2024, 3, 102, 'Dish washer', 'piece', 1, 1800, 3, '5/3 - 15/3', 'Overdue'),
+(2024, 3, 102, 'Sofa', 'set', 1, 3200, 6, '10/3 - 20/3', 'Pending'),
+
+(2024, 4, 201, 'Bed', 'piece', 1, 2200, 1, '1/4 - 5/4', 'Scheduled'),
+(2024, 4, 201, 'Wardrobe', 'set', 1, 3100, 9, '10/4 - 20/4', 'In Progress'),
+(2024, 4, 201, 'Dining table', 'piece', 1, 3600, 6, '15/4 - 25/4', 'Done'),
+
+(2024, 4, 202, 'Dish washer', 'set', 1, 2500, 12, '1/4 - 10/4', 'Overdue'),
+(2024, 4, 202, 'Refrigerator', 'piece', 1, 4000, 1, '5/4 - 10/4', 'Pending'),
+(2024, 4, 202, 'Sofa', 'set', 2, 5000, 3, '10/4 - 20/4', 'Scheduled'),
+
+(2024, 5, 301, 'Bed', 'piece', 1, 2200, 9, '1/5 - 10/5', 'In Progress'),
+(2024, 5, 301, 'Wardrobe', 'set', 1, 3100, 6, '5/5 - 15/5', 'Done'),
+(2024, 5, 301, 'Dining table', 'piece', 1, 3600, 12, '10/5 - 20/5', 'Overdue'),
+
+(2024, 5, 302, 'Dish washer', 'set', 1, 2500, 3, '1/5 - 10/5', 'Pending'),
+(2024, 5, 302, 'Refrigerator', 'piece', 1, 4000, 6, '5/5 - 15/5', 'Scheduled'),
+(2024, 5, 302, 'Sofa', 'set', 2, 5000, 9, '10/5 - 20/5', 'In Progress'),
+
+(2024, 6, 401, 'Bed', 'set', 1, 2000, 12, '1/6 - 10/6', 'Done'),
+(2024, 6, 401, 'Wardrobe', 'piece', 1, 1500, 1, '5/6 - 15/6', 'Overdue'),
+(2024, 6, 401, 'Refrigerator', 'piece', 1, 2500, 3, '10/6 - 20/6', 'Pending'),
+
+(2024, 6, 402, 'Dining table', 'set', 1, 3500, 6, '1/6 - 10/6', 'Scheduled'),
+(2024, 6, 402, 'Dish washer', 'piece', 1, 1800, 9, '5/6 - 15/6', 'In Progress'),
+(2024, 6, 402, 'Sofa', 'set', 1, 3200, 12, '10/6 - 20/6', 'Done'),
+
+(2024, 7, 501, 'Bed', 'piece', 1, 2200, 1, '1/7 - 5/7', 'Overdue'),
+(2024, 7, 501, 'Wardrobe', 'set', 1, 3100, 3, '5/7 - 15/7', 'Pending'),
+(2024, 7, 501, 'Dining table', 'piece', 1, 3600, 6, '10/7 - 20/7', 'Scheduled'),
+
+(2024, 7, 502, 'Dish washer', 'set', 1, 2500, 9, '1/7 - 10/7', 'In Progress'),
+(2024, 7, 502, 'Refrigerator', 'piece', 1, 4000, 12, '5/7 - 15/7', 'Done'),
+(2024, 7, 502, 'Sofa', 'set', 2, 5000, 1, '10/7 - 20/7', 'Overdue');
 INSERT INTO miniapartment.`role`
 (roleId,
 roleName)
