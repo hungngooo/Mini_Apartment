@@ -19,7 +19,8 @@ create table contract(
     moveinDate date,
     expireDate date,
     contractStatus int,
-	representative NVARCHAR(100)
+	representative NVARCHAR(100),
+    contract nvarchar(255)
 );
 -- CREATE INDEX contractId ON contract(contractId);
 -- CREATE UNIQUE INDEX index_unique_column ON contract(contractId);
@@ -41,7 +42,7 @@ create table contractDetail(
 );
 create table `tenants`(
 	id bigint auto_increment primary key,
-	email NVARCHAR(30) unique,
+	email VARCHAR(30) unique,
     roomId int,
     firstName NVARCHAR(15),
     lastName NVARCHAR(15),
@@ -71,7 +72,7 @@ CREATE TABLE users (
     gender int,
     dateOfBirth DATE,
     placeOfPermanet NVARCHAR(100),
-    email NVARCHAR(30),
+    email VARCHAR(30),
     contact NVARCHAR(15),
     citizenId NVARCHAR(255),
     password NVARCHAR(255),
@@ -104,6 +105,8 @@ create table expensesDetail(
     securityDeposite decimal,
     debt decimal,
     fine decimal,
+	createDate Date,
+    dueDate Date,
     status NVARCHAR(20)
 );
 create table payment(
