@@ -21,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -105,6 +107,7 @@ public class PaymentServiceImpl implements PaymentService {
                 String yearStr = "";
                 Integer roomId = null;
                 Integer month = null;
+
                 Integer year = null;
                 Double paid = null;
                 if (des.length >= 8) {
@@ -132,6 +135,8 @@ public class PaymentServiceImpl implements PaymentService {
                         else payment.setStatus("Paid");
                     }
                     payment.setYear(payment.getYear().substring(0,4));
+                    Date currentDate = new Date();
+                    payment.setPaymentDate(currentDate);
                 }
                 paymentRepository.save(payment);
                 ExpensesDetailEntity expensesDetailEntity = expensesDetailRepository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(roomId,yearStr,month);

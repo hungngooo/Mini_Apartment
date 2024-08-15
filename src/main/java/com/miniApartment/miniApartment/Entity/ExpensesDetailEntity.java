@@ -2,8 +2,8 @@ package com.miniApartment.miniApartment.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
+import java.util.Date;
 
 @Data
 @Entity
@@ -45,4 +45,10 @@ public class ExpensesDetailEntity {
     private double fine;
     @Column(name = "status")
     private String status;
+    @Column(name = "createDate")
+    private Date createDate;
+    @Column(name = "dueDate")
+    private Date dueDate;
+    public ExpensesDetailEntity() {
+    }
 }

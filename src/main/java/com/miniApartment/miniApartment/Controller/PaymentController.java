@@ -25,7 +25,7 @@ public class PaymentController {
 
     @GetMapping("/getPaymentByYear")
     public Response<Page<IListPayment>> getPaymentByYear(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                         @RequestParam(defaultValue = "10") Integer pageSize,
+                                                         @RequestParam(defaultValue = "9") Integer pageSize,
                                                          @RequestParam String year){
         return new Response<>(EHttpStatus.OK, paymentService.getPaymentByYear(pageNo,pageSize,year));
     }

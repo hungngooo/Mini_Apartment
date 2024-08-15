@@ -26,7 +26,7 @@ public class ContractController {
 
     @GetMapping("/getAllContract")
     public Response<Page<Contract>> getAllContract(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                   @RequestParam(defaultValue = "2") Integer pageSize,
+                                                   @RequestParam(defaultValue = "9") Integer pageSize,
                                                    @RequestParam String keySearch) throws Exception {
         return new Response<>(EHttpStatus.OK, contractService.getAllContract(pageNo, pageSize, keySearch));
     }

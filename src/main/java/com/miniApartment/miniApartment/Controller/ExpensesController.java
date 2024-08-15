@@ -16,15 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class ExpensesController {
     @Autowired
     private ExpensesService expensesService;
-
     @PostMapping("/addNewExpenses")
-    public Response<?> addNewExpense(@RequestBody ExpensesDetailEntity expensesDetailEntity) {
-        return new Response<>(EHttpStatus.OK, expensesService.addNewExpenses(expensesDetailEntity));
+    public Response<?> addNewExpense(@RequestBody ExpensesDetailEntity entity) {
+        return new Response<>(EHttpStatus.OK, expensesService.addNewExpenses(entity));
     }
 
     @GetMapping("/getExpensesBymonth")
     public Response<?> getExpensesByMonth(@RequestParam(defaultValue = "0") Integer pageNo,
-                                          @RequestParam(defaultValue = "10") Integer pageSize,
+                                          @RequestParam(defaultValue = "9") Integer pageSize,
                                           @RequestParam String year, @RequestParam String month) {
         return new Response<>(EHttpStatus.OK, expensesService.getExpensesDetailByMonth(pageNo, pageSize, year, month));
     }
