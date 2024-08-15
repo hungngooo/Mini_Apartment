@@ -5,16 +5,22 @@ import com.miniApartment.miniApartment.Entity.IDemoExample;
 import com.miniApartment.miniApartment.Response.EHttpStatus;
 import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.ContractService;
+import com.miniApartment.miniApartment.Services.MinioService;
 import com.miniApartment.miniApartment.dto.ContractResponseDTO;
 import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import com.miniApartment.miniApartment.dto.UpdateContractDTO;
+import io.minio.GetObjectArgs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.util.List;
 
 @CrossOrigin
@@ -23,10 +29,11 @@ import java.util.List;
 public class ContractController {
     @Autowired
     private ContractService contractService;
-
+    @Autowired
+    private MinioService minioService;
     @GetMapping("/getAllContract")
     public Response<Page<Contract>> getAllContract(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                   @RequestParam(defaultValue = "9") Integer pageSize,
+                                                   @RequestParam(defaultValue = "10") Integer pageSize,
                                                    @RequestParam String keySearch) throws Exception {
         return new Response<>(EHttpStatus.OK, contractService.getAllContract(pageNo, pageSize, keySearch));
     }
@@ -65,7 +72,27 @@ public class ContractController {
             return new Response<>(EHttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("fileName") String fileName) {
+        try {
+            InputStream stream = minioService.getMinioClient().getObject(
+                    GetObjectArgs.builder()
+                            .bucket("miniapartment")
+                            .object(fileName)
+                            .build()
+            );
 
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(new InputStreamResource(stream));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
 
     @GetMapping("/findContractById")

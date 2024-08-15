@@ -108,16 +108,18 @@ public class ContractServiceImpl implements ContractService {
         // Update room status
 
 
-        updateRoomStatus(createContractDTO.getRoomId(),createContractDTO.getMonth(),createContractDTO.getYear());
+        updateRoomStatus(createContractDTO.getRoomId(), createContractDTO.getMonth(), createContractDTO.getYear());
 
         // Set response DTO
         return createResponseDTO(contract);
     }
+
     private void updateRoomStatus(int roomId, int month, int year) {
         RoomStatus roomStatus = roomStatusRepository.findRoomStatusByRoomIdAndMonthAndYear(roomId, month, year);
         roomStatus.setRoomStatus("reserved");
         roomStatusRepository.save(roomStatus);
     }
+
     private void savePdfUrlToDatabase(String fileUrl, int roomId) {
         Contract contract = contractRepository.findContractByRoomId(roomId);
         contract.setContract(fileUrl);
@@ -160,6 +162,7 @@ public class ContractServiceImpl implements ContractService {
             throw new RuntimeException("Failed to upload PDF to MinIO", e);
         }
     }
+
     @Override
     public String uploadContractPdf(int roomId, MultipartFile file) {
         try {
@@ -247,7 +250,6 @@ public class ContractServiceImpl implements ContractService {
         responseDTO.setMessage("Contract is created successfully");
         return responseDTO;
     }
-
 
 
     @Override
@@ -366,6 +368,7 @@ public class ContractServiceImpl implements ContractService {
             return false;
         }
     }
+
     @Override
     public List<TenantsByMonthDTO> countTenantsEachMonth() {
         List<Object[]> results = contractRepository.countTenantsEachMonth();

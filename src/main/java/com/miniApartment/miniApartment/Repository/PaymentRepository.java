@@ -67,7 +67,7 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     @Query(value = "SELECT new com.miniApartment.miniApartment.dto.OnTimePaymentMonthsDTO(\n" +
             "    p.month, \n" +
             "    COUNT(*), \n" +
-            "    SUM(CASE WHEN p.dueDate > p.paymentDate AND p.status='paid' THEN 1 ELSE 0 END))\n" +
+            "    SUM(CASE WHEN p.dueDate >= p.paymentDate AND p.status='paid' THEN 1 ELSE 0 END))\n" +
             "FROM \n" +
             "    Payment p\n" +
             "GROUP BY \n" +
