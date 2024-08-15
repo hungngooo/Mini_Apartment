@@ -81,22 +81,22 @@ public class AuthController {
 
 
     @PostMapping("/verifyOtp")
-    public ResponseEntity<?> verifyOtp(@RequestBody OtpVerificationDTO otpVerificationDto) {
+    public Response<?> verifyOtp(@RequestBody OtpVerificationDTO otpVerificationDto) {
         String email = otpVerificationDto.getEmail();
         String otp = otpVerificationDto.getOtp();
 
         if (!otpStore.containsKey(email)) {
-            return new ResponseEntity<>("OTP not found or expired!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.BAD_REQUEST,"OTP not found or expired!");
         }
 
         OtpDetails otpDetails = otpStore.get(email);
         if (otpDetails.getExpiryTime().isBefore(LocalDateTime.now())) {
             otpStore.remove(email);
-            return new ResponseEntity<>("OTP expired!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.BAD_REQUEST,"OTP expired!");
         }
 
         if (!otpDetails.getOtp().equals(otp)) {
-            return new ResponseEntity<>("Invalid OTP!", HttpStatus.BAD_REQUEST);
+            return new Response<>(EHttpStatus.BAD_REQUEST,"Invalid OTP!");
         }
 
         otpStore.remove(email); // Remove OTP after verification
@@ -117,20 +117,20 @@ public class AuthController {
         );
         String token = jwtService.generateToken(email);
 
-        return ResponseEntity.ok("User sign up successfully. Token: " + token);
+        return new Response<>(EHttpStatus.OK,"User signed up successfully");
     }
 
     private ConcurrentHashMap<String, OtpDetails> otpResendStore = new ConcurrentHashMap<>();
 
     @PostMapping("/resendOtpRegister")
-    public ResponseEntity<?> resendOtp(@RequestBody SignUpDTO signUpDto) {
+    public Response<?> resendOtp(@RequestBody SignUpDTO signUpDto) {
         otpStore.remove(signUpDto.getEmail());
         Random random = new Random();
         int otp = random.nextInt(900000) + 100000; // Generate 6-digit OTP
         LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(5); // Set expiry time to 5 minutes from now
         otpStore.put(signUpDto.getEmail(), new OtpDetails(String.valueOf(otp), expiryTime));
         emailService.sendMail(signUpDto.getEmail(), "Email confirm", "Here is the OTP: " + otp);
-        return new ResponseEntity<>("OTP resent to your email. Please verify to complete registration.", HttpStatus.OK);
+        return new Response<>(EHttpStatus.OK,"OTP resent to your email. Please verify to complete registration.");
     }
 
 
