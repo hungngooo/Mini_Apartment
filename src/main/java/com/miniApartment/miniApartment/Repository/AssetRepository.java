@@ -31,4 +31,9 @@ public interface AssetRepository extends JpaRepository<AssetEntity, Long> {
     @Transactional
     @Query("UPDATE AssetEntity a SET a.maintCycle = :maintCycle, a.maintDate = :maintDate, a.maintStatus = :maintStatus WHERE a.id = :id")
     void updateAssetMaintenance(@Param("id") Long id, @Param("maintCycle") int maintCycle, @Param("maintDate") String maintDate, @Param("maintStatus") String maintStatus);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM AssetEntity a WHERE a.id = :id")
+    void deleteAssetItem(@Param("id") Long id);
 }

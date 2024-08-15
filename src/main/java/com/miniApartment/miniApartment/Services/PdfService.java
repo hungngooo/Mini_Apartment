@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.itextpdf.kernel.font.PdfFontFactory.EmbeddingStrategy.FORCE_EMBEDDED;
+
 @Service
 public class PdfService {
 
@@ -33,7 +35,7 @@ public class PdfService {
         try {
             // Load and set font that supports Vietnamese with UTF-8 encoding
             String fontPath = "src/main/resources/fonts/times.ttf"; // Path to your font file
-            PdfFont font = PdfFontFactory.createFont(fontPath, "Identity-H", true);
+            PdfFont font = PdfFontFactory.createFont(fontPath, "Identity-H", FORCE_EMBEDDED);
 
             // Set font for the entire document
             document.setFont(font);

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -59,7 +60,7 @@ public class Contract {
         this.contractId = contractId;
     }
 
-    public Contract(RentalFeeOfContractDTO dto) {
+    public Contract(@NotNull RentalFeeOfContractDTO dto) {
         this.rentalFee = dto.getRentalFee();
         this.securityDeposite = dto.getSecurityDeposite();
         this.representative = dto.getRepresentative();

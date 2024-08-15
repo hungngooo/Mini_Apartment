@@ -26,7 +26,16 @@ public class AssetController {
 
     @PostMapping("/updateAssetMaintenance")
     public Response<?> updateAssetMaintenance(@RequestParam Long id, int maintCycle, String maintDate, String maintStatus){
-        assetService.updateAssetMaintenance(id, maintCycle, maintDate, maintStatus);
-        return new Response<>(EHttpStatus.OK);
+        if(assetService.updateAssetMaintenance(id, maintCycle, maintDate, maintStatus)) {
+            return new Response<>(EHttpStatus.OK);
+        }
+        return new Response<>(EHttpStatus.BAD_REQUEST);
+    }
+    @DeleteMapping("/deleteAssetItem")
+    public Response<?> deleteAssetItem(@RequestParam Long id){
+        if(assetService.deleteAssetItem(id)) {
+            return new Response<>(EHttpStatus.OK);
+        }
+        return new Response<>(EHttpStatus.BAD_REQUEST);
     }
 }

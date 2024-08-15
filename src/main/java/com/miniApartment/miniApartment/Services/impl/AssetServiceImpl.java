@@ -29,7 +29,24 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public void updateAssetMaintenance(Long id, int maintCycle, String maintDate, String maintStatus) {
-        assetRepository.updateAssetMaintenance(id, maintCycle, maintDate, maintStatus);
+    public boolean updateAssetMaintenance(Long id, int maintCycle, String maintDate, String maintStatus) {
+        try {
+            assetRepository.updateAssetMaintenance(id, maintCycle, maintDate, maintStatus);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteAssetItem(Long id) {
+        try {
+            assetRepository.deleteAssetItem(id);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }

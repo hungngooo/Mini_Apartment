@@ -12,5 +12,7 @@ public interface AssetService {
 
     Page<IAssetDetail> getAssetDetailByRoom(Integer pageNo, Integer pageSize, int roomId, int month, int year);
 
-    void updateAssetMaintenance(Long id, int maintCycle, String maintDate, String maintStatus);
+    boolean updateAssetMaintenance(Long id, int maintCycle, String maintDate, String maintStatus);
+
+    boolean deleteAssetItem(Long id);
 }

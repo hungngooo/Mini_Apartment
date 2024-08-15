@@ -23,11 +23,6 @@
 			<version>RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.itextpdf</groupId>
-			<artifactId>itext7-core</artifactId>
-			<version>7.1.15</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
 		</dependency>
@@ -126,14 +121,15 @@
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext7-core</artifactId>
-			<version>7.1.15</version>
+			<version>7.2.5</version>
+			<type>pom</type>
 		</dependency>
 	<!-- https://mvnrepository.com/artifact/com.github.rostrovsky/pdf-table -->
-	<dependency>
-		<groupId>com.github.rostrovsky</groupId>
-		<artifactId>pdf-table</artifactId>
-		<version>1.0.0</version>
-	</dependency>
+		<dependency>
+			<groupId>com.github.rostrovsky</groupId>
+			<artifactId>pdf-table</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
