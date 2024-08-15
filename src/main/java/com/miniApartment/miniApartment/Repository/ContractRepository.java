@@ -30,7 +30,7 @@ public interface ContractRepository extends JpaRepository<Contract, BigInteger> 
 
     Contract findContractByContractId(String contractId);
 
-    @Query(value = "SELECT * FROM miniapartment.contract where roomId = :roomId", nativeQuery = true)
+    @Query(value = "SELECT c FROM Contract c where c.roomId = :roomId")
     Contract getRepesentativeByRoomId(int roomId);
 
     Contract findContractByRoomId(int id);

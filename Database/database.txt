@@ -19,7 +19,8 @@ create table contract(
     moveinDate date,
     expireDate date,
     contractStatus int,
-	representative NVARCHAR(100)
+	representative NVARCHAR(100),
+    contract nvarchar(255)
 );
 -- CREATE INDEX contractId ON contract(contractId);
 -- CREATE UNIQUE INDEX index_unique_column ON contract(contractId);
@@ -104,6 +105,8 @@ create table expensesDetail(
     securityDeposite decimal,
     debt decimal,
     fine decimal,
+	createDate Date,
+    dueDate Date,
     status NVARCHAR(20)
 );
 create table payment(

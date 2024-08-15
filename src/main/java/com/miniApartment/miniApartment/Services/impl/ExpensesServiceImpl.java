@@ -5,7 +5,6 @@ import com.miniApartment.miniApartment.Entity.Payment;
 import com.miniApartment.miniApartment.Repository.ExpensesDetailRepository;
 import com.miniApartment.miniApartment.Repository.PaymentRepository;
 import com.miniApartment.miniApartment.Services.ExpensesService;
-import com.miniApartment.miniApartment.Services.JwtService;
 import com.miniApartment.miniApartment.dto.ExpensesStatusDTO;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -24,12 +25,12 @@ public class ExpensesServiceImpl implements ExpensesService {
     private ExpensesDetailRepository repository;
     @Autowired
     private PaymentRepository paymentRepository;
-    @Autowired
-    private JwtService jwtService;
     @Override
     public String addNewExpenses(@NotNull ExpensesDetailEntity entity) {
         if (validateExpensesDetail(entity)) {
             if (checkExpensesExist(entity.getRoomId(), entity.getYear(), entity.getMonth())) {
+//                ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(dto.getRoomId(), dto.getYear(), dto.getMonth());
+//                ExpensesDetailEntity entity1 = new ExpensesDetailEntity();
                 entity.setElectricity((entity.getElectricCurrentMeter() - entity.getElectricPreviousMeter()) * 3800);
                 entity.setWater((entity.getWaterCurrentMeter() - entity.getWaterPreviousMeter()) * 35000);
                 repository.save(entity);
@@ -41,21 +42,22 @@ public class ExpensesServiceImpl implements ExpensesService {
     }
 
     private boolean checkExpensesExist(int roomId, String year, int month) {
-        if (repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(roomId, year, month) != null) return false;
-        return true;
+        return repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(roomId, year, month) == null;
     }
 
-    private void addPaymentEntity(@NotNull ExpensesDetailEntity expensesDetailEntity) {
+    private void addPaymentEntity(@NotNull ExpensesDetailEntity entity) {
         Payment payment = new Payment();
-        payment.setId(expensesDetailEntity.getId());
-        payment.setRoomId(expensesDetailEntity.getRoomId());
-        payment.setYear(expensesDetailEntity.getYear());
-        payment.setMonth(expensesDetailEntity.getMonth());
-        double totalFee = expensesDetailEntity.getRentalFee() + expensesDetailEntity.getWater() + expensesDetailEntity.getElectricity()
-                + expensesDetailEntity.getService() + expensesDetailEntity.getInternet() + expensesDetailEntity.getDebt()
-                + expensesDetailEntity.getFine() + expensesDetailEntity.getSecurityDeposite();
+        payment.setId(entity.getId());
+        payment.setRoomId(entity.getRoomId());
+        payment.setYear(entity.getYear());
+        payment.setMonth(entity.getMonth());
+        double totalFee = entity.getRentalFee() + entity.getWater() + entity.getElectricity()
+                + entity.getService() + entity.getInternet() + entity.getDebt()
+                + entity.getFine() + entity.getSecurityDeposite();
         payment.setTotalFee(totalFee);
-        payment.setStatus(expensesDetailEntity.getStatus());
+        payment.setStatus(entity.getStatus());
+        payment.setCreateDate(entity.getCreateDate());
+        payment.setDueDate(entity.getDueDate());
         paymentRepository.save(payment);
     }
 
@@ -73,8 +75,19 @@ public class ExpensesServiceImpl implements ExpensesService {
 
     @Override
     public ExpensesDetailEntity getExpensesByMonthAndRomm(String year, int month, int room) {
-        return repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(room, year, month);
-    }
+        ExpensesDetailEntity entity = repository.getExpensesDetailEntitiesByRoomIdAndYearAndMonth(room, year, month);
+        Date createDate = entity.getCreateDate();
+        Date dueDate = entity.getDueDate();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(createDate);
+        cal.add(Calendar.DATE, 1);
+        entity.setCreateDate(cal.getTime());
+        Calendar cal1 = Calendar.getInstance();
+        cal.setTime(dueDate);
+        cal.add(Calendar.DATE, 1);
+        entity.setDueDate(cal.getTime());
+        return entity;
+        }
 
     @Override
     public String updateExpensesStatus(@NotNull ExpensesStatusDTO dto) {
@@ -105,6 +118,7 @@ public class ExpensesServiceImpl implements ExpensesService {
     }
 
     private boolean validateExpensesDetail(@NotNull ExpensesDetailEntity expensesDetail) {
+        if(expensesDetail.getCreateDate().after(expensesDetail.getDueDate())) return false;
         if (expensesDetail.getRoomId() <= 0) {
             System.err.println("Room ID must be greater than zero");
             return false;
