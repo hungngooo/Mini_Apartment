@@ -50,4 +50,7 @@ public class AssetEntity {
         this.maintDate = maintDate;
         this.maintStatus = maintStatus;
     }
+
+    public AssetEntity() {
+    }
 }

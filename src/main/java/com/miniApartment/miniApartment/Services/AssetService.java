@@ -1,7 +1,9 @@
 package com.miniApartment.miniApartment.Services;
 
+import com.miniApartment.miniApartment.Entity.AssetEntity;
 import com.miniApartment.miniApartment.Entity.IAssetDetail;
 import com.miniApartment.miniApartment.Entity.IAssetRoom;
+import com.miniApartment.miniApartment.dto.AssetItemDTO;
 import com.miniApartment.miniApartment.dto.AssetRoomDTO;
 import org.springframework.data.domain.Page;
 
@@ -15,4 +17,5 @@ public interface AssetService {
     boolean updateAssetMaintenance(Long id, int maintCycle, String maintDate, String maintStatus);
 
     boolean deleteAssetItem(Long id);
+    List<AssetEntity> addNewItem(AssetItemDTO assetItemDTO);
 }
