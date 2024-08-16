@@ -1,10 +1,16 @@
 package com.miniApartment.miniApartment.Controller;
 
+import com.miniApartment.miniApartment.Entity.AssetEntity;
 import com.miniApartment.miniApartment.Response.EHttpStatus;
 import com.miniApartment.miniApartment.Response.Response;
 import com.miniApartment.miniApartment.Services.AssetService;
+import com.miniApartment.miniApartment.dto.AssetItemDTO;
+import com.miniApartment.miniApartment.dto.ContractResponseDTO;
+import com.miniApartment.miniApartment.dto.CreateContractDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -37,5 +43,15 @@ public class AssetController {
             return new Response<>(EHttpStatus.OK);
         }
         return new Response<>(EHttpStatus.BAD_REQUEST);
+    }
+    @PostMapping("/addNewAssetItem")
+    public Response<?> addNewAssetItem(@RequestBody AssetItemDTO assetItemDTO) {
+        List<AssetEntity> assetEntity;
+        try {
+            assetEntity = assetService.addNewItem(assetItemDTO);
+        } catch (Exception e) {
+            return new Response<>(EHttpStatus.BAD_REQUEST, "False");
+        }
+        return new Response<>(EHttpStatus.OK, "True");
     }
 }
