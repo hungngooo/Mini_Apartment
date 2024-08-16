@@ -3,6 +3,7 @@ package com.miniApartment.miniApartment.Services.impl;
 import com.miniApartment.miniApartment.Entity.Tenants;
 import com.miniApartment.miniApartment.Repository.TenantRepository;
 import com.miniApartment.miniApartment.Services.TenantService;
+import com.miniApartment.miniApartment.dto.TenantDetailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,7 +57,7 @@ public class TenantsServiceImpl implements TenantService {
         }
     }
 
-    public Page<Tenants> getTenantByRoomId(Integer pageNo, Integer pageSize, int roomId) {
+    public Page<TenantDetailDTO> getTenantByRoomId(Integer pageNo, Integer pageSize, int roomId) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         return tenantRepository.getTenantsByRoomId(roomId, paging);
     }
@@ -65,16 +66,21 @@ public class TenantsServiceImpl implements TenantService {
         return tenantRepository.getTenantByEmail(email);
     }
 
-    public void updateTenant(List<Tenants> tenantsList) {
+    public boolean updateTenant(List<Tenants> tenantsList) {
         if (tenantsList == null || tenantsList.isEmpty()) {
-            throw new IllegalArgumentException("Tenant list cannot be null or empty");
+            return false;
         }
+        try {
         for (Tenants tenant : tenantsList) {
             if (validateTenant(tenant)) {
                 tenantRepository.updatetenants(tenant.getId(), tenant.getRoomId(), tenant.getGender(), tenant.getDateOfBirth()
                         , tenant.getContact(), tenant.getCitizenId(), tenant.getEmail(), tenant.getCareer(), tenant.getLicensePlate()
                         , tenant.getVehicleType(), tenant.getVehicleColor(), tenant.getResidenceStatus());
             }
+        }
+            return true;
+        } catch (Exception e){
+            return false;
         }
     }
 
