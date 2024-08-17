@@ -1,6 +1,7 @@
 package com.miniApartment.miniApartment.Repository;
 
 import com.miniApartment.miniApartment.Entity.Tenants;
+import com.miniApartment.miniApartment.dto.TenantDetailDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.core.mapping.schema.LiquibaseChangeSetWriter;
@@ -15,9 +16,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface TenantRepository extends JpaRepository<Tenants, Long> {
-    @Query(value = "select * from tenants  where roomId = :roomId", nativeQuery = true)
-    Page<Tenants> getTenantsByRoomId(@Param("roomId") int roomId, Pageable pageable);
-
+    @Query(value = "select  t.id,t.lastName,t.firstName,t.roomId,t.email,t.dateOfBirth,t.gender,t.residenceStatus,t.licensePlate,t.contact" +
+            ",t.career,t.citizenId,c.moveinDate,c.expireDate from Tenants t join Contract c on t.contractId = c.contractId where t.roomId = :roomId",nativeQuery = true)
+    Page<TenantDetailDTO> getTenantsByRoomId(@Param("roomId") int roomId, Pageable pageable);
     //    @Query(value = "select t from Tenants t where t.roomId = :roomId")
 //    Page<Tenants> getTenantsByRoomIdi(@Param("roomId") int roomId, Pageable pageable);
     @Modifying
